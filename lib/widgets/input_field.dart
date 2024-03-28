@@ -1,93 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+
+import '../cubits/login_cubit/login_cubit.dart';
+import '../cubits/login_cubit/login_state.dart';
 import '../theme/fonts.dart';
 
-class InputField extends StatefulWidget {
+class InputField extends StatelessWidget {
   final String? title;
   final String hint;
   final TextEditingController? controller;
   final Widget? widget;
   final TextInputType? textType;
-  final String? Function(String?)? validator;
-  final void Function(String?)? onSaved;
   final bool isPassword;
+  final Function(String)? onChanged;
 
   const InputField(
-      {this.title,
+      { this.title,
       required this.hint,
       this.controller,
       this.widget,
       this.textType,
-      this.validator,
-      this.onSaved,
+      this.onChanged,
       this.isPassword = false,
       super.key});
 
   @override
-  State<InputField> createState() => _InputFieldState();
-}
-
-class _InputFieldState extends State<InputField> {
-  bool showPwd = false;
-  @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.title != null)
-              Text(
-                widget.title!,
-                style: titleStyle,
-              ),
-            const SizedBox(
-              height: 8,
-            ),
-            TextFormField(
-              obscureText: widget.isPassword && !showPwd,
-              autocorrect: widget.title == null ? true : false,
-              enableSuggestions: widget.title == null ? true : false,
-              onSaved: widget.onSaved,
-              validator: widget.validator,
-              controller: widget.controller,
-              keyboardType: widget.textType,
-              autofocus: false,
-              style: titleStyle,
-              cursorColor: const Color.fromRGBO(0, 117, 255, 1),
-              decoration: InputDecoration(
-                suffixIcon: widget.isPassword
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            showPwd = !showPwd;
-                          });
-                        },
-                        icon: showPwd
-                            ? const Icon(Icons.visibility_off_outlined)
-                            : const Icon(Icons.visibility_outlined),
-                      )
-                    : widget.widget,
-                contentPadding: const EdgeInsets.all(12),
-                prefixIcon: widget.widget,
-                hintText: widget.hint,
-                hintStyle: subTitle,
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      style: BorderStyle.solid,
-                      width: 1,
-                    )),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 1,
-                    )),
-              ),
-            ),
-          ],
-        ));
+    return MultiBlocProvider(
+      providers: [
+      BlocProvider ( create: (context) => AppLoginCubit(),),
+      
+      
+      ],
+      child: BlocConsumer<AppLoginCubit, AppLoginState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = AppLoginCubit.get(context);
+          bool showPwd = cubit.showPwd;
+          return Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if(title != null)
+                  Text(
+                    title!,
+                    style: titleStyle,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextFormField(
+                      onChanged: onChanged,
+                     
+                      obscureText: isPassword && !showPwd,
+                      controller: controller,
+                      keyboardType: textType,
+                      autofocus: false,
+                      style: titleStyle,
+                      cursorColor: primaryBlue,
+                      decoration: InputDecoration(
+                        suffixIcon: isPassword
+                            ? IconButton(
+                                onPressed: () {
+                                  cubit.changePasswordVisibility();
+                                },
+                                icon: cubit.icon,
+                              )
+                            : widget,
+                        hintText: hint,
+                        hintStyle: subTitle,
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                              style: BorderStyle.solid,
+                              width: 1,
+                            )),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: primaryLightTeal,
+                              width: 2,
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+        },
+      ),
+    );
   }
 }
