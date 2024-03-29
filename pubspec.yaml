@@ -38,6 +38,8 @@ dependencies:
   firebase_core: ^2.27.0
   google_fonts: ^6.1.0
   flutter_bloc: ^8.1.5
+  conditional_builder_null_safety: ^0.0.6
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:
