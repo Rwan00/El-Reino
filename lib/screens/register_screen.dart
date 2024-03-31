@@ -122,14 +122,14 @@ class RegisterScreen extends StatelessWidget {
                                           buildSnackBar(
                                           context: context,
                                           text: "Please Fill All Fields!",
-                                          clr: const Color.fromARGB(255, 92, 1, 1));
+                                          clr: errorColor);
                                         }
                                          else if (passwordController.text !=
                                         confirmPasswordController.text) {
                                       buildSnackBar(
                                           context: context,
                                           text: "Password Dosen't Match",
-                                          clr: const Color.fromARGB(255, 92, 1, 1));
+                                          clr: errorColor);
                                     } 
                                
                                     else {

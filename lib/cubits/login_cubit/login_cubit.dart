@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,25 +8,22 @@ class AppLoginCubit extends Cubit<AppLoginState> {
   AppLoginCubit() : super(AppLoginInitialState());
 
   static AppLoginCubit get(context) => BlocProvider.of(context);
-  /* late ShopLoginModel loginModel;
 
   void userLogin({required String email, required String password}) {
-    emit(ShopLoginLoadingState());
-    DioHelper.postData(url: LOGIN, data: {
-      "email": email,
-      "password": password,
-    }).then((value) {
-      loginModel = ShopLoginModel.fromJson(value.data);
-      print(loginModel.status);
-      print(loginModel.message);
-      print(loginModel.data?.token);
-      print(value);
-      emit(ShopLoginSuccessState(loginModel));
-    }).catchError((error){
+    emit(AppLoginLoadingState());
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) {
+      print(value.user!.email);
+      emit(AppLoginSuccessState());
+    }).catchError((error) {
       print(error.toString());
-      emit(ShopLoginErrorState(error.toString()));
+      emit(AppLoginErrorState(error));
     });
-  } */
+  }
 
   Widget icon = const Icon(Icons.remove_red_eye_outlined);
   bool showPwd = false;
