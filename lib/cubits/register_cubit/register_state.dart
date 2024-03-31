@@ -1,21 +1,18 @@
 
 
 
-abstract class ShopRegisterState {}
+abstract class AppRegisterState {}
 
-class ShopRegisterInitialState extends ShopRegisterState {}
+class AppRegisterInitialState extends AppRegisterState {}
 
-class ShopRegisterLoadingState extends ShopRegisterState {}
+class AppRegisterLoadingState extends AppRegisterState {}
 
-class ShopRegisterSuccessState extends ShopRegisterState {
+class AppRegisterSuccessState extends AppRegisterState {
   /* final ShopLoginModel loginModel;
   ShopRegisterSuccessState(this.loginModel); */
 }
 
-class ShopRegisterErrorState extends ShopRegisterState {
-  final String error;
- ShopRegisterErrorState(this.error);
-}
+class AppRegisterErrorState extends AppRegisterState {}
 
-class ShopChangePasswordVisibility extends ShopRegisterState{}
-class ShopUpdateWidgets extends ShopRegisterState{}
+class AppChangePasswordVisibility extends AppRegisterState{}
+class AppUpdateWidgets extends AppRegisterState{}
