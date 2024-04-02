@@ -41,6 +41,7 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   page_transition: ^2.1.0
   firebase_auth: ^4.17.8
+  cloud_firestore: ^4.15.8
 
 dev_dependencies:
   flutter_test:

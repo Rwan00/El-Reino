@@ -30,4 +30,13 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       emit(AppRegisterErrorState());
     });
   }
+  void userCreate({
+    required String email,
+    required String name,
+    required String phone,
+    required String uId,
+  }) {
+    emit(AppCreateUserLoadingState());
+   
+  }
 }
