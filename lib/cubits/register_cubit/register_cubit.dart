@@ -32,7 +32,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
         phone: phone,
         uId: value.user!.uid,
       );
-      emit(AppRegisterSuccessState());
+     
     }).catchError((error) {
       print(error);
       emit(AppRegisterErrorState());
@@ -50,6 +50,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       name: name,
       phone: phone,
       uId: uId,
+      isEmailVerified: false,
     );
     emit(AppCreateUserLoadingState());
     FirebaseFirestore.instance
