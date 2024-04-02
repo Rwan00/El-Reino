@@ -39,3 +39,20 @@ SnackBar buildSnackBar(
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
   return snackBar;
 }
+
+void animatedNavigateAndDelete(
+    {required BuildContext context,
+    required Widget widget,
+    required PageTransitionType direction,
+    required Curve curve}) {
+  Navigator.pushAndRemoveUntil(
+      context,
+      PageTransition(
+        child: widget,
+        type: direction,
+        curve: curve,
+        //alignment: Alignment.bottomLeft,
+        duration: const Duration(milliseconds: 700),
+      ),
+      (Route<dynamic> route) => false);
+}

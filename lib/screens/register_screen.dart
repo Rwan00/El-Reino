@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:el_reino/cubits/register_cubit/register_cubit.dart';
 import 'package:el_reino/cubits/register_cubit/register_state.dart';
+import 'package:el_reino/screens/app_layout.dart';
 import 'package:el_reino/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,16 @@ class RegisterScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppRegisterCubit(),
       child: BlocConsumer<AppRegisterCubit, AppRegisterState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AppCreateUserSuccessState) {
+            animatedNavigateAndDelete(
+              context: context,
+              widget: const SocialAppLayout(),
+              direction: PageTransitionType.fade,
+              curve: Curves.bounceIn,
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = AppRegisterCubit.get(context);
           return Scaffold(
@@ -112,34 +122,33 @@ class RegisterScreen extends StatelessWidget {
                                 width: double.infinity,
                                 height: 45,
                                 child: ConditionalBuilder(
-                                  condition:
-                                      state is! AppRegisterLoadingState,
+                                  condition: state is! AppRegisterLoadingState,
                                   builder: (context) {
                                     return AppBtn(
                                       label: "Sign Up",
                                       onPressed: () {
-                                        if( emailController.text.isEmpty || usernameController.text.isEmpty||passwordController.text.isEmpty||phoneController.text.isEmpty){
+                                        if (emailController.text.isEmpty ||
+                                            usernameController.text.isEmpty ||
+                                            passwordController.text.isEmpty ||
+                                            phoneController.text.isEmpty) {
                                           buildSnackBar(
-                                          context: context,
-                                          text: "Please Fill All Fields!",
-                                          clr: errorColor);
+                                              context: context,
+                                              text: "Please Fill All Fields!",
+                                              clr: errorColor);
+                                        } else if (passwordController.text !=
+                                            confirmPasswordController.text) {
+                                          buildSnackBar(
+                                              context: context,
+                                              text: "Password Dosen't Match",
+                                              clr: errorColor);
+                                        } else {
+                                          cubit.userRegister(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                            name: usernameController.text,
+                                            phone: phoneController.text,
+                                          );
                                         }
-                                         else if (passwordController.text !=
-                                        confirmPasswordController.text) {
-                                      buildSnackBar(
-                                          context: context,
-                                          text: "Password Dosen't Match",
-                                          clr: errorColor);
-                                    } 
-                               
-                                    else {
-                                      cubit.userRegister(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                      name: usernameController.text,
-                                      phone: phoneController.text,
-                                      );
-                                    }
                                       },
                                     );
                                   },

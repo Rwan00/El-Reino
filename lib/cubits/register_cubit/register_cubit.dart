@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,19 +26,41 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
         .then((value) {
       print(value.user!.email);
       print(value.user!.uid);
+      userCreate(
+        email: email,
+        name: name,
+        phone: phone,
+        uId: value.user!.uid,
+      );
       emit(AppRegisterSuccessState());
     }).catchError((error) {
       print(error);
       emit(AppRegisterErrorState());
     });
   }
+
   void userCreate({
     required String email,
     required String name,
     required String phone,
     required String uId,
   }) {
+    UserData userData = UserData(
+      email: email,
+      name: name,
+      phone: phone,
+      uId: uId,
+    );
     emit(AppCreateUserLoadingState());
-   
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(uId)
+        .set(userData.toMap())
+        .then((value) {
+      emit(AppCreateUserSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppCreateUserErrorState());
+    });
   }
 }
