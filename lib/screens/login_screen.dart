@@ -2,10 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:el_reino/cubits/login_cubit/login_cubit.dart';
 import 'package:el_reino/cubits/login_cubit/login_state.dart';
 import 'package:el_reino/methods/methods.dart';
+import 'package:el_reino/screens/app_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../helper/cache_helper.dart';
 import '../theme/fonts.dart';
 import '../widgets/app_btn.dart';
 import '../widgets/input_field.dart';
@@ -24,6 +26,18 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is AppLoginErrorState) {
             buildSnackBar(context: context, text: state.error, clr: errorColor);
+          }
+          if(state is AppLoginSuccessState){
+            CacheHelper.saveData(
+                    key: "uId", value: state.uId)
+                .then((value) {
+                  
+              animatedNavigateAndDelete(
+                  context: context,
+                  widget: const SocialAppLayout(),
+                  direction: PageTransitionType.fade,
+                  curve: Curves.easeInOutBack);
+            });
           }
         },
         builder: (context, state) {
