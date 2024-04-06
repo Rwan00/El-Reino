@@ -33,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
         }
         if (state is AppCreateUserSuccessState) {
           buildSnackBar(context: context, text: "Your Register Done Successfully", clr: primaryBlue,);
-          animatedNavigateAndDelete(
+          animatedNavigateTo(
             context: context,
             widget: const EmailVerificationScreen(),
             direction: PageTransitionType.bottomToTop,

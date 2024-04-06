@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/consts.dart';
-import '../../methods/methods.dart';
+
 
 import 'register_state.dart';
 
@@ -73,14 +73,13 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     emit(VerifyEmailLoadingState());
     try{
      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-       buildSnackBar(
-        context: context,
-        text: "Please Check Your Email",
-        clr: primaryBlue,
-      );
-      userData.isEmailVerified = true;
       emit(VerifyEmailSuccessState());
-      } on FirebaseAuthException catch(error){
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .update({"isEmailVerified": true});
+      emit(AppCreateUserSuccessState());
+      } on FirebaseException catch(error){
  print(error.toString());
       emit(VerifyEmailErrorState(error.message??"Authintication Failed!"));
     }

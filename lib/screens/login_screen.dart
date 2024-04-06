@@ -3,6 +3,7 @@ import 'package:el_reino/cubits/login_cubit/login_cubit.dart';
 import 'package:el_reino/cubits/login_cubit/login_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/app_layout.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -28,18 +29,28 @@ class LoginScreen extends StatelessWidget {
           if (state is AppLoginErrorState) {
             buildSnackBar(context: context, text: state.error, clr: errorColor);
           }
-          if(state is AppLoginSuccessState){
-            buildSnackBar(context: context, text: "Welcome!", clr: primaryBlue,);
-            CacheHelper.saveData(
-                    key: "uId", value: state.user.uid)
-                .then((value) {
-                  
-              animatedNavigateAndDelete(
-                  context: context,
-                  widget: const SocialAppLayout(),
-                  direction: PageTransitionType.fade,
-                  curve: Curves.easeInOutBack);
-            });
+          if (state is AppLoginSuccessState) {
+            if (state.user.emailVerified) {
+              buildSnackBar(
+                context: context,
+                text: "Welcome!",
+                clr: primaryBlue,
+              );
+              CacheHelper.saveData(key: "uId", value: state.user.uid)
+                  .then((value) {
+                animatedNavigateAndDelete(
+                    context: context,
+                    widget: const SocialAppLayout(),
+                    direction: PageTransitionType.fade,
+                    curve: Curves.easeInOutBack);
+              });
+            } else {
+              buildSnackBar(
+                context: context,
+                text: "Please Verifiey Your Email First!",
+                clr: errorColor,
+              );
+            }
           }
         },
         builder: (context, state) {
@@ -116,9 +127,7 @@ class LoginScreen extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              const SizedBox(
-                                height: 24,
-                              ),
+
                               SizedBox(
                                 width: double.infinity,
                                 height: 45,

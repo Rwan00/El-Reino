@@ -2,7 +2,8 @@ import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/register_cubit/register_cubit.dart';
 import 'package:el_reino/cubits/register_cubit/register_state.dart';
 import 'package:el_reino/methods/methods.dart';
-import 'package:el_reino/screens/app_layout.dart';
+
+import 'package:el_reino/screens/login_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/app_btn.dart';
 
@@ -21,9 +22,14 @@ class EmailVerificationScreen extends StatelessWidget {
           buildSnackBar(context: context, text: state.error, clr: errorColor);
         }
         if (state is VerifyEmailSuccessState) {
+          buildSnackBar(
+        context: context,
+        text: "Please Check Your Email",
+        clr: primaryBlue,
+      );
           animatedNavigateAndDelete(
             context: context,
-            widget: const SocialAppLayout(),
+            widget: const LoginScreen(),
             direction: PageTransitionType.fade,
             curve: Curves.bounceIn,
           );
