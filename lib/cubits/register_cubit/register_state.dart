@@ -22,3 +22,7 @@ class AppCreateUserErrorState extends AppRegisterState {}
 
 class AppChangePasswordVisibility extends AppRegisterState{}
 class AppUpdateWidgets extends AppRegisterState{}
+
+class VerifyEmailLoadingState extends AppRegisterState{}
+class VerifyEmailSuccessState extends AppRegisterState{}
+class VerifyEmailErrorState extends AppRegisterState{}

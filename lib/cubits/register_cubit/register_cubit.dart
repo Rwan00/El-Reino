@@ -3,6 +3,8 @@ import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../methods/methods.dart';
+import '../../theme/fonts.dart';
 import 'register_state.dart';
 
 class AppRegisterCubit extends Cubit<AppRegisterState> {
@@ -32,20 +34,20 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
         phone: phone,
         uId: value.user!.uid,
       );
-     
     }).catchError((error) {
       print(error);
       emit(AppRegisterErrorState());
     });
   }
 
+  late UserData userData;
   void userCreate({
     required String email,
     required String name,
     required String phone,
     required String uId,
   }) {
-    UserData userData = UserData(
+     userData = UserData(
       email: email,
       name: name,
       phone: phone,
@@ -62,6 +64,22 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     }).catchError((error) {
       print(error.toString());
       emit(AppCreateUserErrorState());
+    });
+  }
+
+  void verifyEmail(context) {
+    emit(VerifyEmailLoadingState());
+    FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
+      buildSnackBar(
+        context: context,
+        text: "Please Check Your Email",
+        clr: primaryBlue,
+      );
+      userData.isEmailVerified = true;
+      emit(VerifyEmailSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(VerifyEmailErrorState());
     });
   }
 }
