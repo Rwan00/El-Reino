@@ -9,20 +9,20 @@ class AppLoginCubit extends Cubit<AppLoginState> {
 
   static AppLoginCubit get(context) => BlocProvider.of(context);
 
-  void userLogin({required String email, required String password}) {
+  void userLogin({required String email, required String password})async {
     emit(AppLoginLoadingState());
-    FirebaseAuth.instance
+    try{
+      var value = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
       email: email,
       password: password,
-    )
-        .then((value) {
-      print(value.user!.email);
-      emit(AppLoginSuccessState(uId: value.user!.uid));
-    }).catchError((error) {
-      print(error.toString());
-      emit(AppLoginErrorState(error));
-    });
+    );
+    print(value.user!.email);
+      emit(AppLoginSuccessState(user: value.user!));
+    }on FirebaseAuthException catch(error){
+      emit(AppLoginErrorState(error.message??"Authintication Failed!"));
+
+    }
   }
 
   Widget icon = const Icon(Icons.remove_red_eye_outlined);

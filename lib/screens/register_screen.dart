@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../constants/consts.dart';
 import '../methods/methods.dart';
 import '../theme/fonts.dart';
 import '../widgets/app_btn.dart';
@@ -24,7 +25,14 @@ class RegisterScreen extends StatelessWidget {
     TextEditingController confirmPasswordController = TextEditingController();
     return BlocConsumer<AppRegisterCubit, AppRegisterState>(
       listener: (context, state) {
+        if (state is AppRegisterErrorState) {
+          buildSnackBar(context: context, text: state.error, clr: errorColor,);
+        }
+        if (state is AppCreateUserErrorState) {
+          buildSnackBar(context: context, text: state.error, clr: errorColor,);
+        }
         if (state is AppCreateUserSuccessState) {
+          buildSnackBar(context: context, text: "Your Register Done Successfully", clr: primaryBlue,);
           animatedNavigateAndDelete(
             context: context,
             widget: const EmailVerificationScreen(),
@@ -65,8 +73,8 @@ class RegisterScreen extends StatelessWidget {
                               style: heading,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 64.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 64.0),
                               child: Text(
                                 "Hurry And Be One Of Us",
                                 style: subTitle,
@@ -90,8 +98,8 @@ class RegisterScreen extends StatelessWidget {
                                 InputField(
                                   title: 'Password',
                                   hint: '******',
-                                  widget: const Icon(
-                                      Icons.remove_red_eye_outlined),
+                                  widget:
+                                      const Icon(Icons.remove_red_eye_outlined),
                                   textType: TextInputType.visiblePassword,
                                   isPassword: true,
                                   controller: passwordController,
@@ -99,8 +107,8 @@ class RegisterScreen extends StatelessWidget {
                                 InputField(
                                   title: 'Confirm Password',
                                   hint: '******',
-                                  widget: const Icon(
-                                      Icons.remove_red_eye_outlined),
+                                  widget:
+                                      const Icon(Icons.remove_red_eye_outlined),
                                   textType: TextInputType.visiblePassword,
                                   isPassword: true,
                                   controller: confirmPasswordController,
@@ -171,8 +179,7 @@ class RegisterScreen extends StatelessWidget {
                                     animatedNavigateTo(
                                       context: context,
                                       widget: const LoginScreen(),
-                                      direction:
-                                          PageTransitionType.leftToRight,
+                                      direction: PageTransitionType.leftToRight,
                                       curve: Curves.easeInCirc,
                                     );
                                   },

@@ -3,8 +3,9 @@ import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants/consts.dart';
 import '../../methods/methods.dart';
-import '../../theme/fonts.dart';
+
 import 'register_state.dart';
 
 class AppRegisterCubit extends Cubit<AppRegisterState> {
@@ -17,27 +18,28 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String password,
     required String name,
     required String phone,
-  }) {
+  }) async{
     emit(AppRegisterLoadingState());
 
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )
-        .then((value) {
-      print(value.user!.email);
-      print(value.user!.uid);
-      userCreate(
+    try {
+      var value = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: email,
-        name: name,
-        phone: phone,
-        uId: value.user!.uid,
+        password: password,
       );
-    }).catchError((error) {
+      print(value.user!.email);
+        print(value.user!.uid);
+        userCreate(
+          email: email,
+          name: name,
+          phone: phone,
+          uId: value.user!.uid,
+        );
+    } on FirebaseAuthException catch (error) {
       print(error);
-      emit(AppRegisterErrorState());
-    });
+      emit(AppRegisterErrorState(
+          error: error.message ?? "Authintication Failed!"));
+    }
   }
 
   late UserData userData;
@@ -46,8 +48,8 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String name,
     required String phone,
     required String uId,
-  }) {
-     userData = UserData(
+  }) async{
+    userData = UserData(
       email: email,
       name: name,
       phone: phone,
@@ -55,31 +57,32 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       isEmailVerified: false,
     );
     emit(AppCreateUserLoadingState());
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(uId)
-        .set(userData.toMap())
-        .then((value) {
-      emit(AppCreateUserSuccessState());
-    }).catchError((error) {
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .set(userData.toMap());
+          emit(AppCreateUserSuccessState());
+    } on FirebaseException catch (error) {
       print(error.toString());
-      emit(AppCreateUserErrorState());
-    });
+      emit(AppCreateUserErrorState(error.message??"Authintication Failed!"));
+    }
   }
 
-  void verifyEmail(context) {
+  void verifyEmail(context) async{
     emit(VerifyEmailLoadingState());
-    FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
-      buildSnackBar(
+    try{
+     await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+       buildSnackBar(
         context: context,
         text: "Please Check Your Email",
         clr: primaryBlue,
       );
       userData.isEmailVerified = true;
       emit(VerifyEmailSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(VerifyEmailErrorState());
-    });
+      } on FirebaseAuthException catch(error){
+ print(error.toString());
+      emit(VerifyEmailErrorState(error.message??"Authintication Failed!"));
+    }
   }
 }

@@ -1,4 +1,4 @@
-
+import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/register_cubit/register_cubit.dart';
 import 'package:el_reino/cubits/register_cubit/register_state.dart';
 import 'package:el_reino/methods/methods.dart';
@@ -17,6 +17,9 @@ class EmailVerificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AppRegisterCubit, AppRegisterState>(
       listener: (context, state) {
+        if (state is VerifyEmailErrorState) {
+          buildSnackBar(context: context, text: state.error, clr: errorColor);
+        }
         if (state is VerifyEmailSuccessState) {
           animatedNavigateAndDelete(
             context: context,

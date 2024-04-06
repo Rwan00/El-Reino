@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../constants/consts.dart';
 import '../helper/cache_helper.dart';
 import '../theme/fonts.dart';
 import '../widgets/app_btn.dart';
@@ -28,8 +29,9 @@ class LoginScreen extends StatelessWidget {
             buildSnackBar(context: context, text: state.error, clr: errorColor);
           }
           if(state is AppLoginSuccessState){
+            buildSnackBar(context: context, text: "Welcome!", clr: primaryBlue,);
             CacheHelper.saveData(
-                    key: "uId", value: state.uId)
+                    key: "uId", value: state.user.uid)
                 .then((value) {
                   
               animatedNavigateAndDelete(
