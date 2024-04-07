@@ -8,18 +8,26 @@ import 'package:like_button/like_button.dart';
 
 import '../cubits/app_cubit/app_cubit.dart';
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
+  
   const PostWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = AppCubit.get(context);
+  State<PostWidget> createState() => _PostWidgetState();
+}
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
+class _PostWidgetState extends State<PostWidget> {
+   bool flag = true;
+  void readMore() {
+   setState(() {
+      flag = !flag;
+   });
+   
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Card(
             color: Colors.white,
             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -78,8 +86,8 @@ class PostWidget extends StatelessWidget {
                           Text(
                             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
                             style: titleStyle,
-                            maxLines: cubit.flag ? 3 : null,
-                            overflow: cubit.flag ? TextOverflow.ellipsis : null,
+                            maxLines: flag ? 3 : null,
+                            overflow: flag ? TextOverflow.ellipsis : null,
                           ),
                           SizedBox(
                             width: double.infinity,
@@ -155,13 +163,13 @@ class PostWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              cubit.flag ? "Show More.." : "Show Less",
+                              flag ? "Show More.." : "Show Less",
                               style: titleStyle.copyWith(color: primaryBlue),
                             ),
                           ],
                         ),
                         onTap: () {
-                          cubit.readMore();
+                          readMore();
                         },
                       ),
                     ],
@@ -248,7 +256,5 @@ class PostWidget extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
   }
 }

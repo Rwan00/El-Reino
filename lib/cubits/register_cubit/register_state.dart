@@ -47,3 +47,7 @@ class UpdateVerifyEmailErrorState extends AppRegisterState {
   final String error;
   UpdateVerifyEmailErrorState(this.error);
 }
+
+class AddImageLoading extends AppRegisterState {}
+
+class AddImageSuccess extends AppRegisterState {}

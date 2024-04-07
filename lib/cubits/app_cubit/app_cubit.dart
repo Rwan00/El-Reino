@@ -5,25 +5,25 @@ import 'package:el_reino/models/user_model.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
 
   late UserData userData;
 
-  void getUserData() {
+  void getUserData() async {
     emit(GetUserLoadingState());
 
-    FirebaseFirestore.instance.collection("users").doc(uId).get().then((value) {
+    try {
+      var value =
+          await FirebaseFirestore.instance.collection("users").doc(uId).get();
       print(value.data());
       userData = UserData.fromJson(value.data());
       emit(GetUserSuccessState());
-    }).catchError((error) {
+    } on FirebaseException catch (error) {
       print(error.toString());
       emit(GetUserErrorState());
-    });
+    }
   }
 
   bool flag = true;
@@ -31,6 +31,4 @@ class AppCubit extends Cubit<AppStates> {
     flag = !flag;
     emit(ReadMoreState());
   }
-
-  
 }
