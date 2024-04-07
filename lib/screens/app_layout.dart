@@ -13,9 +13,13 @@ class SocialAppLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      child:  Scaffold(
+      child: Scaffold(
         appBar: AppBar(
-          title:  Text("El Rieno",style: heading.copyWith(color: primaryBlue),),
+          backgroundColor: Colors.white,
+          title: Text(
+            "El Rieno",
+            style: heading.copyWith(color: primaryBlue),
+          ),
           actions: const [
             Padding(
               padding: EdgeInsets.all(8.0),
@@ -24,12 +28,20 @@ class SocialAppLayout extends StatelessWidget {
               ),
             )
           ],
-          bottom:  TabBar(
+          bottom: TabBar(
             tabs: <Widget>[
-              Tab(icon: Image.asset("assets/home.png"),),
-              Tab(icon: Image.asset("assets/chat.png"),),
-              Tab(icon: Image.asset("assets/notification.png"),),
-              Tab(icon: Image.asset("assets/setting.png"),),  
+              Tab(
+                icon: Image.asset("assets/home.png"),
+              ),
+              Tab(
+                icon: Image.asset("assets/chat.png"),
+              ),
+              Tab(
+                icon: Image.asset("assets/notification.png"),
+              ),
+              Tab(
+                icon: Image.asset("assets/setting.png"),
+              ),
             ],
           ),
         ),

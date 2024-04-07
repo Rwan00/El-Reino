@@ -26,5 +26,11 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  bool flag = true;
+  void readMore() {
+    flag = !flag;
+    emit(ReadMoreState());
+  }
+
   
 }

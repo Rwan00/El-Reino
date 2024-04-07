@@ -6,3 +6,4 @@ class GetUserLoadingState extends AppStates{}
 class GetUserSuccessState extends AppStates{}
 class GetUserErrorState extends AppStates{}
 
+class ReadMoreState extends AppStates{}
