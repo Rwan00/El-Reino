@@ -45,8 +45,8 @@ class SocialAppLayout extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
-          physics: BouncingScrollPhysics(),
+        body: const TabBarView(
+          physics:  PageScrollPhysics(),
           children: [
             FeedsScreen(),
             ChatsScreen(),
