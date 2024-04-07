@@ -39,3 +39,11 @@ class VerifyEmailErrorState extends AppRegisterState {
   final String error;
   VerifyEmailErrorState(this.error);
 }
+class UpdateVerifyEmailLoadingState extends AppRegisterState {}
+
+class UpdateVerifyEmailSuccessState extends AppRegisterState {}
+
+class UpdateVerifyEmailErrorState extends AppRegisterState {
+  final String error;
+  UpdateVerifyEmailErrorState(this.error);
+}

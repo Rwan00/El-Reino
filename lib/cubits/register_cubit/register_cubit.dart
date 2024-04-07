@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/consts.dart';
 
-
 import 'register_state.dart';
 
 class AppRegisterCubit extends Cubit<AppRegisterState> {
@@ -18,23 +17,22 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String password,
     required String name,
     required String phone,
-  }) async{
+  }) async {
     emit(AppRegisterLoadingState());
 
     try {
-      var value = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      var value = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       print(value.user!.email);
-        print(value.user!.uid);
-        userCreate(
-          email: email,
-          name: name,
-          phone: phone,
-          uId: value.user!.uid,
-        );
+      print(value.user!.uid);
+      userCreate(
+        email: email,
+        name: name,
+        phone: phone,
+        uId: value.user!.uid,
+      );
     } on FirebaseAuthException catch (error) {
       print(error);
       emit(AppRegisterErrorState(
@@ -48,7 +46,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String name,
     required String phone,
     required String uId,
-  }) async{
+  }) async {
     userData = UserData(
       email: email,
       name: name,
@@ -62,26 +60,37 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
           .collection("users")
           .doc(uId)
           .set(userData.toMap());
-          emit(AppCreateUserSuccessState());
+      emit(AppCreateUserSuccessState());
     } on FirebaseException catch (error) {
       print(error.toString());
-      emit(AppCreateUserErrorState(error.message??"Authintication Failed!"));
+      emit(AppCreateUserErrorState(error.message ?? "Authintication Failed!"));
     }
   }
 
-  void verifyEmail(context) async{
+  void verifyEmail(context) async {
     emit(VerifyEmailLoadingState());
-    try{
-     await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    try {
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
       emit(VerifyEmailSuccessState());
+      updatVerification();
+    } on FirebaseException catch (error) {
+      print(error.toString());
+      emit(VerifyEmailErrorState(error.message ?? "Authintication Failed!"));
+    }
+  }
+
+  void updatVerification() async {
+    emit(UpdateVerifyEmailLoadingState());
+    try {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(uId)
           .update({"isEmailVerified": true});
-      emit(AppCreateUserSuccessState());
-      } on FirebaseException catch(error){
- print(error.toString());
-      emit(VerifyEmailErrorState(error.message??"Authintication Failed!"));
+      emit(UpdateVerifyEmailSuccessState());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UpdateVerifyEmailErrorState(
+          error.message ?? "Authintication Failed!"));
     }
   }
 }
