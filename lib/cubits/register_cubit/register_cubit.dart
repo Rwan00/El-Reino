@@ -68,6 +68,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String uId,
     String? bio,
     String? image,
+    String? cover,
    
   }) async {
     userData = UserData(
@@ -76,6 +77,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       phone: phone,
       uId: uId,
       image: image,
+      cover:cover,
       isEmailVerified: false,
       bio: bio,
     );

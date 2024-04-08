@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/models/user_model.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -24,6 +27,20 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
       emit(GetUserErrorState());
     }
+  }
+
+   final ImagePicker coverPicker = ImagePicker();
+  File? pickedCoverImage;
+  
+
+  fetchCoverImage() async {
+    emit(AddCoverImageLoading());
+    final XFile? image = await coverPicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    pickedCoverImage = File(image.path);
+    emit(AddCoverImageSuccess());
   }
 
   bool flag = true;

@@ -34,24 +34,24 @@ class SettingsScreen extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          image: const DecorationImage(
+                          image:  DecorationImage(
                             image: NetworkImage(
-                              "https://i.pinimg.com/564x/66/fa/bc/66fabc32423171aa0fd850091b65d1e0.jpg",
+                              cubit.userData.cover??"https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
                             ),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                     Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: CircleAvatar(
                         radius: 55,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                            "https://i.pinimg.com/564x/97/f0/cb/97f0cb0bd91313be32a74ff14584d0f7.jpg",
+                            cubit.userData.image!,
                           ),
                         ),
                       ),
@@ -62,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "Rwan",
+                    cubit.userData.name!,
                     style: heading,
                   ),
                   const Spacer(),
@@ -70,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
               Text(
-                "To Be or Not To Be..",
+                cubit.userData.bio??"Add Bio..",
                 style: subTitle,
               ),
               const SizedBox(
@@ -82,7 +82,35 @@ class SettingsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "100",
+                          "500",
+                          style: titleStyle,
+                        ),
+                        Text(
+                          "Posts",
+                          style: subTitle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "350",
+                          style: titleStyle,
+                        ),
+                        Text(
+                          "Photos",
+                          style: subTitle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "100K",
                           style: titleStyle,
                         ),
                         Text(
@@ -96,39 +124,11 @@ class SettingsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "100",
+                          "367",
                           style: titleStyle,
                         ),
                         Text(
-                          "Followers",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "100",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Followers",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "100",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Followers",
+                          "Followings",
                           style: subTitle,
                         ),
                       ],

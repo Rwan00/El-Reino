@@ -4,8 +4,10 @@ class UserData {
   String? phone;
   String? uId;
   String? image;
+  String? cover;
   String? bio;
   bool? isEmailVerified;
+
 
   UserData({
     required this.email,
@@ -13,6 +15,7 @@ class UserData {
     required this.phone,
     required this.uId,
     required this.image,
+    required this.cover,
     required this.bio,
     required this.isEmailVerified,
   });
@@ -23,6 +26,7 @@ class UserData {
       phone: json?["phone"],
       uId: json?["uId"],
       image: json?["image"],
+      cover: json?["cover"],
       bio: json?["bio"],
       isEmailVerified: json?["isEmailVerified"],
     );
@@ -35,6 +39,7 @@ class UserData {
       "phone": phone,
       "uId": uId,
       "image": image,
+      "cover": cover,
       "bio": bio,
       "isEmailVerified":isEmailVerified,
     };

@@ -7,3 +7,7 @@ class GetUserSuccessState extends AppStates{}
 class GetUserErrorState extends AppStates{}
 
 class ReadMoreState extends AppStates{}
+
+class AddCoverImageLoading extends AppStates {}
+
+class AddCoverImageSuccess extends AppStates {}
