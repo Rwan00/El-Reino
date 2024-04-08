@@ -12,7 +12,7 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
 
-  late UserData userData;
+   UserData? userData;
 
   void getUserData() async {
     emit(GetUserLoadingState());

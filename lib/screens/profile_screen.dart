@@ -1,20 +1,21 @@
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/methods/methods.dart';
+import 'package:el_reino/screens/edit_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../widgets/app_btn.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return Padding(
@@ -34,16 +35,17 @@ class SettingsScreen extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          image:  DecorationImage(
+                          image: DecorationImage(
                             image: NetworkImage(
-                              cubit.userData.cover??"https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
+                              cubit.userData!.cover ??
+                                  "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
                             ),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
-                     Padding(
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: CircleAvatar(
                         radius: 55,
@@ -51,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                            cubit.userData.image!,
+                            cubit.userData!.image!,
                           ),
                         ),
                       ),
@@ -62,15 +64,24 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    cubit.userData.name!,
+                    cubit.userData!.name!,
                     style: heading,
                   ),
                   const Spacer(),
-                  AppBtn(label: "Edit Your Profile", onPressed: () {}),
+                  AppBtn(
+                      label: "Edit Your Profile",
+                      onPressed: () {
+                        animatedNavigateTo(
+                          context: context,
+                          widget: const EditScreen(),
+                          direction: PageTransitionType.bottomToTop,
+                          curve: Curves.decelerate,
+                        );
+                      }),
                 ],
               ),
               Text(
-                cubit.userData.bio??"Add Bio..",
+                cubit.userData!.bio ?? "Add Bio..",
                 style: subTitle,
               ),
               const SizedBox(
