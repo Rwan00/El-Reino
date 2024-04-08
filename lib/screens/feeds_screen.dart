@@ -16,7 +16,7 @@ class FeedsScreen extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        var cubit = AppCubit.get(context);
+       
         return CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [

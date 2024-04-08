@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -42,6 +42,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
         await storageRef.putFile(pickedImage!);
         final imgUrl = await storageRef.getDownloadURL();
         log(imgUrl);
+     
 
       userCreate(
         email: email,
@@ -67,6 +68,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String uId,
     String? bio,
     String? image,
+   
   }) async {
     userData = UserData(
       email: email,
@@ -120,7 +122,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
 
   final ImagePicker picker = ImagePicker();
   File? pickedImage;
-  ImageProvider<Object>? imageProvider;
+  
 
   fetchImage() async {
     emit(AddImageLoading());
@@ -129,7 +131,6 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       return;
     }
     pickedImage = File(image.path);
-    imageProvider = FileImage(pickedImage!);
     emit(AddImageSuccess());
   }
 }

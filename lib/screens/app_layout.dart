@@ -40,7 +40,7 @@ class SocialAppLayout extends StatelessWidget {
                 icon: Image.asset("assets/notification.png"),
               ),
               Tab(
-                icon: Image.asset("assets/setting.png"),
+                icon: Image.asset("assets/avatar.png"),
               ),
             ],
           ),

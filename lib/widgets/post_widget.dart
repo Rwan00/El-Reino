@@ -1,12 +1,11 @@
 import 'package:el_reino/constants/consts.dart';
-import 'package:el_reino/cubits/app_cubit/app_state.dart';
+
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/divide.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:like_button/like_button.dart';
 
-import '../cubits/app_cubit/app_cubit.dart';
 
 class PostWidget extends StatefulWidget {
   
