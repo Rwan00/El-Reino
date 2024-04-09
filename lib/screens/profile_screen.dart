@@ -71,9 +71,10 @@ class ProfileScreen extends StatelessWidget {
                   AppBtn(
                       label: "Edit Your Profile",
                       onPressed: () {
+                        print(cubit.userData?.cover);
                         animatedNavigateTo(
                           context: context,
-                          widget: const EditScreen(),
+                          widget:  EditScreen(userData: cubit.userData!,),
                           direction: PageTransitionType.bottomToTop,
                           curve: Curves.decelerate,
                         );

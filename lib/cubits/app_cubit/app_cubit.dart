@@ -29,18 +29,32 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-   final ImagePicker coverPicker = ImagePicker();
+   final ImagePicker picker = ImagePicker();
+
+
   File? pickedCoverImage;
   
 
   fetchCoverImage() async {
     emit(AddCoverImageLoading());
-    final XFile? image = await coverPicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
       return;
     }
     pickedCoverImage = File(image.path);
     emit(AddCoverImageSuccess());
+  }
+  File? pickedProfileImage;
+  
+
+  fetchProfileImage() async {
+    emit(AddProfileImageLoading());
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    pickedProfileImage = File(image.path);
+    emit(AddProfileImageSuccess());
   }
 
   bool flag = true;
