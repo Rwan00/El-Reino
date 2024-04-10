@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
@@ -18,138 +19,155 @@ class ProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 190,
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomStart,
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional.topCenter,
-                      child: Container(
-                        height: 140,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              cubit.userData!.cover ??
-                                  "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
+
+        return ConditionalBuilder(
+          condition: cubit.userData != null,
+          builder: (context) {
+           return  Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 190,
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomStart,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional.topCenter,
+                          child: Container(
+                            height: 140,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  cubit.userData!.cover ??
+                                      "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
+                                ),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: CircleAvatar(
+                            radius: 55,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(
+                                cubit.userData!.image!,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: CircleAvatar(
-                        radius: 55,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                            cubit.userData!.image!,
-                          ),
-                        ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        cubit.userData!.name!,
+                        style: heading,
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: [
+                      const Spacer(),
+                      AppBtn(
+                          label: "Edit Your Profile",
+                          onPressed: () {
+                            print(cubit.userData?.cover);
+                            animatedNavigateTo(
+                              context: context,
+                              widget: EditScreen(
+                                userData: cubit.userData!,
+                              ),
+                              direction: PageTransitionType.bottomToTop,
+                              curve: Curves.decelerate,
+                            );
+                          }),
+                    ],
+                  ),
                   Text(
-                    cubit.userData!.name!,
-                    style: heading,
+                    cubit.userData!.bio ?? "Add Bio..",
+                    style: subTitle,
                   ),
-                  const Spacer(),
-                  AppBtn(
-                      label: "Edit Your Profile",
-                      onPressed: () {
-                        print(cubit.userData?.cover);
-                        animatedNavigateTo(
-                          context: context,
-                          widget:  EditScreen(userData: cubit.userData!,),
-                          direction: PageTransitionType.bottomToTop,
-                          curve: Curves.decelerate,
-                        );
-                      }),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "500",
+                              style: titleStyle,
+                            ),
+                            Text(
+                              "Posts",
+                              style: subTitle,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "350",
+                              style: titleStyle,
+                            ),
+                            Text(
+                              "Photos",
+                              style: subTitle,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "100K",
+                              style: titleStyle,
+                            ),
+                            Text(
+                              "Followers",
+                              style: subTitle,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "367",
+                              style: titleStyle,
+                            ),
+                            Text(
+                              "Followings",
+                              style: subTitle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
-              Text(
-                cubit.userData!.bio ?? "Add Bio..",
-                style: subTitle,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "500",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Posts",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "350",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Photos",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "100K",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Followers",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "367",
-                          style: titleStyle,
-                        ),
-                        Text(
-                          "Followings",
-                          style: subTitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+            );
+          },
+         fallback: (context) {
+                              return Center(
+                child: Image.asset(
+                  "assets/loading.gif",
+                  height: 95,
+                  width: 95,
+                ),
+                              );
+                            },
         );
       },
     );

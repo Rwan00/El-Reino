@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../constants/consts.dart';
+
 
 import 'register_state.dart';
 
@@ -68,7 +68,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String uId,
     String? bio,
     String? image,
-    String? cover,
+    
    
   }) async {
     userData = UserData(
@@ -77,7 +77,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       phone: phone,
       uId: uId,
       image: image,
-      cover:cover,
+      cover: "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
       isEmailVerified: false,
       bio: bio,
     );
@@ -100,27 +100,13 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     try {
       await FirebaseAuth.instance.currentUser!.sendEmailVerification();
       emit(VerifyEmailSuccessState());
-      updatVerification();
     } on FirebaseException catch (error) {
       print(error.toString());
       emit(VerifyEmailErrorState(error.message ?? "Authintication Failed!"));
     }
   }
 
-  void updatVerification() async {
-    emit(UpdateVerifyEmailLoadingState());
-    try {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(uId)
-          .update({"isEmailVerified": true});
-      emit(UpdateVerifyEmailSuccessState());
-    } on FirebaseException catch (error) {
-      print(error.message);
-      emit(UpdateVerifyEmailErrorState(
-          error.message ?? "Authintication Failed!"));
-    }
-  }
+ 
 
   final ImagePicker picker = ImagePicker();
   File? pickedImage;

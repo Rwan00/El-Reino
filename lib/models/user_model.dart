@@ -10,14 +10,14 @@ class UserData {
 
 
   UserData({
-    required this.email,
-    required this.name,
-    required this.phone,
-    required this.uId,
-    required this.image,
-    required this.cover,
-    required this.bio,
-    required this.isEmailVerified,
+     required this.email,
+     required this.name,
+     required this.phone,
+     required this.uId,
+     required this.image,
+     required this.cover,
+     required this.bio,
+     required this.isEmailVerified,
   });
   factory UserData.fromJson(json) {
     return UserData(

@@ -16,7 +16,7 @@ class AppCubit extends Cubit<AppStates> {
 
   UserData? userData;
 
-  void getUserData() async {
+  Future<void> getUserData() async {
     emit(GetUserLoadingState());
 
     try {
@@ -108,6 +108,35 @@ class AppCubit extends Cubit<AppStates> {
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UploadCoverImageError());
+    }
+  }
+
+  void updateUser({
+    required String name,
+    required String phone,
+    required String bio,
+  }) async {
+    UserData model = UserData(
+      name: name,
+      phone: phone,
+      image: profileImgUrl ?? userData!.image,
+      cover: coverImgUrl ?? userData!.cover,
+      bio: bio,
+       email: userData!.email,
+        uId: uId,
+         isEmailVerified: userData!.isEmailVerified,
+    );
+
+    try {
+      emit(UpdateUserLoadingState());
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .update(model.toMap());
+      getUserData();
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UserUpdateError(error.message!));
     }
   }
 }

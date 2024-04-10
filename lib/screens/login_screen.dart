@@ -38,12 +38,14 @@ class LoginScreen extends StatelessWidget {
               );
               CacheHelper.saveData(key: "uId", value: state.user.uid)
                   .then((value) {
+                     CacheHelper.getData(key: "uId");
                 animatedNavigateAndDelete(
                     context: context,
                     widget: const SocialAppLayout(),
                     direction: PageTransitionType.fade,
                     curve: Curves.easeInOutBack);
               });
+             
             } else {
               buildSnackBar(
                 context: context,

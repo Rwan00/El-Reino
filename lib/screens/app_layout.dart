@@ -21,68 +21,66 @@ class SocialAppLayout extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-          return  DefaultTabController(
-                length: 4,
-                child: Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.white,
-                    title: Text(
-                      "El Rieno",
-                      style: heading.copyWith(color: primaryBlue),
+          print("User:${cubit.userData}");
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                title: Text(
+                  "El Rieno",
+                  style: heading.copyWith(color: primaryBlue),
+                ),
+                actions: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage("assets/logo.png"),
                     ),
-                    actions: const [
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage("assets/logo.png"),
-                        ),
-                      )
+                  )
+                ],
+                bottom: TabBar(
+                  tabs: <Widget>[
+                    Tab(
+                      icon: Image.asset("assets/home.png"),
+                    ),
+                    Tab(
+                      icon: Image.asset("assets/chat.png"),
+                    ),
+                    Tab(
+                      icon: Image.asset("assets/notification.png"),
+                    ),
+                    Tab(
+                      icon: Image.asset("assets/avatar.png"),
+                    ),
+                  ],
+                ),
+              ),
+              body: ConditionalBuilder(
+                condition: cubit.userData != null,
+                builder: (context) {
+                  return const TabBarView(
+                    physics: PageScrollPhysics(),
+                    children: [
+                      FeedsScreen(),
+                      ChatsScreen(),
+                      NotificationScreen(),
+                      ProfileScreen(),
                     ],
-                    bottom: TabBar(
-                      tabs: <Widget>[
-                        Tab(
-                          icon: Image.asset("assets/home.png"),
-                        ),
-                        Tab(
-                          icon: Image.asset("assets/chat.png"),
-                        ),
-                        Tab(
-                          icon: Image.asset("assets/notification.png"),
-                        ),
-                        Tab(
-                          icon: Image.asset("assets/avatar.png"),
-                        ),
-                      ],
+                  );
+                },
+                fallback: (context) {
+                  return Center(
+                    child: Image.asset(
+                      "assets/loading.gif",
+                      height: 95,
+                      width: 95,
                     ),
-                  ),
-                  body: ConditionalBuilder(
-                    condition: cubit.userData != null,
-                    builder: (context) {
-                      return const TabBarView(
-                        physics: PageScrollPhysics(),
-                        children: [
-                          FeedsScreen(),
-                          ChatsScreen(),
-                          NotificationScreen(),
-                          ProfileScreen(),
-                        ],
-                      );
-                    },
-                     fallback: (context) {
-              return Center(
-                child: Image.asset(
-                  "assets/loading.gif",
-                  height: 95,
-                  width: 95,
-                ),
-              );
-            },
-                  ),
-                ),
-              );
-      
-           
-          
+                  );
+                },
+              ),
+            ),
+          );
         },
       ),
     );
