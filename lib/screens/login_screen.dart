@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
               );
               CacheHelper.saveData(key: "uId", value: state.user.uid)
                   .then((value) {
-                     CacheHelper.getData(key: "uId");
+                    uId= CacheHelper.getData(key: "uId");
                 animatedNavigateAndDelete(
                     context: context,
                     widget: const SocialAppLayout(),

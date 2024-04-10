@@ -16,7 +16,7 @@ class AppCubit extends Cubit<AppStates> {
 
   UserData? userData;
 
-  Future<void> getUserData() async {
+  void getUserData() async {
     emit(GetUserLoadingState());
 
     try {
@@ -25,6 +25,7 @@ class AppCubit extends Cubit<AppStates> {
       print(value.data());
       userData = UserData.fromJson(value.data());
       emit(GetUserSuccessState());
+      
     } on FirebaseException catch (error) {
       print(error.toString());
       emit(GetUserErrorState());

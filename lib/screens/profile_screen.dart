@@ -19,9 +19,9 @@ class ProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-
+         print("User:${cubit.userData}");
         return ConditionalBuilder(
-          condition: cubit.userData != null,
+          condition: state is GetUserSuccessState,
           builder: (context) {
            return  Padding(
               padding: const EdgeInsets.all(8),

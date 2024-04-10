@@ -57,7 +57,7 @@ class SocialAppLayout extends StatelessWidget {
                 ),
               ),
               body: ConditionalBuilder(
-                condition: cubit.userData != null,
+                condition: state is GetUserSuccessState,
                 builder: (context) {
                   return const TabBarView(
                     physics: PageScrollPhysics(),
