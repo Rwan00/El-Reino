@@ -15,3 +15,11 @@ class AddCoverImageSuccess extends AppStates {}
 class AddProfileImageLoading extends AppStates {}
 
 class AddProfileImageSuccess extends AppStates {}
+
+class UploadProfileImageError extends AppStates {}
+
+class UploadProfileImageSuccess extends AppStates {}
+
+class UploadCoverImageError extends AppStates {}
+
+class UploadCoverImageSuccess extends AppStates {}
