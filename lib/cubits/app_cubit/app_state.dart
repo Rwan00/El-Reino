@@ -27,6 +27,7 @@ class UploadCoverImageError extends AppStates {}
 class UploadCoverImageSuccess extends AppStates {}
 
 class UpdateUserLoadingState extends AppStates {}
+class UpdateUserSuccessState extends AppStates {}
 
 class UserUpdateError extends AppStates {
   final String error;

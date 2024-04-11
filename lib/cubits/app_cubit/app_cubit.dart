@@ -7,8 +7,10 @@ import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/models/user_model.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -25,7 +27,6 @@ class AppCubit extends Cubit<AppStates> {
       print(value.data());
       userData = UserData.fromJson(value.data());
       emit(GetUserSuccessState());
-      
     } on FirebaseException catch (error) {
       print(error.toString());
       emit(GetUserErrorState());
@@ -116,6 +117,7 @@ class AppCubit extends Cubit<AppStates> {
     required String name,
     required String phone,
     required String bio,
+   
   }) async {
     UserData model = UserData(
       name: name,
@@ -123,9 +125,9 @@ class AppCubit extends Cubit<AppStates> {
       image: profileImgUrl ?? userData!.image,
       cover: coverImgUrl ?? userData!.cover,
       bio: bio,
-       email: userData!.email,
-        uId: uId,
-         isEmailVerified: userData!.isEmailVerified,
+      email: userData!.email,
+      uId: uId,
+      isEmailVerified: userData!.isEmailVerified,
     );
 
     try {
@@ -135,6 +137,8 @@ class AppCubit extends Cubit<AppStates> {
           .doc(uId)
           .update(model.toMap());
       getUserData();
+       
+      emit(UpdateUserSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UserUpdateError(error.message!));
