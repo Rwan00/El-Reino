@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -186,9 +187,10 @@ class AppCubit extends Cubit<AppStates> {
   }) async {
     PostModel model = PostModel(
       name: userData!.name,
+      isEmailVerified: userData!.isEmailVerified,
       uId: uId,
       image: postImgUrl,
-      dateTime: DateTime.now().toString(),
+      dateTime: DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
       text: text,
       profileImage: userData!.image,
     );
@@ -208,5 +210,20 @@ class AppCubit extends Cubit<AppStates> {
   void removePostImg() {
     pickedPostImage = null;
     emit(RemovePostImgState());
+  }
+
+  List<PostModel> posts = [];
+  void getPosts() async {
+    emit(GetPostLoadingState());
+    try {
+      var value = await FirebaseFirestore.instance.collection("posts").get();
+      for (var element in value.docs) {
+        posts.add(PostModel.fromJson(element.data()));
+      }
+      emit(GetPostSuccessState());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(GetPostErrorState());
+    }
   }
 }

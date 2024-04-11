@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/widgets/post_widget.dart';
@@ -11,40 +12,59 @@ class FeedsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
-       
-        return CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            const SliverToBoxAdapter(
-              child: AddPostWidget(),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 2,
-                width: double.infinity,
-                color: Colors.grey,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 710,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return const PostWidget();
-                  },
-                  itemCount: 10,
+    return BlocProvider(
+      create: (context) => AppCubit()..getUserData()..getPosts(),
+      child: BlocConsumer<AppCubit, AppStates>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          var cubit = AppCubit.get(context);
+          return ConditionalBuilder(
+            condition: cubit.posts.isNotEmpty,
+            builder: (context) {
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: AddPostWidget(),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      height: 2,
+                      width: double.infinity,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 710,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return PostWidget(
+                            post: cubit.posts[index],
+                          );
+                        },
+                        itemCount: cubit.posts.length,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            fallback: (context) {
+              return Center(
+                child: Image.asset(
+                  "assets/loading.gif",
+                  height: 65,
+                  width: 65,
                 ),
-              ),
-            ),
-          ],
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

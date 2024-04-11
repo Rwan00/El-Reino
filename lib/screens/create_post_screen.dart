@@ -70,7 +70,16 @@ class CreatePost extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        cubit.createNewPost(text: postController.text);
+                        if (postController.text.isEmpty ||
+                            cubit.pickedPostImage == null) {
+                          buildSnackBar(
+                            context: context,
+                            text: "Empty Post!",
+                            clr: errorColor,
+                          );
+                        }else{
+                           cubit.createNewPost(text: postController.text);
+                        }
                       },
                       label: Text(
                         "Post",
@@ -87,15 +96,16 @@ class CreatePost extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       backgroundImage: NetworkImage(
-                          "https://avatars.githubusercontent.com/u/93911923?v=4"),
+                        cubit.userData!.image!,
+                      ),
                     ),
                     const SizedBox(
                       width: 18,
                     ),
                     Text(
-                      "Rwan",
+                      cubit.userData!.name!,
                       style: titleStyle,
                     ),
                   ],

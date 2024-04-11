@@ -5,6 +5,7 @@ class PostModel {
   String? profileImage;
   String? dateTime;
   String? text;
+  bool? isEmailVerified;
 
 
   PostModel({
@@ -13,6 +14,7 @@ class PostModel {
      required this.dateTime,
      required this.text,
      required this.profileImage,
+     required this.isEmailVerified,
       this.image,
 
   });
@@ -23,6 +25,7 @@ class PostModel {
       text: json?["text"],
       dateTime: json?["dateTime"],
       profileImage: json?["profileImage"],
+      isEmailVerified: json?["isEmailVerified"],
       
       uId: json?["uId"],
       image: json?["image"],
@@ -40,6 +43,7 @@ class PostModel {
       "uId": uId,
       "image": image,
       "profileImage": profileImage,
+      "isEmailVerified": isEmailVerified,
     };
   }
 }

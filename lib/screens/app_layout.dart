@@ -16,7 +16,7 @@ class SocialAppLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getUserData(),
+      create: (context) => AppCubit()..getUserData()..getPosts(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -57,7 +57,7 @@ class SocialAppLayout extends StatelessWidget {
                 ),
               ),
               body: ConditionalBuilder(
-                condition: state is GetUserSuccessState,
+                condition: cubit.userData != null,
                 builder: (context) {
                   return const TabBarView(
                     physics: PageScrollPhysics(),

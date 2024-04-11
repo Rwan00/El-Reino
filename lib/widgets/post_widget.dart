@@ -1,31 +1,27 @@
 import 'package:el_reino/constants/consts.dart';
+import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
+import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/models/post_model.dart';
 
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/divide.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:like_button/like_button.dart';
 
+class PostWidget extends StatelessWidget {
+  final PostModel post;
 
-class PostWidget extends StatefulWidget {
-  
-  const PostWidget({super.key});
+  const PostWidget({required this.post, super.key});
 
-  @override
-  State<PostWidget> createState() => _PostWidgetState();
-}
-
-class _PostWidgetState extends State<PostWidget> {
-   bool flag = true;
-  void readMore() {
-   setState(() {
-      flag = !flag;
-   });
-   
-  }
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = AppCubit.get(context);
+        return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Card(
             color: Colors.white,
@@ -41,32 +37,35 @@ class _PostWidgetState extends State<PostWidget> {
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://avatars.githubusercontent.com/u/93911923?v=4"),
+                          post.profileImage!,
+                        ),
                       ),
                       const SizedBox(
                         width: 16,
                       ),
                       Expanded(
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text("Rwan", style: titleStyle),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(post.name!, style: titleStyle),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                if (post.isEmailVerified!)
                                   Icon(
                                     Icons.verified,
                                     color: primaryBlue,
                                     size: 16,
-                                  )
-                                ],
-                              ),
-                              Text("Jan 22,2024 at 11:00 pm", style: subTitle),
-                            ]),
+                                  ),
+                              ],
+                            ),
+                            Text(post.dateTime!, style: subTitle),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         width: 28,
@@ -81,12 +80,12 @@ class _PostWidgetState extends State<PostWidget> {
                   Column(
                     children: <Widget>[
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+                            post.text!,
                             style: titleStyle,
-                            maxLines: flag ? 3 : null,
-                            overflow: flag ? TextOverflow.ellipsis : null,
                           ),
                           SizedBox(
                             width: double.infinity,
@@ -157,34 +156,22 @@ class _PostWidgetState extends State<PostWidget> {
                           )
                         ],
                       ),
-                      InkWell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              flag ? "Show More.." : "Show Less",
-                              style: titleStyle.copyWith(color: primaryBlue),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          readMore();
-                        },
-                      ),
                     ],
                   ),
-                  Container(
-                    height: 190,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://pbs.twimg.com/media/GKcSxC6WoAAm7bb?format=jpg&name=small"),
-                        fit: BoxFit.cover,
+                  if (post.image != null)
+                    Container(
+                      height: 190,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            post.image!,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
                   const SizedBox(
                     height: 12,
                   ),
@@ -237,9 +224,8 @@ class _PostWidgetState extends State<PostWidget> {
                   const Divide(),
                   Row(
                     children: [
-                      const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://avatars.githubusercontent.com/u/93911923?v=4"),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(cubit.userData!.image!),
                       ),
                       TextButton(
                         onPressed: () {},
@@ -255,5 +241,7 @@ class _PostWidgetState extends State<PostWidget> {
             ),
           ),
         );
+      },
+    );
   }
 }
