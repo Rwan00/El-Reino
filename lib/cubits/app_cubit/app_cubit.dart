@@ -190,7 +190,8 @@ class AppCubit extends Cubit<AppStates> {
       isEmailVerified: userData!.isEmailVerified,
       uId: uId,
       image: postImgUrl,
-      dateTime: DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
+      dateTime:
+          DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
       text: text,
       profileImage: userData!.image,
     );
@@ -213,17 +214,40 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<int> likes = [];
   void getPosts() async {
     emit(GetPostLoadingState());
     try {
       var value = await FirebaseFirestore.instance.collection("posts").get();
       for (var element in value.docs) {
-        posts.add(PostModel.fromJson(element.data()));
+        
+        var value = await element.reference.collection("likes").get();
+        likes.add(value.docs.length);
+          postsId.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
       }
       emit(GetPostSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(GetPostErrorState());
+    }
+  }
+
+  void likePost(String postId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postId)
+          .collection("likes")
+          .doc(uId)
+          .set({
+        "like": true,
+      });
+      emit(LikePostSuccessState());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(LikePostErrorState());
     }
   }
 }

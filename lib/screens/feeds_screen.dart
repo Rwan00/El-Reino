@@ -21,7 +21,7 @@ class FeedsScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           return ConditionalBuilder(
-            condition: cubit.posts.isNotEmpty,
+            condition: cubit.posts.isNotEmpty && cubit.userData != null ,
             builder: (context) {
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -44,6 +44,7 @@ class FeedsScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return PostWidget(
                             post: cubit.posts[index],
+                            index: index,
                           );
                         },
                         itemCount: cubit.posts.length,

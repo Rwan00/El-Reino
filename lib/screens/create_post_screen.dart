@@ -70,7 +70,7 @@ class CreatePost extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        if (postController.text.isEmpty ||
+                        if (postController.text.isEmpty &&
                             cubit.pickedPostImage == null) {
                           buildSnackBar(
                             context: context,

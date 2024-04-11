@@ -8,12 +8,11 @@ import 'package:el_reino/widgets/divide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:like_button/like_button.dart';
-
 class PostWidget extends StatelessWidget {
   final PostModel post;
+  final int index;
 
-  const PostWidget({required this.post, super.key});
+  const PostWidget({required this.post, required this.index, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -178,23 +177,19 @@ class PostWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      LikeButton(
-                        size: 24,
-                        likeBuilder: (bool isLiked) {
-                          return Icon(
-                            isLiked
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            size: 24,
-                            color: isLiked ? Colors.redAccent : Colors.black54,
-                          );
-                        },
-                        likeCount: 900,
-                        bubblesColor: BubblesColor(
-                            dotPrimaryColor: primaryBlue,
-                            dotSecondaryColor: lightBlue),
-                        circleColor:
-                            CircleColor(start: primaryBlue, end: lightBlue),
+                      GestureDetector(
+                        onTap: ()=>cubit.likePost(cubit.postsId[index]),
+                        child: const Icon(
+                          Icons.favorite_border_outlined,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${cubit.likes[index]}",
+                        style: subTitle,
                       ),
                       const Spacer(),
                       TextButton.icon(

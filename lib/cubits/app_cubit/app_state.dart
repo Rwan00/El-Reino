@@ -58,3 +58,6 @@ class CreatePostErrorState extends AppStates {
 
 class RemovePostImgState extends AppStates{}
 
+class LikePostSuccessState extends AppStates{}
+class LikePostErrorState extends AppStates{}
+
