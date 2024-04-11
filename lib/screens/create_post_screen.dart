@@ -104,6 +104,7 @@ class CreatePost extends StatelessWidget {
                   child: TextField(
                     maxLines: 10,
                     controller: postController,
+                    style: titleStyle,
                     decoration: InputDecoration(
                       hintText: "What's on Your Mind?",
                       hintStyle: subTitle,
@@ -111,6 +112,32 @@ class CreatePost extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (cubit.pickedPostImage != null)
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: FileImage(
+                          cubit.pickedPostImage!,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: AlignmentDirectional.topEnd,
+                      child: IconButton(
+                        onPressed: () {
+                          cubit.removePostImg();
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          color: primaryBlue,
+                        ),
+                      ),
+                    ),
+                  ),
                 const Spacer(),
                 Row(
                   children: [

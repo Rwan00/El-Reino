@@ -70,16 +70,16 @@ class EditScreen extends StatelessWidget {
                           bioController.text.isEmpty ||
                           phoneController.text.isEmpty) {
                         buildSnackBar(
-                            context: context,
-                            text: "Empty Fields!",
-                            clr: errorColor,);
-                      }
-                      else{
+                          context: context,
+                          text: "Empty Fields!",
+                          clr: errorColor,
+                        );
+                      } else {
                         cubit.updateUser(
-                        name: nameController.text,
-                        phone: phoneController.text,
-                        bio: bioController.text,
-                      );
+                          name: nameController.text,
+                          phone: phoneController.text,
+                          bio: bioController.text,
+                        );
                       }
                     },
                     label: Text(

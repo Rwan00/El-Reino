@@ -49,3 +49,6 @@ class CreatePostErrorState extends AppStates {
   final String error;
   CreatePostErrorState(this.error);
 }
+
+class RemovePostImgState extends AppStates{}
+

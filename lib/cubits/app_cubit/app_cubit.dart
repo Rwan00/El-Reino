@@ -12,7 +12,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
@@ -118,7 +117,6 @@ class AppCubit extends Cubit<AppStates> {
     required String name,
     required String phone,
     required String bio,
-   
   }) async {
     UserData model = UserData(
       name: name,
@@ -133,12 +131,13 @@ class AppCubit extends Cubit<AppStates> {
 
     try {
       emit(UpdateUserLoadingState());
+
       await FirebaseFirestore.instance
           .collection("users")
           .doc(uId)
           .update(model.toMap());
       getUserData();
-       
+
       emit(UpdateUserSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
@@ -159,7 +158,7 @@ class AppCubit extends Cubit<AppStates> {
     emit(AddPostImageSuccess());
   }
 
-   String? postImgUrl;
+  String? postImgUrl;
   void uploadPostImage() async {
     Reference? storageRef;
     try {
@@ -183,32 +182,31 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void createNewPost({
-     required String text,
-      
-   
+    required String text,
   }) async {
-     PostModel model = PostModel(
+    PostModel model = PostModel(
       name: userData!.name,
       uId: uId,
       image: postImgUrl,
       dateTime: DateTime.now().toString(),
-      text: text, 
+      text: text,
       profileImage: userData!.image,
-     
-     
     );
 
     try {
       emit(CreatePostLoadingState());
-      await FirebaseFirestore.instance
-          .collection("posts")
-          .doc(uId)
-          .set(model.toMap());
-       
+
+      await FirebaseFirestore.instance.collection("posts").add(model.toMap());
+
       emit(CreatePostSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(CreatePostErrorState(error.message!));
     }
+  }
+
+  void removePostImg() {
+    pickedPostImage = null;
+    emit(RemovePostImgState());
   }
 }

@@ -73,8 +73,8 @@ class SocialAppLayout extends StatelessWidget {
                   return Center(
                     child: Image.asset(
                       "assets/loading.gif",
-                      height: 95,
-                      width: 95,
+                      height: 65,
+                      width: 65,
                     ),
                   );
                 },
