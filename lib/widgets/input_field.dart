@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 import '../constants/consts.dart';
 import '../cubits/login_cubit/login_cubit.dart';
 import '../cubits/login_cubit/login_state.dart';
@@ -18,7 +16,7 @@ class InputField extends StatelessWidget {
   final Function(String)? onChanged;
 
   const InputField(
-      { this.title,
+      {this.title,
       required this.hint,
       this.controller,
       this.widget,
@@ -31,9 +29,9 @@ class InputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-      BlocProvider ( create: (context) => AppLoginCubit(),),
-      
-      
+        BlocProvider(
+          create: (context) => AppLoginCubit(),
+        ),
       ],
       child: BlocConsumer<AppLoginCubit, AppLoginState>(
         listener: (context, state) {},
@@ -45,11 +43,11 @@ class InputField extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if(title != null)
-                  Text(
-                    title!,
-                    style: titleStyle,
-                  ),
+                  if (title != null)
+                    Text(
+                      title!,
+                      style: titleStyle,
+                    ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -61,7 +59,6 @@ class InputField extends StatelessWidget {
                     ),
                     child: TextFormField(
                       onChanged: onChanged,
-                     
                       obscureText: isPassword && !showPwd,
                       controller: controller,
                       keyboardType: textType,
