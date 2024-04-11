@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -142,6 +143,72 @@ class AppCubit extends Cubit<AppStates> {
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UserUpdateError(error.message!));
+    }
+  }
+
+  File? pickedPostImage;
+
+  fetchPostImage() async {
+    emit(AddPostImageLoading());
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    pickedPostImage = File(image.path);
+    uploadPostImage();
+    emit(AddPostImageSuccess());
+  }
+
+   String? postImgUrl;
+  void uploadPostImage() async {
+    Reference? storageRef;
+    try {
+      storageRef = FirebaseStorage.instance
+          .ref()
+          .child("posts_images")
+          .child(Uri.file(pickedPostImage!.path).pathSegments.last);
+      await storageRef.putFile(pickedPostImage!);
+      emit(UploadPostImageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UploadPostImageError());
+    }
+    try {
+      postImgUrl = await storageRef!.getDownloadURL();
+      log(postImgUrl!);
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UploadPostImageError());
+    }
+  }
+
+  void createNewPost({
+     required String text,
+      
+   
+  }) async {
+     PostModel model = PostModel(
+      name: userData!.name,
+      uId: uId,
+      image: postImgUrl,
+      dateTime: DateTime.now().toString(),
+      text: text, 
+      profileImage: userData!.image,
+     
+     
+    );
+
+    try {
+      emit(CreatePostLoadingState());
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(uId)
+          .set(model.toMap());
+       
+      emit(CreatePostSuccessState());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(CreatePostErrorState(error.message!));
     }
   }
 }
