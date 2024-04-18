@@ -194,6 +194,7 @@ class AppCubit extends Cubit<AppStates> {
           DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
       text: text,
       profileImage: userData!.image,
+      likes: 0,
     );
 
     try {
@@ -216,17 +217,49 @@ class AppCubit extends Cubit<AppStates> {
   List<PostModel> posts = [];
   List<String> postsId = [];
   List<int> likes = [];
+  List<bool> likeStatusList = [];
+
   void getPosts() async {
     emit(GetPostLoadingState());
     try {
-      var value = await FirebaseFirestore.instance.collection("posts").get();
-      for (var element in value.docs) {
-        
-        var value = await element.reference.collection("likes").get();
-        likes.add(value.docs.length);
-          postsId.add(element.id);
-          posts.add(PostModel.fromJson(element.data()));
+      var postsValue =
+          await FirebaseFirestore.instance.collection("posts").get();
+
+      //print(value.docs);
+      for (var post in postsValue.docs) {
+        /*  print(post.data()["likedBy"]);
+        //usersLikes.add(likesData.data()?["like"]);
+        //print(likesValue.docs.length);
+        //print(likesValue.docs.first);
+        //likes.add(likesValue.docs.length);
+        likedBy.addAll(post.data()["likedBy"]); */
+
+        postsId.add(post.id);
+        likeStatusList.add(false);
+  
+
+        posts.add(PostModel.fromJson(post.data()));
       }
+
+      
+
+      await Future.forEach(postsId, (postId) async {
+      DocumentSnapshot postDoc =
+          await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+     Map<String, dynamic>? postData = postDoc.data()
+        as Map<String, dynamic>?; 
+    
+
+
+    Map<String, dynamic>? likedBy = postData?['likedBy'];
+      if (likedBy != null && likedBy.containsKey(uId)) {
+        likeStatusList[postsId.indexOf(postId)] = true;
+      }
+    });
+
+    emit(PostLikesLoadedState(likeStatusList));
+      
+
       emit(GetPostSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
@@ -234,20 +267,72 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  void likePost(String postId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection("posts")
-          .doc(postId)
-          .collection("likes")
-          .doc(uId)
-          .set({
-        "like": true,
+ 
+
+  
+
+  void toggleLike(int index) async {
+     String postId = postsId[index];
+   
+    DocumentReference postRef =
+        FirebaseFirestore.instance.collection('posts').doc(postId);
+
+    if (!likeStatusList[index]) {
+    
+      postRef.update({
+        'likes': FieldValue.increment(1),
+        'likedBy.$uId': true,
       });
-      emit(LikePostSuccessState());
-    } on FirebaseException catch (error) {
-      print(error.message);
-      emit(LikePostErrorState());
+    } else {
+      
+      postRef.update({
+        'likes': FieldValue.increment(-1),
+        'likedBy.$uId': FieldValue.delete(),
+      });
     }
+
+   
+    likeStatusList[index] = !likeStatusList[index];
+    emit(PostLikesLoadedState(likeStatusList));
   }
-}
+  }
+
+  // bool isLiked = false;
+  // late int likesCount;
+
+  // void likePost(String postId) async {
+  //   try {
+  //     // Get reference to the Firestore document
+  //   DocumentReference postRef =
+  //       FirebaseFirestore.instance.collection('posts').doc(postId);
+
+  //   if (!isLiked) {
+  //     // If post is not liked, add user ID to the list of likes
+  //     postRef.update({
+  //       'likes': FieldValue.increment(1),
+  //       'likedBy.$uId': true,
+  //     });
+
+  //       likesCount++;
+  //       isLiked = true;
+
+  //   } else {
+  //     // If post is already liked, remove user ID from the list of likes
+  //     postRef.update({
+  //       'likes': FieldValue.increment(-1),
+  //       'likedBy.$uId': FieldValue.delete(),
+  //     });
+
+  //       likesCount--;
+  //       isLiked = false;
+
+  //   }
+
+  //     emit(LikePostSuccessState());
+  //   } on FirebaseException catch (error) {
+  //     isLiked = false;
+  //     print(error.message);
+  //     emit(LikePostErrorState());
+  //   }
+  // }
+

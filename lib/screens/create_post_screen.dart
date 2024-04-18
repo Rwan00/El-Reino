@@ -1,5 +1,6 @@
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/models/user_model.dart';
 import 'package:el_reino/widgets/app_btn.dart';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import '../theme/fonts.dart';
 import 'app_layout.dart';
 
 class CreatePost extends StatelessWidget {
-  const CreatePost({super.key});
+  final UserData userData;
+  const CreatePost({required this.userData,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +79,8 @@ class CreatePost extends StatelessWidget {
                             text: "Empty Post!",
                             clr: errorColor,
                           );
-                        }else{
-                           cubit.createNewPost(text: postController.text);
+                        } else {
+                          cubit.createNewPost(text: postController.text);
                         }
                       },
                       label: Text(
@@ -98,14 +100,14 @@ class CreatePost extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        cubit.userData!.image!,
+                        userData.image!,
                       ),
                     ),
                     const SizedBox(
                       width: 18,
                     ),
                     Text(
-                      cubit.userData!.name!,
+                    userData.name!,
                       style: titleStyle,
                     ),
                   ],

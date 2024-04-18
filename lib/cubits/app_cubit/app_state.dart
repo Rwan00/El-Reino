@@ -41,6 +41,7 @@ class UploadCoverImageError extends AppStates {}
 class UploadCoverImageSuccess extends AppStates {}
 
 class UpdateUserLoadingState extends AppStates {}
+
 class UpdateUserSuccessState extends AppStates {}
 
 class UserUpdateError extends AppStates {
@@ -49,6 +50,7 @@ class UserUpdateError extends AppStates {
 }
 
 class CreatePostLoadingState extends AppStates {}
+
 class CreatePostSuccessState extends AppStates {}
 
 class CreatePostErrorState extends AppStates {
@@ -56,8 +58,14 @@ class CreatePostErrorState extends AppStates {
   CreatePostErrorState(this.error);
 }
 
-class RemovePostImgState extends AppStates{}
+class RemovePostImgState extends AppStates {}
 
-class LikePostSuccessState extends AppStates{}
-class LikePostErrorState extends AppStates{}
+class LikePostSuccessState extends AppStates {}
 
+class LikePostErrorState extends AppStates {}
+
+class PostLikesLoadedState extends AppStates {
+  final List<bool> likeStatusList;
+
+  PostLikesLoadedState(this.likeStatusList);
+}

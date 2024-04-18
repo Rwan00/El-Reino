@@ -16,10 +16,12 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //AppCubit.get(context).checkUserLikedPost(AppCubit.get(context).postsId[index]);
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
+    
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Card(
@@ -178,17 +180,26 @@ class PostWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        onTap: ()=>cubit.likePost(cubit.postsId[index]),
-                        child: const Icon(
-                          Icons.favorite_border_outlined,
-                          color: Colors.black54,
-                        ),
+                        onTap: () {
+                          cubit.toggleLike(index);
+                        },
+                        child: cubit.likeStatusList[index]
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.favorite_border_outlined,
+                                color: Colors.black54,
+                              ),
                       ),
                       const SizedBox(
                         width: 5,
                       ),
                       Text(
-                        "${cubit.likes[index]}",
+                        cubit.likeStatusList[index]
+                            ? "You and ${post.likes} Likes"
+                            : "${post.likes} Likes",
                         style: subTitle,
                       ),
                       const Spacer(),

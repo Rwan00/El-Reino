@@ -23,7 +23,7 @@ class AddPostWidget extends StatelessWidget {
           onTap: () {
             animatedNavigateTo(
               context: context,
-              widget: const CreatePost(),
+              widget:  CreatePost(userData: cubit.userData!,),
               direction: PageTransitionType.bottomToTop,
               curve: Curves.decelerate,
             );
