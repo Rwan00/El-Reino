@@ -28,7 +28,7 @@ class PostDetailsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-
+        
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -58,7 +58,7 @@ class PostDetailsScreen extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: 50,
                       itemBuilder: (context, index) {
-                        return CommentWidget();
+                        return const CommentWidget();
                       },
                     ),
                   ),
