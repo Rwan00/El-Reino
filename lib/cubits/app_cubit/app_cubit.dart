@@ -216,6 +216,8 @@ class AppCubit extends Cubit<AppStates> {
     emit(RemovePostImgState());
   }
 
+  
+
   /*  List<PostModel> posts = [];
   List<String> postsId = [];
   List<int> likes = [];
