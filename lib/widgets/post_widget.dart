@@ -51,11 +51,11 @@ class _PostWidgetState extends State<PostWidget> {
         FirebaseFirestore.instance.collection("posts").doc(widget.postId);
     if (isLike) {
       postRef.update({
-        "LikesList": FieldValue.arrayUnion([currentUser.email])
+        "likes": FieldValue.arrayUnion([currentUser.email])
       });
     } else {
       postRef.update({
-        "LikesList": FieldValue.arrayRemove([currentUser.email])
+        "likes": FieldValue.arrayRemove([currentUser.email])
       });
     }
   }

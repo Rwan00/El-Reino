@@ -62,7 +62,7 @@ class PostDetailsScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  NewCommentWidget(),
+                  NewCommentWidget(postId: postId,),
                 ],
               );
             },

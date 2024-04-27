@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/models/comment_model.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -195,8 +196,8 @@ class AppCubit extends Cubit<AppStates> {
           DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
       text: text,
       profileImage: userData!.image,
-      likes: 0,
-      likesList: [],
+      
+      likes: [],
     );
 
     try {
@@ -216,8 +217,28 @@ class AppCubit extends Cubit<AppStates> {
     emit(RemovePostImgState());
   }
 
-  void addComment(postId){
-    
+  void addComment({
+    required postId,
+    required commentText,
+  }) async {
+    CommentModel comment = CommentModel(
+      name: userData!.name!,
+      image: userData!.image!,
+      comment: commentText,
+    );
+    try {
+
+      await FirebaseFirestore.instance.collection("posts")
+      .doc(postId)
+      .collection("Comments")
+      .add(comment.toMap());
+
+      emit(AddCommentSuccessState());
+
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(AddCommentErrorState(error.message!));
+    }
   }
 
   /*  List<PostModel> posts = [];
@@ -268,11 +289,6 @@ class AppCubit extends Cubit<AppStates> {
       emit(GetPostErrorState());
     }
   } */
-  
-
- 
-
- 
 
   /* void toggleLike(int index) async {
     String postId = postsId[index];

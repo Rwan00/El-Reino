@@ -14,7 +14,7 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: 16,
+          width: 5,
         ),
         Container(
           constraints: const BoxConstraints(maxWidth: 200),

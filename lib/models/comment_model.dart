@@ -15,4 +15,12 @@ class CommentModel {
       comment: json["comment"],
     );
   }
+
+    Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "image": image,
+      "comment":comment,
+    };
+  }
 }

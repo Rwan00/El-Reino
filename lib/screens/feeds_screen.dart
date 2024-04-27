@@ -84,9 +84,9 @@ class FeedsScreen extends StatelessWidget {
                                   final post = PostModel.fromJson(
                                       snapshot.data!.docs[index].data());
                                   final postId = snapshot.data!.docs[index];
-                                  print("pst ${post.likesList}");
+                                  print("pst ${post.likes}");
                                   return PostWidget(
-                                    likes: List<String>.from(post.likesList ?? []),
+                                    likes: List<String>.from(post.likes ?? []),
                                     post: post,
                                     postId: postId.id,
                                     isFeed: true,
