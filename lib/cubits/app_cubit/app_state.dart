@@ -62,10 +62,4 @@ class RemovePostImgState extends AppStates {}
 
 class LikePostSuccessState extends AppStates {}
 
-class LikePostErrorState extends AppStates {}
 
-class PostLikesLoadedState extends AppStates {
-  final List<bool> likeStatusList;
-
-  PostLikesLoadedState(this.likeStatusList);
-}

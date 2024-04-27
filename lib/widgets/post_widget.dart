@@ -1,18 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/models/post_model.dart';
+import 'package:el_reino/screens/post_details_screen.dart';
 
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/divide.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   final PostModel post;
-  final int index;
+  final String postId;
+  final bool isFeed;
+  final List likes;
 
-  const PostWidget({required this.post, required this.index, super.key});
+  const PostWidget(
+      {required this.post,
+      required this.isFeed,
+      required this.postId,
+      required this.likes,
+      super.key});
+
+  @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  bool isLike = false;
+  @override
+  void initState() {
+    super.initState();
+    isLike = widget.likes.contains(currentUser.email);
+    print(isLike);
+    print(currentUser.email);
+    print(widget.likes);
+    print(widget.postId);
+  }
+
+  void toggleLike() {
+    setState(() {
+      isLike = !isLike;
+    });
+    DocumentReference postRef =
+        FirebaseFirestore.instance.collection("posts").doc(widget.postId);
+    if (isLike) {
+      postRef.update({
+        "LikesList": FieldValue.arrayUnion([currentUser.email])
+      });
+    } else {
+      postRef.update({
+        "LikesList": FieldValue.arrayRemove([currentUser.email])
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +67,16 @@ class PostWidget extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-    
+
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 3),
           child: Card(
             color: Colors.white,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(3.0),
             ),
-            elevation: 10,
+            elevation: 0,
             margin: const EdgeInsets.symmetric(horizontal: 8),
             child: Padding(
               padding: const EdgeInsets.all(10),
@@ -40,7 +86,7 @@ class PostWidget extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage: NetworkImage(
-                          post.profileImage!,
+                          widget.post.profileImage!,
                         ),
                       ),
                       const SizedBox(
@@ -52,11 +98,11 @@ class PostWidget extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(post.name!, style: titleStyle),
+                                Text(widget.post.name!, style: titleStyle),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                if (post.isEmailVerified!)
+                                if (widget.post.isEmailVerified!)
                                   Icon(
                                     Icons.verified,
                                     color: primaryBlue,
@@ -64,12 +110,12 @@ class PostWidget extends StatelessWidget {
                                   ),
                               ],
                             ),
-                            Text(post.dateTime!, style: subTitle),
+                            Text(widget.post.dateTime!, style: subTitle),
                           ],
                         ),
                       ),
                       const SizedBox(
-                        width: 28,
+                        width: 32,
                       ),
                       IconButton(
                         onPressed: () {},
@@ -77,7 +123,10 @@ class PostWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Divide(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  //const Divide(),
                   Column(
                     children: <Widget>[
                       Column(
@@ -85,7 +134,7 @@ class PostWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.text!,
+                            widget.post.text!,
                             style: titleStyle,
                           ),
                           SizedBox(
@@ -159,7 +208,7 @@ class PostWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (post.image != null)
+                  if (widget.post.image != null)
                     Container(
                       height: 190,
                       width: double.infinity,
@@ -167,7 +216,7 @@ class PostWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                         image: DecorationImage(
                           image: NetworkImage(
-                            post.image!,
+                            widget.post.image!,
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -179,11 +228,12 @@ class PostWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      if(widget.isFeed)
                       GestureDetector(
                         onTap: () {
-                          cubit.toggleLike(index);
+                          toggleLike();
                         },
-                        child: cubit.likeStatusList[index]
+                        child: isLike
                             ? const Icon(
                                 Icons.favorite,
                                 color: Colors.red,
@@ -197,14 +247,25 @@ class PostWidget extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        cubit.likeStatusList[index]
-                            ? "You and ${post.likes} Likes"
-                            : "${post.likes} Likes",
+                        "${widget.likes.length.toString()} Likes",
                         style: subTitle,
                       ),
                       const Spacer(),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (widget.isFeed) {
+                            animatedNavigateTo(
+                              context: context,
+                              widget: PostDetailsScreen(
+                                post: widget.post,
+                                postId: widget.postId,
+                                likes: widget.likes,
+                              ),
+                              direction: PageTransitionType.rightToLeft,
+                              curve: Curves.easeInCirc,
+                            );
+                          }
+                        },
                         icon: const Icon(
                           Icons.comment_outlined,
                           color: Colors.black54,
@@ -228,20 +289,22 @@ class PostWidget extends StatelessWidget {
                     ],
                   ),
                   const Divide(),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(cubit.userData!.image!),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Write a comment...",
-                          style: subTitle,
+                  if (widget.isFeed)
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 15,
+                          backgroundImage: NetworkImage(cubit.userData!.image!),
                         ),
-                      ),
-                    ],
-                  )
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Write a comment...",
+                            style: subTitle,
+                          ),
+                        ),
+                      ],
+                    )
                 ],
               ),
             ),

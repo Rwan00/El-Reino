@@ -23,7 +23,9 @@ class AddPostWidget extends StatelessWidget {
           onTap: () {
             animatedNavigateTo(
               context: context,
-              widget:  CreatePost(userData: cubit.userData!,),
+              widget: CreatePost(
+                userData: cubit.userData!,
+              ),
               direction: PageTransitionType.bottomToTop,
               curve: Curves.decelerate,
             );
@@ -35,18 +37,19 @@ class AddPostWidget extends StatelessWidget {
               height: 48,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[300],
-              ),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey)),
               child: Row(
                 children: [
-                   CircleAvatar(
+                  CircleAvatar(
                     backgroundImage: NetworkImage(
-                        cubit.userData!.image!,),
+                      cubit.userData!.image!,
+                    ),
                   ),
                   Text(
                     "Share Your Thoughts...",
-                    style: subTitle,
+                    style: subTitle.copyWith(color: Colors.black),
                   ),
                 ],
               ),

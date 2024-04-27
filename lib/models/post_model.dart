@@ -7,6 +7,7 @@ class PostModel {
   String? text;
   bool? isEmailVerified;
   int? likes;
+  List? likesList;
 
   PostModel({
     required this.name,
@@ -16,6 +17,7 @@ class PostModel {
     required this.profileImage,
     required this.isEmailVerified,
     required this.likes,
+    required this.likesList,
     this.image,
   });
   factory PostModel.fromJson(json) {
@@ -28,6 +30,7 @@ class PostModel {
       uId: json?["uId"],
       image: json?["image"],
       likes: json?["likes"],
+      likesList: json?["LikesList"],
     );
   }
 

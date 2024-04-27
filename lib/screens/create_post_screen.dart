@@ -2,6 +2,7 @@ import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/models/user_model.dart';
 import 'package:el_reino/widgets/app_btn.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,11 +62,7 @@ class CreatePost extends StatelessWidget {
             ),
             actions: [
               state is CreatePostLoadingState
-                  ? Image.asset(
-                      "assets/loading.gif",
-                      height: 95,
-                      width: 95,
-                    )
+                  ? const LoadingWidget()
                   : TextButton.icon(
                       icon: const Icon(
                         Icons.post_add_outlined,

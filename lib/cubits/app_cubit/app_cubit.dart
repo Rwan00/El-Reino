@@ -6,6 +6,7 @@ import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -195,6 +196,7 @@ class AppCubit extends Cubit<AppStates> {
       text: text,
       profileImage: userData!.image,
       likes: 0,
+      likesList: [],
     );
 
     try {
@@ -214,12 +216,12 @@ class AppCubit extends Cubit<AppStates> {
     emit(RemovePostImgState());
   }
 
-  List<PostModel> posts = [];
+  /*  List<PostModel> posts = [];
   List<String> postsId = [];
   List<int> likes = [];
-  List<bool> likeStatusList = [];
+  List<bool> likeStatusList = []; */
 
-  void getPosts() async {
+  /* void getPosts() async {
     emit(GetPostLoadingState());
     try {
       var postsValue =
@@ -236,66 +238,62 @@ class AppCubit extends Cubit<AppStates> {
 
         postsId.add(post.id);
         likeStatusList.add(false);
-  
 
         posts.add(PostModel.fromJson(post.data()));
       }
 
-      
-
       await Future.forEach(postsId, (postId) async {
-      DocumentSnapshot postDoc =
-          await FirebaseFirestore.instance.collection('posts').doc(postId).get();
-     Map<String, dynamic>? postData = postDoc.data()
-        as Map<String, dynamic>?; 
-    
+        DocumentSnapshot postDoc = await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .get();
+        Map<String, dynamic>? postData =
+            postDoc.data() as Map<String, dynamic>?;
 
+        Map<String, dynamic>? likedBy = postData?['likedBy'];
+        if (likedBy != null && likedBy.containsKey(uId)) {
+          likeStatusList[postsId.indexOf(postId)] = true;
+        }
+      });
 
-    Map<String, dynamic>? likedBy = postData?['likedBy'];
-      if (likedBy != null && likedBy.containsKey(uId)) {
-        likeStatusList[postsId.indexOf(postId)] = true;
-      }
-    });
-
-    emit(PostLikesLoadedState(likeStatusList));
-      
+      emit(PostLikesLoadedState(likeStatusList));
 
       emit(GetPostSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(GetPostErrorState());
     }
-  }
+  } */
+  
 
  
 
-  
+ 
 
-  void toggleLike(int index) async {
-     String postId = postsId[index];
-   
+  /* void toggleLike(int index) async {
+    String postId = postsId[index];
+
     DocumentReference postRef =
         FirebaseFirestore.instance.collection('posts').doc(postId);
 
     if (!likeStatusList[index]) {
-    
       postRef.update({
         'likes': FieldValue.increment(1),
         'likedBy.$uId': true,
       });
     } else {
-      
       postRef.update({
         'likes': FieldValue.increment(-1),
         'likedBy.$uId': FieldValue.delete(),
       });
     }
 
-   
     likeStatusList[index] = !likeStatusList[index];
+   
+    
     emit(PostLikesLoadedState(likeStatusList));
-  }
-  }
+  } */
+}
 
   // bool isLiked = false;
   // late int likesCount;

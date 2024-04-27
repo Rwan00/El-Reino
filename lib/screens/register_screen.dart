@@ -3,6 +3,7 @@ import 'package:el_reino/cubits/register_cubit/register_cubit.dart';
 import 'package:el_reino/cubits/register_cubit/register_state.dart';
 import 'package:el_reino/screens/email_verification_screen.dart';
 import 'package:el_reino/screens/login_screen.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -200,13 +201,7 @@ class RegisterScreen extends StatelessWidget {
                               },
                             );
                           },
-                          fallback: (context) => Center(
-                            child: Image.asset(
-                              "assets/loading.gif",
-                              height: 95,
-                              width: 95,
-                            ),
-                          ),
+                          fallback: (context) => const LoadingWidget(),
                         ),
                       ),
                       Row(

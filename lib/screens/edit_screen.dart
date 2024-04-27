@@ -6,6 +6,7 @@ import 'package:el_reino/models/user_model.dart';
 import 'package:el_reino/screens/app_layout.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/input_field.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -55,11 +56,7 @@ class EditScreen extends StatelessWidget {
           ),
           actions: [
             state is UpdateUserLoadingState
-                ? Image.asset(
-                    "assets/loading.gif",
-                    height: 95,
-                    width: 95,
-                  )
+                ? const LoadingWidget()
                 : TextButton.icon(
                     icon: const Icon(
                       Icons.save_outlined,

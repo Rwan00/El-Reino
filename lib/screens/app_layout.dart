@@ -7,6 +7,7 @@ import 'package:el_reino/screens/feeds_screen.dart';
 import 'package:el_reino/screens/notification_screen.dart';
 import 'package:el_reino/screens/profile_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,9 @@ class SocialAppLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getUserData()..getPosts(),
+      create: (context) => AppCubit()
+        ..getUserData()
+        ,
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -26,6 +29,7 @@ class SocialAppLayout extends StatelessWidget {
             length: 4,
             child: Scaffold(
               appBar: AppBar(
+                elevation: 0,
                 backgroundColor: Colors.white,
                 title: Text(
                   "El Rieno",
@@ -40,6 +44,7 @@ class SocialAppLayout extends StatelessWidget {
                   )
                 ],
                 bottom: TabBar(
+                 
                   tabs: <Widget>[
                     Tab(
                       icon: Image.asset("assets/home.png"),
@@ -70,13 +75,7 @@ class SocialAppLayout extends StatelessWidget {
                   );
                 },
                 fallback: (context) {
-                  return Center(
-                    child: Image.asset(
-                      "assets/loading.gif",
-                      height: 65,
-                      width: 65,
-                    ),
-                  );
+                  return const LoadingWidget();
                 },
               ),
             ),

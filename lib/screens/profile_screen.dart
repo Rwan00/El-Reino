@@ -4,10 +4,12 @@ import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/edit_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../constants/consts.dart';
 import '../widgets/app_btn.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -75,6 +77,12 @@ class ProfileScreen extends StatelessWidget {
                           cubit.userData!.name!,
                           style: heading,
                         ),
+                        if (cubit.userData!.isEmailVerified!)
+                          Icon(
+                            Icons.verified,
+                            color: primaryBlue,
+                            size: 24,
+                          ),
                         const Spacer(),
                         AppBtn(
                             label: "Edit Your Profile",
@@ -163,13 +171,7 @@ class ProfileScreen extends StatelessWidget {
               );
             },
             fallback: (context) {
-              return Center(
-                child: Image.asset(
-                  "assets/loading.gif",
-                  height: 65,
-                  width: 65,
-                ),
-              );
+              return const LoadingWidget();
             },
           );
         },

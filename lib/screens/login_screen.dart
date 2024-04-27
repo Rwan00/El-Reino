@@ -3,6 +3,7 @@ import 'package:el_reino/cubits/login_cubit/login_cubit.dart';
 import 'package:el_reino/cubits/login_cubit/login_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/app_layout.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,13 +144,7 @@ class LoginScreen extends StatelessWidget {
                                           password: passwordController.text);
                                     },
                                   ),
-                                  fallback: (context) => Center(
-                                    child: Image.asset(
-                                      "assets/loading.gif",
-                                      height: 95,
-                                      width: 95,
-                                    ),
-                                  ),
+                                  fallback: (context) => const LoadingWidget(),
                                 ),
                               ),
                               // const Spacer(),

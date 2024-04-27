@@ -6,6 +6,7 @@ import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/login_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/app_btn.dart';
+import 'package:el_reino/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,13 +54,7 @@ class EmailVerificationScreen extends StatelessWidget {
                   style: titleStyle,
                 ),
                 state is VerifyEmailLoadingState
-                    ? Center(
-                        child: Image.asset(
-                          "assets/loading.gif",
-                          height: 95,
-                          width: 95,
-                        ),
-                      )
+                    ? const LoadingWidget()
                     : AppBtn(
                         label: "Send Verification",
                         onPressed: () => cubit.verifyEmail(context),
