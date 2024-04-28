@@ -240,17 +240,7 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  List<int> Comments = [];
-  void getComments(postId) async {
-    var value = await FirebaseFirestore.instance
-        .collection("posts")
-        .doc(postId)
-        .collection("Comments")
-        .get();
-    Comments.add(value.docs.length);
-
-    print(Comments);
-  }
+ 
 
   /*  List<PostModel> posts = [];
   List<String> postsId = [];

@@ -5,6 +5,7 @@ import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/screens/post_details_screen.dart';
+import 'package:el_reino/screens/view_image.dart';
 
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/divide.dart';
@@ -227,16 +228,26 @@ class _PostWidgetState extends State<PostWidget> {
                     ],
                   ),
                   if (widget.post.image != null)
-                    Container(
-                      height: 190,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            widget.post.image!,
+                    GestureDetector(
+                      onTap: (){
+                         animatedNavigateTo(
+                              context: context,
+                              widget:  ViewImage(image: widget.post.image!,),
+                              direction: PageTransitionType.rightToLeft,
+                              curve: Curves.easeInCirc,
+                            );
+                      },
+                      child: Container(
+                        height: 190,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              widget.post.image!,
+                            ),
+                            fit: BoxFit.cover,
                           ),
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -294,17 +305,7 @@ class _PostWidgetState extends State<PostWidget> {
                           style: subTitle,
                         ),
                       ),
-                      TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.ios_share_outlined,
-                          color: Colors.black54,
-                        ),
-                        label: Text(
-                          "200",
-                          style: subTitle,
-                        ),
-                      ),
+                      
                     ],
                   ),
                   const Divide(),
@@ -316,7 +317,19 @@ class _PostWidgetState extends State<PostWidget> {
                           backgroundImage: NetworkImage(cubit.userData!.image!),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                             animatedNavigateTo(
+                              context: context,
+                              widget: PostDetailsScreen(
+                                index: widget.index!,
+                                post: widget.post,
+                                postId: widget.postId,
+                                likes: widget.likes,
+                              ),
+                              direction: PageTransitionType.rightToLeft,
+                              curve: Curves.easeInCirc,
+                            );
+                          },
                           child: Text(
                             "Write a comment...",
                             style: subTitle,
