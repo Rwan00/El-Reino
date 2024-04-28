@@ -19,11 +19,15 @@ class PostWidget extends StatefulWidget {
   final bool isFeed;
   final List likes;
 
+  final int? index;
+
   const PostWidget(
       {required this.post,
       required this.isFeed,
       required this.postId,
       required this.likes,
+
+      this.index,
       super.key});
 
   @override
@@ -37,6 +41,7 @@ class _PostWidgetState extends State<PostWidget> {
   void initState() {
     super.initState();
     isLike = widget.likes.contains(currentUser.email);
+    getCommentsCount();
     print(isLike);
     print(currentUser.email);
     print(widget.likes);
@@ -58,6 +63,19 @@ class _PostWidgetState extends State<PostWidget> {
         "likes": FieldValue.arrayRemove([currentUser.email])
       });
     }
+  }
+
+  int count = 0;
+  getCommentsCount() async {
+    var value = await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(widget.postId)
+        .collection("Comments")
+        .get();
+    setState(() {
+      count = value.docs.length;
+    });
+    print("Hell${value.docs.length}");
   }
 
   @override
@@ -228,21 +246,21 @@ class _PostWidgetState extends State<PostWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if(widget.isFeed)
-                      GestureDetector(
-                        onTap: () {
-                          toggleLike();
-                        },
-                        child: isLike
-                            ? const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              )
-                            : const Icon(
-                                Icons.favorite_border_outlined,
-                                color: Colors.black54,
-                              ),
-                      ),
+                      if (widget.isFeed)
+                        GestureDetector(
+                          onTap: () {
+                            toggleLike();
+                          },
+                          child: isLike
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border_outlined,
+                                  color: Colors.black54,
+                                ),
+                        ),
                       const SizedBox(
                         width: 5,
                       ),
@@ -257,6 +275,7 @@ class _PostWidgetState extends State<PostWidget> {
                             animatedNavigateTo(
                               context: context,
                               widget: PostDetailsScreen(
+                                index: widget.index!,
                                 post: widget.post,
                                 postId: widget.postId,
                                 likes: widget.likes,
@@ -271,7 +290,7 @@ class _PostWidgetState extends State<PostWidget> {
                           color: Colors.black54,
                         ),
                         label: Text(
-                          "2000 comment",
+                           "$count Comment",
                           style: subTitle,
                         ),
                       ),

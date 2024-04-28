@@ -196,7 +196,6 @@ class AppCubit extends Cubit<AppStates> {
           DateFormat('MMM dd, yyyy \'at\' hh:mm a').format(DateTime.now()),
       text: text,
       profileImage: userData!.image,
-      
       likes: [],
     );
 
@@ -225,20 +224,32 @@ class AppCubit extends Cubit<AppStates> {
       name: userData!.name!,
       image: userData!.image!,
       comment: commentText,
+      time: DateTime.now().toString(),
     );
     try {
-
-      await FirebaseFirestore.instance.collection("posts")
-      .doc(postId)
-      .collection("Comments")
-      .add(comment.toMap());
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postId)
+          .collection("Comments")
+          .add(comment.toMap());
 
       emit(AddCommentSuccessState());
-
     } on FirebaseException catch (error) {
       print(error.message);
       emit(AddCommentErrorState(error.message!));
     }
+  }
+
+  List<int> Comments = [];
+  void getComments(postId) async {
+    var value = await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(postId)
+        .collection("Comments")
+        .get();
+    Comments.add(value.docs.length);
+
+    print(Comments);
   }
 
   /*  List<PostModel> posts = [];
