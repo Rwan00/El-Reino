@@ -19,7 +19,6 @@ class ViewImage extends StatelessWidget {
             minScale: 0.5,
             maxScale: 4,
             constrained: false,
-            
             boundaryMargin: const EdgeInsets.all(42),
             child: Image.network(
               image,

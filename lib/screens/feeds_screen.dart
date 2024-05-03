@@ -17,7 +17,7 @@ class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getUserData(),
+      create: (context) => AppCubit()..getUserData()..getAllUsers(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {
           // TODO: implement listener
@@ -25,7 +25,7 @@ class FeedsScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           return ConditionalBuilder(
-            condition: cubit.userData != null,
+            condition: cubit.userData != null && cubit.users.isNotEmpty,
             builder: (context) {
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -33,13 +33,6 @@ class FeedsScreen extends StatelessWidget {
                   const SliverToBoxAdapter(
                     child: AddPostWidget(),
                   ),
-                  /*  SliverToBoxAdapter(
-                    child: Container(
-                      height: 2,
-                      width: double.infinity,
-                      color: Colors.grey,
-                    ),
-                  ), */
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: 710,

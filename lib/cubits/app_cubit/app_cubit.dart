@@ -240,118 +240,21 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
- 
+  List<UserData> users = [];
 
-  /*  List<PostModel> posts = [];
-  List<String> postsId = [];
-  List<int> likes = [];
-  List<bool> likeStatusList = []; */
+  void getAllUsers() async {
+    emit(GetAllUsersLoadingState());
 
-  /* void getPosts() async {
-    emit(GetPostLoadingState());
     try {
-      var postsValue =
-          await FirebaseFirestore.instance.collection("posts").get();
-
-      //print(value.docs);
-      for (var post in postsValue.docs) {
-        /*  print(post.data()["likedBy"]);
-        //usersLikes.add(likesData.data()?["like"]);
-        //print(likesValue.docs.length);
-        //print(likesValue.docs.first);
-        //likes.add(likesValue.docs.length);
-        likedBy.addAll(post.data()["likedBy"]); */
-
-        postsId.add(post.id);
-        likeStatusList.add(false);
-
-        posts.add(PostModel.fromJson(post.data()));
+      var value = await FirebaseFirestore.instance.collection("users").get();
+      for (var u in value.docs) {
+        users.add(UserData.fromJson(u.data()));
       }
-
-      await Future.forEach(postsId, (postId) async {
-        DocumentSnapshot postDoc = await FirebaseFirestore.instance
-            .collection('posts')
-            .doc(postId)
-            .get();
-        Map<String, dynamic>? postData =
-            postDoc.data() as Map<String, dynamic>?;
-
-        Map<String, dynamic>? likedBy = postData?['likedBy'];
-        if (likedBy != null && likedBy.containsKey(uId)) {
-          likeStatusList[postsId.indexOf(postId)] = true;
-        }
-      });
-
-      emit(PostLikesLoadedState(likeStatusList));
-
-      emit(GetPostSuccessState());
+      print("users: $users");
+      emit(GetAllUsersSuccessState());
     } on FirebaseException catch (error) {
-      print(error.message);
-      emit(GetPostErrorState());
+      print(error.toString());
+      emit(GetAllUsersErrorState());
     }
-  } */
-
-  /* void toggleLike(int index) async {
-    String postId = postsId[index];
-
-    DocumentReference postRef =
-        FirebaseFirestore.instance.collection('posts').doc(postId);
-
-    if (!likeStatusList[index]) {
-      postRef.update({
-        'likes': FieldValue.increment(1),
-        'likedBy.$uId': true,
-      });
-    } else {
-      postRef.update({
-        'likes': FieldValue.increment(-1),
-        'likedBy.$uId': FieldValue.delete(),
-      });
-    }
-
-    likeStatusList[index] = !likeStatusList[index];
-   
-    
-    emit(PostLikesLoadedState(likeStatusList));
-  } */
+  }
 }
-
-  // bool isLiked = false;
-  // late int likesCount;
-
-  // void likePost(String postId) async {
-  //   try {
-  //     // Get reference to the Firestore document
-  //   DocumentReference postRef =
-  //       FirebaseFirestore.instance.collection('posts').doc(postId);
-
-  //   if (!isLiked) {
-  //     // If post is not liked, add user ID to the list of likes
-  //     postRef.update({
-  //       'likes': FieldValue.increment(1),
-  //       'likedBy.$uId': true,
-  //     });
-
-  //       likesCount++;
-  //       isLiked = true;
-
-  //   } else {
-  //     // If post is already liked, remove user ID from the list of likes
-  //     postRef.update({
-  //       'likes': FieldValue.increment(-1),
-  //       'likedBy.$uId': FieldValue.delete(),
-  //     });
-
-  //       likesCount--;
-  //       isLiked = false;
-
-  //   }
-
-  //     emit(LikePostSuccessState());
-  //   } on FirebaseException catch (error) {
-  //     isLiked = false;
-  //     print(error.message);
-  //     emit(LikePostErrorState());
-  //   }
-  // }
-

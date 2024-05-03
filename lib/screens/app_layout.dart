@@ -19,6 +19,7 @@ class SocialAppLayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppCubit()
         ..getUserData()
+        ..getAllUsers()
         ,
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
@@ -62,7 +63,7 @@ class SocialAppLayout extends StatelessWidget {
                 ),
               ),
               body: ConditionalBuilder(
-                condition: cubit.userData != null,
+                condition: cubit.userData != null && cubit.users.isNotEmpty,
                 builder: (context) {
                   return const TabBarView(
                     physics: PageScrollPhysics(),
