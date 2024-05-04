@@ -36,6 +36,17 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+
+
+
+bool _isDisposed = false; // Add a variable to track if the widget is disposed
+
+  @override
+  void dispose() {
+    _isDisposed = true; // Mark the widget as disposed when it is disposed
+    super.dispose();
+  }
+
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLike = false;
   @override
@@ -73,9 +84,9 @@ class _PostWidgetState extends State<PostWidget> {
         .doc(widget.postId)
         .collection("Comments")
         .get();
-    setState(() {
+    if (!_isDisposed && mounted) {setState(() {
       count = value.docs.length;
-    });
+    });}
     print("Hell${value.docs.length}");
   }
 

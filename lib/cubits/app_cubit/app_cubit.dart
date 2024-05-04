@@ -248,7 +248,8 @@ class AppCubit extends Cubit<AppStates> {
     try {
       var value = await FirebaseFirestore.instance.collection("users").get();
       for (var u in value.docs) {
-        users.add(UserData.fromJson(u.data()));
+        if(u.data()["uId"] != uId)
+       { users.add(UserData.fromJson(u.data()));}
       }
       print("users: $users");
       emit(GetAllUsersSuccessState());
