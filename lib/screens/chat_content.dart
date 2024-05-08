@@ -1,4 +1,5 @@
 import 'package:el_reino/theme/fonts.dart';
+import 'package:el_reino/widgets/new_message_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user_model.dart';
@@ -37,6 +38,12 @@ class ChatContent extends StatelessWidget {
             ),
           ],
         ),
+      ),
+
+      body: Column(
+        children: [
+          NewMessage(user: user,),
+        ],
       ),
     );
   }

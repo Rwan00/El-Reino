@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/models/comment_model.dart';
+import 'package:el_reino/models/message_model.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -248,14 +249,57 @@ class AppCubit extends Cubit<AppStates> {
     try {
       var value = await FirebaseFirestore.instance.collection("users").get();
       for (var u in value.docs) {
-        if(u.data()["uId"] != uId)
-       { users.add(UserData.fromJson(u.data()));}
+        if (u.data()["uId"] != uId) {
+          users.add(UserData.fromJson(u.data()));
+        }
       }
       print("users: $users");
       emit(GetAllUsersSuccessState());
     } on FirebaseException catch (error) {
       print(error.toString());
       emit(GetAllUsersErrorState());
+    }
+  }
+
+  void sendMessage({
+    required String recieverId,
+    required String dateTime,
+    required String message,
+  }) async {
+    MessageModel messageModel = MessageModel(
+      senderId: uId!,
+      receiverId: recieverId,
+      dateTime: dateTime,
+      message: message,
+    );
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .collection("chats")
+          .doc(recieverId)
+          .collection("messages")
+          .add(messageModel.toMap());
+
+      emit(SendMessageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(SendMessageError());
+    }
+
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(recieverId)
+          .collection("chats")
+          .doc(uId)
+          .collection("messages")
+          .add(messageModel.toMap());
+
+      emit(SendMessageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(SendMessageError());
     }
   }
 }
