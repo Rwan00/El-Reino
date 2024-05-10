@@ -12,18 +12,14 @@ class ViewImage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       body: Center(
-        child: SizedBox(
-          height: 500,
-          width: double.infinity,
-          child: InteractiveViewer(
-            minScale: 0.5,
-            maxScale: 4,
-            constrained: false,
-            boundaryMargin: const EdgeInsets.all(42),
-            child: Image.network(
-              image,
-              fit: BoxFit.cover,
-            ),
+        child: InteractiveViewer(
+          minScale: 0.1,
+          maxScale: 4,
+          //constrained: false,
+          //boundaryMargin: const EdgeInsets.all(42),
+          child: Image.network(
+            image,
+            fit: BoxFit.fitWidth,
           ),
         ),
       ),
