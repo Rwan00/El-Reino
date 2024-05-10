@@ -1,7 +1,7 @@
+import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble.first({
@@ -10,8 +10,8 @@ class MessageBubble extends StatelessWidget {
     required this.username,
     required this.message,
     required this.isMe,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
     required this.time,
     this.file,
   }) : isFirstInSequence = true;
@@ -20,8 +20,8 @@ class MessageBubble extends StatelessWidget {
     super.key,
     required this.message,
     required this.isMe,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
     required this.time,
     this.file,
   })  : isFirstInSequence = false,
@@ -36,8 +36,8 @@ class MessageBubble extends StatelessWidget {
   final String? message;
 
   final bool isMe;
-  final double lat;
-  final double lng;
+  final double? lat;
+  final double? lng;
 
   final String? file;
   final String time;
@@ -61,9 +61,7 @@ class MessageBubble extends StatelessWidget {
                 if (isFirstInSequence) const SizedBox(height: 18),
                 Container(
                   decoration: BoxDecoration(
-                    color: isMe
-                        ? Color.fromRGBO(0, 117, 255, 1)
-                        : Color.fromRGBO(24, 37, 51, 1),
+                    color: isMe ? primaryBlue : Colors.grey[300],
                     borderRadius: BorderRadius.only(
                       topLeft: !isMe && isFirstInSequence
                           ? Radius.zero
@@ -84,7 +82,7 @@ class MessageBubble extends StatelessWidget {
                     vertical: 4,
                     horizontal: 12,
                   ),
-                  child: lat != 0 && lng != 0
+                  child: lat != null && lng != null
                       ? GestureDetector(
                           onTap: () {
                             // Navigator.of(context).push(
@@ -127,7 +125,9 @@ class MessageBubble extends StatelessWidget {
                             )
                           : Text(
                               message!,
-                              style: titleStyle,
+                              style: isMe
+                                  ? titleStyle.copyWith(color: Colors.white)
+                                  : titleStyle,
                               softWrap: true,
                             ),
                 ),

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../constants/consts.dart';
+import '../models/message_model.dart';
 import '../theme/fonts.dart';
 
 void animatedNavigateTo(
@@ -56,3 +59,39 @@ void animatedNavigateAndDelete(
       ),
       (Route<dynamic> route) => false);
 }
+
+ void sendMessage({
+    required String recieverId,
+    required String dateTime,
+    required String message,
+  }) async {
+    MessageModel messageModel = MessageModel(
+      senderId: uId!,
+      receiverId: recieverId,
+      dateTime: dateTime,
+      message: message,
+    );
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .collection("chats")
+          .doc(recieverId)
+          .collection("messages")
+          .add(messageModel.toMap());
+    } on FirebaseException catch (error) {
+      print(error.message);
+    }
+
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(recieverId)
+          .collection("chats")
+          .doc(uId)
+          .collection("messages")
+          .add(messageModel.toMap());
+    } on FirebaseException catch (error) {
+      print(error.message);
+    }
+  }

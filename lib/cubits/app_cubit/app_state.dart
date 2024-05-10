@@ -80,6 +80,6 @@ class SendMessageError extends AppStates{}
 
 class GetMessagesLoading extends AppStates{}
 class GetMessageSuccess extends AppStates{}
-class GetMessageError extends AppStates{}
+
 
 

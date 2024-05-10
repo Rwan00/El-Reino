@@ -38,62 +38,60 @@ class InputField extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppLoginCubit.get(context);
           bool showPwd = cubit.showPwd;
-          return Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (title != null)
-                    Text(
-                      title!,
-                      style: titleStyle,
-                    ),
-                  const SizedBox(
-                    height: 8,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title != null)
+                Text(
+                  title!,
+                  style: titleStyle,
+                ),
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextFormField(
+                  onChanged: onChanged,
+                  obscureText: isPassword && !showPwd,
+                  controller: controller,
+                  keyboardType: textType,
+                  autofocus: false,
+                  style: titleStyle,
+                  cursorColor: primaryBlue,
+                  decoration: InputDecoration(
+                    suffixIcon: isPassword
+                        ? IconButton(
+                            onPressed: () {
+                              cubit.changePasswordVisibility();
+                            },
+                            icon: cubit.icon,
+                          )
+                        : widget,
+                    hintText: hint,
+                    hintStyle: subTitle,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.grey,
+                          style: BorderStyle.solid,
+                          width: 1,
+                        )),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: primaryBlue,
+                          width: 2,
+                        )),
                   ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextFormField(
-                      onChanged: onChanged,
-                      obscureText: isPassword && !showPwd,
-                      controller: controller,
-                      keyboardType: textType,
-                      autofocus: false,
-                      style: titleStyle,
-                      cursorColor: primaryBlue,
-                      decoration: InputDecoration(
-                        suffixIcon: isPassword
-                            ? IconButton(
-                                onPressed: () {
-                                  cubit.changePasswordVisibility();
-                                },
-                                icon: cubit.icon,
-                              )
-                            : widget,
-                        hintText: hint,
-                        hintStyle: subTitle,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                              style: BorderStyle.solid,
-                              width: 1,
-                            )),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: primaryLightTeal,
-                              width: 2,
-                            )),
-                      ),
-                    ),
-                  ),
-                ],
-              ));
+                ),
+              ),
+            ],
+          );
         },
       ),
     );
