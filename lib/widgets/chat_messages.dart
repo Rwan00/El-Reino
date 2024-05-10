@@ -65,19 +65,15 @@ class ChatMessages extends StatelessWidget {
                 if (nextUserIsSame) {
                   return MessageBubble.next(
                       message: message["message"],
-                      //file: chat.file,
-                      //lat: chat.latitude,
-                      // lng: chat.longitude,
+                      file: message["imgUrl"],
                       time: message["dateTime"],
                       isMe: uId == message["senderId"]);
                 } else {
                   return MessageBubble.first(
-                    userImage: user.image,
+                    
                     username: user.name,
                     message: message["message"],
-                    //lat: chat.latitude,
-                    //lng: chat.longitude,
-                    //file: chat.file,
+                    file: message["imgUrl"],
                     time: message["dateTime"],
                     isMe: uId == currentMessageUserId,
                   );

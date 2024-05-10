@@ -9,12 +9,13 @@ import 'package:el_reino/models/comment_model.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
 
-
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
+import '../../models/message_model.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -214,6 +215,7 @@ class AppCubit extends Cubit<AppStates> {
 
   void removePostImg() {
     pickedPostImage = null;
+    postImgUrl = null;
     emit(RemovePostImgState());
   }
 
@@ -259,5 +261,90 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
       emit(GetAllUsersErrorState());
     }
+  }
+
+  File? pickedImage;
+
+  fetchImage() async {
+    emit(AddMessageImageLoading());
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    pickedImage = File(image.path);
+    uploadImage();
+    emit(AddMessageImageSuccess());
+  }
+
+  String? imgUrl;
+  void uploadImage() async {
+    Reference? storageRef;
+    try {
+      storageRef = FirebaseStorage.instance
+          .ref()
+          .child("messages_images")
+          .child(Uri.file(pickedImage!.path).pathSegments.last);
+      await storageRef.putFile(pickedImage!);
+      emit(UploadMessageImageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UploadMessageImageError());
+    }
+    try {
+      imgUrl = await storageRef!.getDownloadURL();
+      log(imgUrl!);
+      emit(UploadMessageImageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(UploadMessageImageError());
+    }
+  }
+
+  void sendMessage({
+    required String recieverId,
+    required String dateTime,
+    required String message,
+  }) async {
+    MessageModel messageModel = MessageModel(
+      senderId: uId!,
+      receiverId: recieverId,
+      dateTime: dateTime,
+      message: message,
+      imgUrl: imgUrl,
+    );
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(uId)
+          .collection("chats")
+          .doc(recieverId)
+          .collection("messages")
+          .add(messageModel.toMap());
+      emit(SendMessageSuccess());
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(SendMessageError());
+    }
+
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(recieverId)
+          .collection("chats")
+          .doc(uId)
+          .collection("messages")
+          .add(messageModel.toMap());
+    } on FirebaseException catch (error) {
+      print(error.message);
+    }
+
+    pickedImage = null;
+    imgUrl = null;
+  }
+
+  void removeMessageImg() {
+    pickedImage = null;
+    imgUrl = null;
+    emit(RemoveMessageImgState());
   }
 }

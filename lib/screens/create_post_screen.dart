@@ -70,7 +70,7 @@ class CreatePost extends StatelessWidget {
                       ),
                       onPressed: () {
                         if (postController.text.isEmpty &&
-                            cubit.pickedPostImage == null) {
+                            cubit.postImgUrl == null) {
                           buildSnackBar(
                             context: context,
                             text: "Empty Post!",
@@ -121,7 +121,7 @@ class CreatePost extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (cubit.pickedPostImage != null)
+                if (cubit.postImgUrl != null)
                   Container(
                     height: 200,
                     width: double.infinity,

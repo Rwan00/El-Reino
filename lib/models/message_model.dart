@@ -3,18 +3,21 @@ class MessageModel {
   String receiverId;
   String dateTime;
   String message;
+  String? imgUrl;
   MessageModel({
     required this.senderId,
     required this.receiverId,
     required this.dateTime,
     required this.message,
+     this.imgUrl,
   });
   factory MessageModel.fromJson(json) {
     return MessageModel(
       senderId: json["senderId"],
       receiverId: json["receiverId"],
       dateTime: json["dateTime"],
-      message: json["message"]
+      message: json["message"],
+      imgUrl: json?["imgUrl"],
     );
   }
 
@@ -24,6 +27,7 @@ class MessageModel {
       "receiverId": receiverId,
       "dateTime": dateTime,
       "message":message,
+      "imgUrl":imgUrl,
     };
   }
 }

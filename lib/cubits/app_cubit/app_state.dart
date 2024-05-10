@@ -38,6 +38,14 @@ class UploadPostImageError extends AppStates {}
 
 class UploadPostImageSuccess extends AppStates {}
 
+class AddMessageImageLoading extends AppStates {}
+
+class AddMessageImageSuccess extends AppStates {}
+
+class UploadMessageImageError extends AppStates {}
+
+class UploadMessageImageSuccess extends AppStates {}
+
 class UploadProfileImageError extends AppStates {}
 
 class UploadProfileImageSuccess extends AppStates {}
@@ -71,6 +79,7 @@ class AddCommentErrorState extends AppStates {
 }
 
 class RemovePostImgState extends AppStates {}
+class RemoveMessageImgState extends AppStates {}
 
 class LikePostSuccessState extends AppStates {}
 
