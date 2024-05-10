@@ -22,7 +22,7 @@ class ChatMessages extends StatelessWidget {
             .collection("messages")
             .orderBy(
               "dateTime",
-              descending: false,
+              descending: true,
             )
             .snapshots(),
         builder: (context, snapshot) {
@@ -43,6 +43,7 @@ class ChatMessages extends StatelessWidget {
           } else {
             final messages = snapshot.data!.docs;
             return ListView.builder(
+              reverse: true,
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(
                 bottom: 40,

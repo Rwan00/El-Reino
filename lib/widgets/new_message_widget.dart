@@ -1,9 +1,9 @@
+import 'package:el_reino/widgets/app_input_field.dart';
 import 'package:flutter/material.dart';
 
 import '../methods/methods.dart';
 
 import '../models/user_model.dart';
-import 'input_field.dart';
 
 class NewMessage extends StatelessWidget {
   final UserData user;
@@ -21,9 +21,25 @@ class NewMessage extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: InputField(
+            child: AppInputField(
               hint: "Send Message",
               controller: messageController,
+              widget: SizedBox(
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.image),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.map),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           IconButton(

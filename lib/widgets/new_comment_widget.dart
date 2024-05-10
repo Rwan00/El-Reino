@@ -1,10 +1,11 @@
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/widgets/app_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'input_field.dart';
+
 
 class NewCommentWidget extends StatelessWidget {
   final String postId;
@@ -24,7 +25,7 @@ class NewCommentWidget extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: InputField(
+                child: AppInputField(
                   hint: "Write a Comment...",
                   controller: commentController,
                 ),
