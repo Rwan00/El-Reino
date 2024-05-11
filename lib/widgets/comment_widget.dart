@@ -22,6 +22,7 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               constraints: const BoxConstraints(maxWidth: 200),
@@ -31,6 +32,7 @@ class CommentWidget extends StatelessWidget {
               ),
               margin: const EdgeInsets.symmetric(
                 vertical: 4,
+                horizontal: 8,
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
