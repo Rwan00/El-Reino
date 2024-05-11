@@ -2,10 +2,12 @@ import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/cubits/register_cubit/register_cubit.dart';
 import 'package:el_reino/helper/cache_helper.dart';
+
 import 'package:el_reino/screens/app_layout.dart';
 import 'package:el_reino/screens/login_screen.dart';
 import 'package:el_reino/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,12 +15,31 @@ import 'constants/consts.dart';
 import 'cubits/bloc_observer.dart';
 import 'firebase_options.dart';
 
+Future<void> firebaseMassegingBackgroundHandler(RemoteMessage message) async {
+   print(message.data.toString());
+    print("On Background Message ");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = SimpleBlocObserver();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  var token = await FirebaseMessaging.instance.getToken();
+  print("token: $token");
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.data.toString());
+    print("On Message");
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print(event.data.toString());
+    print("On Message Opened App");
+  });
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMassegingBackgroundHandler);
   await CacheHelper.init();
   Widget widget;
   uId = CacheHelper.getData(key: "uId");
@@ -40,7 +61,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AppCubit()..getUserData()..getAllUsers(),
+          create: (context) => AppCubit()
+            ..getUserData()
+            ..getAllUsers(),
         ),
         BlocProvider(
           create: (context) => AppRegisterCubit(),
