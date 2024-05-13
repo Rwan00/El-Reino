@@ -91,4 +91,7 @@ class GetMessagesLoading extends AppStates{}
 class GetMessageSuccess extends AppStates{}
 
 
+class ChangeTabBar extends AppStates{}
+
+
 

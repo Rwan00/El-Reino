@@ -53,68 +53,66 @@ class PostDetailsScreen extends StatelessWidget {
           body: ConditionalBuilder(
             condition: cubit.userData != null,
             builder: (context) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    PostWidget(
-                      post: post,
-                      isFeed: false,
-                      postId: postId,
-                      likes: likes,
-                  
-                    ),
-                    Expanded(
-                      child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("posts")
-                              .doc(postId)
-                              .collection("Comments")
-                              .orderBy("time")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              print("hello?1");
-                              return LoadingWidget();
-                            } else if (snapshot.hasError) {
-                              print("hello?2");
-                              return Center(
-                                child: Text(
-                                  "Something Went Wrong...",
-                                  style: titleStyle,
-                                ),
-                              );
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.docs.isEmpty) {
-                              print("hello?3");
-                              return Center(
-                                child: Text(
-                                  "No Comments Found!",
-                                  style: titleStyle,
-                                ),
-                              );
-                            } else {
-                              return ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final comment = CommentModel.fromJson(
-                                      snapshot.data!.docs[index].data());
+              return Column(
+                children: [
+                  PostWidget(
+                    post: post,
+                    isFeed: false,
+                    postId: postId,
+                    likes: likes,
                 
-                                 
-                                  return CommentWidget(
-                                    comment: comment,
-                                  );
-                                },
-                              );
-                            }
-                          }),
-                    ),
-                    NewCommentWidget(
-                      postId: postId,
-                    ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("posts")
+                            .doc(postId)
+                            .collection("Comments")
+                            .orderBy("time")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            print("hello?1");
+                            return LoadingWidget();
+                          } else if (snapshot.hasError) {
+                            print("hello?2");
+                            return Center(
+                              child: Text(
+                                "Something Went Wrong...",
+                                style: titleStyle,
+                              ),
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.docs.isEmpty) {
+                            print("hello?3");
+                            return Center(
+                              child: Text(
+                                "No Comments Found!",
+                                style: titleStyle,
+                              ),
+                            );
+                          } else {
+                            return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final comment = CommentModel.fromJson(
+                                    snapshot.data!.docs[index].data());
+              
+                               
+                                return CommentWidget(
+                                  comment: comment,
+                                );
+                              },
+                            );
+                          }
+                        }),
+                  ),
+                  NewCommentWidget(
+                    postId: postId,
+                  ),
+                ],
               );
             },
             fallback: (context) {

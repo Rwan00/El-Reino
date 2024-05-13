@@ -347,4 +347,10 @@ class AppCubit extends Cubit<AppStates> {
     imgUrl = null;
     emit(RemoveMessageImgState());
   }
+
+  int currentIndex = 0;
+  void changeTabBar(int index) {
+    currentIndex = index;
+    emit(ChangeTabBar());
+  }
 }

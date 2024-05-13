@@ -5,6 +5,7 @@ import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/screens/post_details_screen.dart';
+import 'package:el_reino/screens/user_profile_screen.dart';
 import 'package:el_reino/screens/view_image.dart';
 
 import 'package:el_reino/theme/fonts.dart';
@@ -13,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../models/user_model.dart';
 
 class PostWidget extends StatefulWidget {
   final PostModel post;
@@ -27,7 +30,6 @@ class PostWidget extends StatefulWidget {
       required this.isFeed,
       required this.postId,
       required this.likes,
-
       this.index,
       super.key});
 
@@ -36,10 +38,7 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-
-
-
-bool _isDisposed = false; // Add a variable to track if the widget is disposed
+  bool _isDisposed = false; // Add a variable to track if the widget is disposed
 
   @override
   void dispose() {
@@ -84,20 +83,20 @@ bool _isDisposed = false; // Add a variable to track if the widget is disposed
         .doc(widget.postId)
         .collection("Comments")
         .get();
-    if (!_isDisposed && mounted) {setState(() {
-      count = value.docs.length;
-    });}
+    if (!_isDisposed && mounted) {
+      setState(() {
+        count = value.docs.length;
+      });
+    }
     print("Hell${value.docs.length}");
   }
 
   @override
   Widget build(BuildContext context) {
-    //AppCubit.get(context).checkUserLikedPost(AppCubit.get(context).postsId[index]);
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: Card(
@@ -114,9 +113,21 @@ bool _isDisposed = false; // Add a variable to track if the widget is disposed
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          widget.post.profileImage!,
+                      GestureDetector(
+                        onTap: () {
+                          /*  animatedNavigateTo(
+                            context: context,
+                            widget: UserProfileScreen(user: user),
+                            direction: PageTransitionType.leftToRight,
+                            curve: Curves.bounceIn,
+                          ); */
+                          print(cubit.users[2].uId);
+                          print(widget.post.uId);
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            widget.post.profileImage!,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -159,105 +170,40 @@ bool _isDisposed = false; // Add a variable to track if the widget is disposed
                   //const Divide(),
                   Column(
                     children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.post.text!,
-                            style: titleStyle,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Wrap(
-                              children: [
-                                SizedBox(
-                                  height: 25,
-                                  child: MaterialButton(
-                                    onPressed: () {},
-                                    height: 25,
-                                    minWidth: 1,
-                                    padding: EdgeInsets.zero,
-                                    child: Text(
-                                      "#software",
-                                      style: subTitle.copyWith(
-                                        color: primaryBlue,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                  child: MaterialButton(
-                                    onPressed: () {},
-                                    height: 25,
-                                    minWidth: 1,
-                                    padding: EdgeInsets.zero,
-                                    child: Text(
-                                      "#software",
-                                      style: subTitle.copyWith(
-                                        color: primaryBlue,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                  child: MaterialButton(
-                                    onPressed: () {},
-                                    height: 25,
-                                    minWidth: 1,
-                                    padding: EdgeInsets.zero,
-                                    child: Text(
-                                      "#software",
-                                      style: subTitle.copyWith(
-                                        color: primaryBlue,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                  child: MaterialButton(
-                                    onPressed: () {},
-                                    height: 25,
-                                    minWidth: 1,
-                                    padding: EdgeInsets.zero,
-                                    child: Text(
-                                      "#software",
-                                      style: subTitle.copyWith(
-                                        color: primaryBlue,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.post.text!,
+                          style: titleStyle,
+                        ),
                       ),
                     ],
                   ),
                   if (widget.post.image != null)
                     GestureDetector(
-                      onTap: (){
-                         animatedNavigateTo(
-                              context: context,
-                              widget:  ViewImage(image: widget.post.image!,),
-                              direction: PageTransitionType.rightToLeft,
-                              curve: Curves.easeInCirc,
-                            );
+                      onTap: () {
+                        animatedNavigateTo(
+                          context: context,
+                          widget: ViewImage(
+                            image: widget.post.image!,
+                          ),
+                          direction: PageTransitionType.rightToLeft,
+                          curve: Curves.easeInCirc,
+                        );
                       },
-                      child: Container(
-                        height: 190,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              widget.post.image!,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 190,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                widget.post.image!,
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -312,11 +258,10 @@ bool _isDisposed = false; // Add a variable to track if the widget is disposed
                           color: Colors.black54,
                         ),
                         label: Text(
-                           "$count Comment",
+                          "$count Comment",
                           style: subTitle,
                         ),
                       ),
-                      
                     ],
                   ),
                   const Divide(),
@@ -329,7 +274,7 @@ bool _isDisposed = false; // Add a variable to track if the widget is disposed
                         ),
                         TextButton(
                           onPressed: () {
-                             animatedNavigateTo(
+                            animatedNavigateTo(
                               context: context,
                               widget: PostDetailsScreen(
                                 index: widget.index!,

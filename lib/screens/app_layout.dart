@@ -19,8 +19,7 @@ class SocialAppLayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppCubit()
         ..getUserData()
-        ..getAllUsers()
-        ,
+        ..getAllUsers(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -45,19 +44,34 @@ class SocialAppLayout extends StatelessWidget {
                   )
                 ],
                 bottom: TabBar(
-                 
+                  indicatorColor: primaryBlue,
+                  indicatorWeight: 3,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  physics: const BouncingScrollPhysics(),
+                  
+                  onTap: (index) {
+                    cubit.changeTabBar(index);
+                  },
                   tabs: <Widget>[
                     Tab(
-                      icon: Image.asset("assets/home.png"),
+                      icon: cubit.currentIndex == 0
+                          ? Image.asset("assets/home_selected.png")
+                          : Image.asset("assets/home.png"),
                     ),
                     Tab(
-                      icon: Image.asset("assets/chat.png"),
+                      icon: cubit.currentIndex == 1
+                          ? Image.asset("assets/chat_selected.png")
+                          : Image.asset("assets/chat.png"),
                     ),
                     Tab(
-                      icon: Image.asset("assets/notification.png"),
+                      icon: cubit.currentIndex == 2
+                          ? Image.asset("assets/notification_selected.png")
+                          : Image.asset("assets/notification.png"),
                     ),
                     Tab(
-                      icon: Image.asset("assets/avatar.png"),
+                      icon: cubit.currentIndex == 3
+                          ? Image.asset("assets/user_selected.png")
+                          : Image.asset("assets/avatar.png"),
                     ),
                   ],
                 ),
@@ -66,7 +80,8 @@ class SocialAppLayout extends StatelessWidget {
                 condition: cubit.userData != null && cubit.users.isNotEmpty,
                 builder: (context) {
                   return const TabBarView(
-                    physics: PageScrollPhysics(),
+                    
+                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       FeedsScreen(),
                       ChatsScreen(),

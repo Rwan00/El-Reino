@@ -16,8 +16,8 @@ import 'cubits/bloc_observer.dart';
 import 'firebase_options.dart';
 
 Future<void> firebaseMassegingBackgroundHandler(RemoteMessage message) async {
-   print(message.data.toString());
-    print("On Background Message ");
+  print(message.data.toString());
+  print("On Background Message ");
 }
 
 void main() async {
