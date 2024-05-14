@@ -17,7 +17,7 @@ class ChatsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        List<UserData> users = cubit.users.where((element) => element.uId != uId).toList();
+        List<UserData> users = cubit.users.where((element) => element.uId != uId && cubit.userData!.followers!.contains(element.email)).toList();
        
         return ListView.separated(
           physics: const BouncingScrollPhysics(),

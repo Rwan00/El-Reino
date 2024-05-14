@@ -11,9 +11,12 @@ import '../constants/consts.dart';
 
 import '../cubits/app_cubit/app_state.dart';
 import '../methods/methods.dart';
+import '../models/post_model.dart';
 import '../theme/fonts.dart';
 import '../widgets/app_btn.dart';
+import '../widgets/divide.dart';
 import '../widgets/loading_widget.dart';
+import '../widgets/post_widget.dart';
 import 'edit_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -147,7 +150,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           : AppBtn(
                               label: isFollow ? "Unfollow" : "Follow",
                               onPressed: () {
-                                toggleFollow();
+                                if (widget.user.email ==
+                                    "rwanbdalrhym948@gmail.com") {
+                                  buildSnackBar(
+                                      context: context,
+                                      text: "ههههه لا",
+                                      clr: errorColor);
+                                } else {
+                                  toggleFollow();
+                                }
                               },
                               clr: isFollow ? Colors.white : null,
                               style: isFollow ? titleStyle : null,
@@ -162,88 +173,157 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     height: 12,
                   ),
                   StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("users")
-                          .doc(widget.user.uId)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          print("hello?1");
-                          return LoadingWidget();
-                        } else if (snapshot.hasError) {
-                          print("hello?2");
-                          return Center(
-                            child: Text(
-                              "Something Went Wrong...",
-                              style: titleStyle,
+                    stream: FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(widget.user.uId)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        print("hello?1");
+                        return LoadingWidget();
+                      } else if (snapshot.hasError) {
+                        print("hello?2");
+                        return Center(
+                          child: Text(
+                            "Something Went Wrong...",
+                            style: titleStyle,
+                          ),
+                        );
+                      } else {
+                        final user = UserData.fromJson(snapshot.data!);
+                        print(user.email);
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    user.posts!.length.toString(),
+                                    style: titleStyle,
+                                  ),
+                                  Text(
+                                    "Posts",
+                                    style: subTitle,
+                                  ),
+                                ],
+                              ),
                             ),
-                          );
-                        } else {
-                          final user = UserData.fromJson(snapshot.data!);
-                          print(user.email);
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "500",
-                                      style: titleStyle,
-                                    ),
-                                    Text(
-                                      "Posts",
-                                      style: subTitle,
-                                    ),
-                                  ],
-                                ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "350",
+                                    style: titleStyle,
+                                  ),
+                                  Text(
+                                    "Photos",
+                                    style: subTitle,
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "350",
-                                      style: titleStyle,
-                                    ),
-                                    Text(
-                                      "Photos",
-                                      style: subTitle,
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    user.followers!.length.toString(),
+                                    style: titleStyle,
+                                  ),
+                                  Text(
+                                    "Followers",
+                                    style: subTitle,
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      user.followers!.length.toString(),
-                                      style: titleStyle,
-                                    ),
-                                    Text(
-                                      "Followers",
-                                      style: subTitle,
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    user.followings!.length.toString(),
+                                    style: titleStyle,
+                                  ),
+                                  Text(
+                                    "Followings",
+                                    style: subTitle,
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      user.followings!.length.toString(),
-                                      style: titleStyle,
-                                    ),
-                                    Text(
-                                      "Followings",
-                                      style: subTitle,
-                                    ),
-                                  ],
-                                ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const Divide(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("posts")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          print(snapshot.hasData);
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            print("hello?1");
+                            return LoadingWidget();
+                          } else if (snapshot.hasError) {
+                            print("hello?2");
+                            return Center(
+                              child: Text(
+                                "Something Went Wrong...",
+                                style: titleStyle,
                               ),
-                            ],
-                          );
-                        }
-                      })
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.docs.isEmpty) {
+                            print("hello?3");
+                            return Center(
+                              child: Text(
+                                "No Posts Found!",
+                                style: titleStyle,
+                              ),
+                            );
+                          } else {
+                            print("hello?4");
+                            print(snapshot.data!.docs[0].data());
+                            List posts = snapshot.data!.docs
+                                .where((element) =>
+                                    widget.user.posts!.contains(element.id))
+                                .toList();
+                            print(posts[0].data);
+                            return ListView.separated(
+                              separatorBuilder: (context, index) => Container(
+                                height: 0.5,
+                                width: double.infinity,
+                                color: Colors.grey,
+                              ),
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final post =
+                                    PostModel.fromJson(posts[index].data());
+                                final postId = posts[index];
+
+                                print("pst ${post.likes}");
+                                return PostWidget(
+                                  index: index,
+                                  likes: List<String>.from(post.likes ?? []),
+                                  post: post,
+                                  postId: postId.id,
+                                  isFeed: true,
+                                );
+                              },
+                              itemCount: posts.length,
+                            );
+                          }
+                        }),
+                  ),
                 ],
               ),
             ),

@@ -82,7 +82,9 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       isEmailVerified: false,
       bio: bio,
       followers: [],
-      followings: [],
+      followings: [
+        "rwanbdalrhym948@gmail.com",
+      ],
       posts: [],
     );
     emit(AppCreateUserLoadingState());

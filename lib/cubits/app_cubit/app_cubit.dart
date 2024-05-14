@@ -185,7 +185,7 @@ class AppCubit extends Cubit<AppStates> {
     try {
       postImgUrl = await storageRef!.getDownloadURL();
       log(postImgUrl!);
-            emit(UploadPostImageSuccess());
+      emit(UploadPostImageSuccess());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UploadPostImageError());
@@ -210,7 +210,16 @@ class AppCubit extends Cubit<AppStates> {
     try {
       emit(CreatePostLoadingState());
 
-      await FirebaseFirestore.instance.collection("posts").add(model.toMap());
+      var value = await FirebaseFirestore.instance
+          .collection("posts")
+          .add(model.toMap());
+
+      DocumentReference meRef =
+          FirebaseFirestore.instance.collection("users").doc(uId);
+
+      meRef.update({
+        "posts": FieldValue.arrayUnion([value.id])
+      });
 
       emit(CreatePostSuccessState());
     } on FirebaseException catch (error) {
@@ -257,9 +266,7 @@ class AppCubit extends Cubit<AppStates> {
     try {
       var value = await FirebaseFirestore.instance.collection("users").get();
       for (var u in value.docs) {
-        
-          users.add(UserData.fromJson(u.data()));
-       
+        users.add(UserData.fromJson(u.data()));
       }
       print("users: $users");
       emit(GetAllUsersSuccessState());
@@ -357,6 +364,7 @@ class AppCubit extends Cubit<AppStates> {
   int currentIndex = 0;
   void changeTabBar(int index) {
     currentIndex = index;
+    print(currentIndex);
     emit(ChangeTabBar());
   }
 }
