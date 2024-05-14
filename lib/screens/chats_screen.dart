@@ -1,5 +1,7 @@
+import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
+import 'package:el_reino/models/user_model.dart';
 import 'package:el_reino/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,11 +17,15 @@ class ChatsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
+        List<UserData> users = cubit.users.where((element) => element.uId != uId).toList();
+       
         return ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) => ChatItem(user: cubit.users[index],),
+          itemBuilder: (context, index) => ChatItem(
+            user: users[index],
+          ),
           separatorBuilder: (context, index) => const Divide(),
-          itemCount: cubit.users.length,
+          itemCount: users.length,
         );
       },
     );

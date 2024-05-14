@@ -50,6 +50,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
         phone: phone,
         uId: value.user!.uid,
         image: imgUrl,
+        
       );
     } on FirebaseAuthException catch (error) {
       print(error);
@@ -80,6 +81,9 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       cover: "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
       isEmailVerified: false,
       bio: bio,
+      followers: [],
+      followings: [],
+      posts: [],
     );
     emit(AppCreateUserLoadingState());
     try {

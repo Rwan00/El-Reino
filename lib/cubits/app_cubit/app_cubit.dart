@@ -89,6 +89,7 @@ class AppCubit extends Cubit<AppStates> {
     try {
       profileImgUrl = await storageRef!.getDownloadURL();
       log(profileImgUrl!);
+      emit(UploadProfileImageSuccess());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UploadProfileImageError());
@@ -112,6 +113,7 @@ class AppCubit extends Cubit<AppStates> {
     try {
       coverImgUrl = await storageRef!.getDownloadURL();
       log(coverImgUrl!);
+      emit(UploadCoverImageSuccess());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UploadCoverImageError());
@@ -132,6 +134,9 @@ class AppCubit extends Cubit<AppStates> {
       email: userData!.email,
       uId: uId,
       isEmailVerified: userData!.isEmailVerified,
+      followers: userData!.followers,
+      followings: userData!.followings,
+      posts: userData!.posts,
     );
 
     try {
@@ -180,6 +185,7 @@ class AppCubit extends Cubit<AppStates> {
     try {
       postImgUrl = await storageRef!.getDownloadURL();
       log(postImgUrl!);
+            emit(UploadPostImageSuccess());
     } on FirebaseException catch (error) {
       print(error.message);
       emit(UploadPostImageError());
@@ -251,9 +257,9 @@ class AppCubit extends Cubit<AppStates> {
     try {
       var value = await FirebaseFirestore.instance.collection("users").get();
       for (var u in value.docs) {
-        if (u.data()["uId"] != uId) {
+        
           users.add(UserData.fromJson(u.data()));
-        }
+       
       }
       print("users: $users");
       emit(GetAllUsersSuccessState());

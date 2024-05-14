@@ -96,7 +96,12 @@ class _PostWidgetState extends State<PostWidget> {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        
         var cubit = AppCubit.get(context);
+        UserData user = cubit.users.firstWhere(
+  (user) => user.uId == widget.post.uId,
+
+);
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: Card(
@@ -115,13 +120,13 @@ class _PostWidgetState extends State<PostWidget> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          /*  animatedNavigateTo(
+                           animatedNavigateTo(
                             context: context,
                             widget: UserProfileScreen(user: user),
                             direction: PageTransitionType.leftToRight,
                             curve: Curves.bounceIn,
-                          ); */
-                          print(cubit.users[2].uId);
+                          );
+                          
                           print(widget.post.uId);
                         },
                         child: CircleAvatar(

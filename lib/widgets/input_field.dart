@@ -13,7 +13,6 @@ class InputField extends StatelessWidget {
   final Widget? widget;
   final TextInputType? textType;
   final bool isPassword;
- 
 
   const InputField(
       {this.title,
@@ -21,7 +20,6 @@ class InputField extends StatelessWidget {
       this.controller,
       this.widget,
       this.textType,
-    
       this.isPassword = false,
       super.key});
 
@@ -47,16 +45,16 @@ class InputField extends StatelessWidget {
                   style: titleStyle,
                 ),
               const SizedBox(
-                height: 8,
+                height: 4,
               ),
               Container(
                 height: 50,
+                margin: EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextFormField(
-                  
                   obscureText: isPassword && !showPwd,
                   controller: controller,
                   keyboardType: textType,

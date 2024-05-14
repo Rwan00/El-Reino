@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../constants/consts.dart';
+import '../models/user_model.dart';
 import '../widgets/app_btn.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -73,9 +75,14 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          cubit.userData!.name!,
-                          style: heading,
+                        SizedBox(
+                          width: cubit.userData!.name!.length > 10 ? 200 : null,
+                          child: Text(
+                            cubit.userData!.name!,
+                            style: heading,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
                         ),
                         if (cubit.userData!.isEmailVerified!)
                           Icon(
@@ -106,67 +113,89 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
-                  
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                "500",
+                    StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(uId)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            print("hello?1");
+                            return LoadingWidget();
+                          } else if (snapshot.hasError) {
+                            print("hello?2");
+                            return Center(
+                              child: Text(
+                                "Something Went Wrong...",
                                 style: titleStyle,
                               ),
-                              Text(
-                                "Posts",
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                "350",
-                                style: titleStyle,
-                              ),
-                              Text(
-                                "Photos",
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                "100K",
-                                style: titleStyle,
-                              ),
-                              Text(
-                                "Followers",
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                "367",
-                                style: titleStyle,
-                              ),
-                              Text(
-                                "Followings",
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
+                            );
+                          } else {
+                            final user = UserData.fromJson(snapshot.data!);
+                            print(user.email);
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "500",
+                                        style: titleStyle,
+                                      ),
+                                      Text(
+                                        "Posts",
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "350",
+                                        style: titleStyle,
+                                      ),
+                                      Text(
+                                        "Photos",
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        user.followers!.length.toString(),
+                                        style: titleStyle,
+                                      ),
+                                      Text(
+                                        "Followers",
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        user.followings!.length.toString(),
+                                        style: titleStyle,
+                                      ),
+                                      Text(
+                                        "Followings",
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        })
                   ],
                 ),
               );

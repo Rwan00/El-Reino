@@ -7,17 +7,22 @@ class UserData {
   String? cover;
   String? bio;
   bool? isEmailVerified;
-
+  List? followers;
+  List? followings;
+  List? posts;
 
   UserData({
-     required this.email,
-     required this.name,
-     required this.phone,
-     required this.uId,
-     required this.image,
-     required this.cover,
-     required this.bio,
-     required this.isEmailVerified,
+    required this.email,
+    required this.name,
+    required this.phone,
+    required this.uId,
+    required this.image,
+    required this.cover,
+    required this.bio,
+    required this.isEmailVerified,
+    required this.followers,
+    required this.followings,
+    required this.posts,
   });
   factory UserData.fromJson(json) {
     return UserData(
@@ -29,6 +34,9 @@ class UserData {
       cover: json?["cover"],
       bio: json?["bio"],
       isEmailVerified: json?["isEmailVerified"],
+      followers: json?["followers"],
+      followings: json?["followings"],
+      posts: json?["posts"],
     );
   }
 
@@ -41,7 +49,10 @@ class UserData {
       "image": image,
       "cover": cover,
       "bio": bio,
-      "isEmailVerified":isEmailVerified,
+      "isEmailVerified": isEmailVerified,
+      "followers": followers,
+      "followings": followings,
+      "posts": posts,
     };
   }
 }
