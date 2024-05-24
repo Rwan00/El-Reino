@@ -165,7 +165,66 @@ class _PostWidgetState extends State<PostWidget> {
                         width: 32,
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                              useSafeArea: true,
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  height: 150,
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      ListTile(
+                                        onTap: () {
+                                          cubit.savePost(widget.postId);
+                                          if (state is SavePostError) {
+                                            buildSnackBar(
+                                              context: context,
+                                              text: "Something Went Wrong",
+                                              clr: errorColor,
+                                            );
+                                          }
+                                          buildSnackBar(
+                                            context: context,
+                                            text: "Post Saved",
+                                            clr: primaryBlue,
+                                          );
+
+                                          Navigator.of(context).pop();
+                                        },
+                                        leading: const Icon(
+                                          Icons.save_alt_rounded,
+                                          size: 32,
+                                        ),
+                                        title: Text(
+                                          "Save Post",
+                                          style:
+                                              appTitle.copyWith(fontSize: 18),
+                                        ),
+                                      ),
+                                      if (widget.post.uId == uId)
+                                        const Divider(),
+                                      if (widget.post.uId == uId)
+                                        ListTile(
+                                          leading: const Icon(
+                                            Icons.delete_forever_outlined,
+                                            size: 32,
+                                            color: Colors.red,
+                                          ),
+                                          title: Text(
+                                            "Delete Post",
+                                            style:
+                                                appTitle.copyWith(fontSize: 18),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
                         icon: const Icon(Icons.more_vert),
                       ),
                     ],

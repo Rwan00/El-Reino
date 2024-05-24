@@ -71,6 +71,7 @@ class CreatePostErrorState extends AppStates {
   final String error;
   CreatePostErrorState(this.error);
 }
+
 class AddCommentSuccessState extends AppStates {}
 
 class AddCommentErrorState extends AppStates {
@@ -79,19 +80,19 @@ class AddCommentErrorState extends AppStates {
 }
 
 class RemovePostImgState extends AppStates {}
+
 class RemoveMessageImgState extends AppStates {}
 
 class LikePostSuccessState extends AppStates {}
 
-class SendMessageSuccess extends AppStates{}
-class SendMessageError extends AppStates{}
+class SendMessageSuccess extends AppStates {}
 
+class SendMessageError extends AppStates {}
 
-class GetMessagesLoading extends AppStates{}
-class GetMessageSuccess extends AppStates{}
+class GetMessagesLoading extends AppStates {}
 
+class GetMessageSuccess extends AppStates {}
 
-class ChangeTabBar extends AppStates{}
+class ChangeTabBar extends AppStates {}
 
-
-
+class SavePostError extends AppStates {}
