@@ -7,6 +7,13 @@ TextStyle get heading {
     fontWeight: FontWeight.w700,
   );
 }
+TextStyle get appTitle {
+  return GoogleFonts.abyssinicaSil(
+    fontSize: 24,
+    color: Colors.black,
+    fontWeight: FontWeight.w700,
+  );
+}
 
 TextStyle get subTitle {
   return GoogleFonts.acme(

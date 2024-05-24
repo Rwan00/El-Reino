@@ -5,6 +5,7 @@ import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/screens/post_details_screen.dart';
+import 'package:el_reino/screens/user_details.dart';
 import 'package:el_reino/screens/user_profile_screen.dart';
 import 'package:el_reino/screens/view_image.dart';
 
@@ -120,15 +121,12 @@ class _PostWidgetState extends State<PostWidget> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          
-                            
-                            animatedNavigateTo(
-                              context: context,
-                              widget: UserProfileScreen(user: user),
-                              direction: PageTransitionType.leftToRight,
-                              curve: Curves.bounceIn,
-                            );
-                          
+                          animatedNavigateTo(
+                            context: context,
+                            widget: UserProfileScreen(user: user),
+                            direction: PageTransitionType.leftToRight,
+                            curve: Curves.bounceIn,
+                          );
 
                           print(widget.post.uId);
                         },
@@ -240,9 +238,22 @@ class _PostWidgetState extends State<PostWidget> {
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        "${widget.likes.length.toString()} Likes",
-                        style: subTitle,
+                      GestureDetector(
+                        onTap: () {
+                          animatedNavigateTo(
+                            context: context,
+                            widget: UserDetailsScreen(
+                              title: "Likes",
+                              usersEmails: widget.likes,
+                            ),
+                            direction: PageTransitionType.leftToRight,
+                            curve: Curves.easeInCirc,
+                          );
+                        },
+                        child: Text(
+                          "${widget.likes.length.toString()} Likes",
+                          style: subTitle,
+                        ),
                       ),
                       const Spacer(),
                       TextButton.icon(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/models/user_model.dart';
+import 'package:el_reino/screens/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -30,10 +31,9 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isFollow = widget.user.followers!.contains(currentUser.email);
-    print(widget.user.followers);
+    print("followers: ${widget.user.followers}");
     print(isFollow);
   }
 
@@ -70,9 +70,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocConsumer<AppCubit, AppStates>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           return Scaffold(
@@ -191,6 +189,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         );
                       } else {
                         final user = UserData.fromJson(snapshot.data!);
+
                         print(user.email);
                         return Row(
                           children: [
@@ -223,31 +222,57 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                             ),
                             Expanded(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    user.followers!.length.toString(),
-                                    style: titleStyle,
-                                  ),
-                                  Text(
-                                    "Followers",
-                                    style: subTitle,
-                                  ),
-                                ],
+                              child: GestureDetector(
+                                onTap: () {
+                                  animatedNavigateTo(
+                                    context: context,
+                                    widget: UserDetailsScreen(
+                                      title: "Followers",
+                                      usersEmails: user.followers!,
+                                    ),
+                                    direction: PageTransitionType.leftToRight,
+                                    curve: Curves.easeInCirc,
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      user.followers!.length.toString(),
+                                      style: titleStyle,
+                                    ),
+                                    Text(
+                                      "Followers",
+                                      style: subTitle,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Expanded(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    user.followings!.length.toString(),
-                                    style: titleStyle,
-                                  ),
-                                  Text(
-                                    "Followings",
-                                    style: subTitle,
-                                  ),
-                                ],
+                              child: GestureDetector(
+                                onTap: () {
+                                  animatedNavigateTo(
+                                    context: context,
+                                    widget: UserDetailsScreen(
+                                      title: "Followings",
+                                      usersEmails: user.followings!,
+                                    ),
+                                    direction: PageTransitionType.leftToRight,
+                                    curve: Curves.easeInCirc,
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      user.followings!.length.toString(),
+                                      style: titleStyle,
+                                    ),
+                                    Text(
+                                      "Followings",
+                                      style: subTitle,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
