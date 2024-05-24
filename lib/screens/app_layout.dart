@@ -7,6 +7,7 @@ import 'package:el_reino/screens/feeds_screen.dart';
 import 'package:el_reino/screens/notification_screen.dart';
 import 'package:el_reino/screens/profile_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
+import 'package:el_reino/widgets/drawer.dart';
 import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,20 +36,26 @@ class SocialAppLayout extends StatelessWidget {
                   "El Rieno",
                   style: heading.copyWith(color: primaryBlue),
                 ),
-                actions: const [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage("assets/logo.png"),
-                    ),
-                  )
+                actions: [
+                  Builder(builder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                        child: const CircleAvatar(
+                          backgroundImage: AssetImage("assets/logo.png"),
+                        ),
+                      ),
+                    );
+                  })
                 ],
                 bottom: TabBar(
                   indicatorColor: primaryBlue,
                   indicatorWeight: 3,
                   indicatorSize: TabBarIndicatorSize.label,
                   physics: const BouncingScrollPhysics(),
-                  
                   onTap: (index) {
                     cubit.changeTabBar(index);
                   },
@@ -80,7 +87,6 @@ class SocialAppLayout extends StatelessWidget {
                 condition: cubit.userData != null && cubit.users.isNotEmpty,
                 builder: (context) {
                   return const TabBarView(
-                    
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       FeedsScreen(),
@@ -94,6 +100,8 @@ class SocialAppLayout extends StatelessWidget {
                   return const LoadingWidget();
                 },
               ),
+              endDrawer: const MyDrawer(),
+              drawerScrimColor: primaryLightTeal.withOpacity(0.3),
             ),
           );
         },
