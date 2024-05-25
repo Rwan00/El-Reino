@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../constants/consts.dart';
+import '../cubits/theme_cubit/theme_cubit.dart';
+import '../helper/cache_helper.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -19,59 +20,81 @@ class MyDrawer extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        return Drawer(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 24,
-                ),
-                /* Text(
-                  "El Rieno",
-                  style: heading.copyWith(color: primaryBlue),
-                ), */
-                ListTile(
-                  leading: CircleAvatar(
-                    radius: 32,
-                    backgroundImage: NetworkImage(cubit.userData!.image!),
+
+        return Builder(builder: (context) {
+          bool isDark = CacheHelper.getData(key: "isDark");
+          return Drawer(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 24,
                   ),
-                  title: Text(
-                    cubit.userData!.name!,
-                    style: appTitle,
+                  /* Text(
+                      "El Rieno",
+                      style: heading.copyWith(color: primaryBlue),
+                    ), */
+
+                  ListTile(
+                    leading: CircleAvatar(
+                      radius: 32,
+                      backgroundImage: NetworkImage(cubit.userData!.image!),
+                    ),
+                    title: Text(
+                      cubit.userData!.name!,
+                      style: appTitle,
+                    ),
+                    subtitle: Text(
+                      cubit.userData!.bio!,
+                      style: subTitle,
+                    ),
+                    onTap: () {
+                      animatedNavigateTo(
+                        context: context,
+                        widget: UserProfileScreen(user: cubit.userData!),
+                        direction: PageTransitionType.fade,
+                        curve: Curves.bounceInOut,
+                      );
+                    },
                   ),
-                  subtitle: Text(
-                    cubit.userData!.bio!,
-                    style: subTitle,
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Divide(),
                   ),
-                  onTap: () {
-                    animatedNavigateTo(
-                      context: context,
-                      widget: UserProfileScreen(user: cubit.userData!),
-                      direction: PageTransitionType.fade,
-                      curve: Curves.bounceInOut,
-                    );
-                  },
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Divide(),
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.local_activity_outlined,
-                    size: 28,
+                  ListTile(
+                    trailing: Switch(
+                      value: isDark,
+                      onChanged: (isDark) {
+                        cubit.changeAppMode();
+                        print(cubit.isDark);
+                      },
+                    ),
+                    leading: const Icon(
+                      Icons.dark_mode,
+                      size: 28,
+                    ),
+                    title: Text(
+                      "Theme Mode",
+                      style: titleStyle.copyWith(fontSize: 22),
+                    ),
                   ),
-                  title: Text(
-                    "My Activity",
-                    style: titleStyle.copyWith(fontSize: 22),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.local_activity_outlined,
+                      size: 28,
+                    ),
+                    title: Text(
+                      "My Activity",
+                      style: titleStyle.copyWith(fontSize: 22),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }

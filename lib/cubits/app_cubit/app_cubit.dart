@@ -10,16 +10,32 @@ import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../helper/cache_helper.dart';
 import '../../models/message_model.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
+
+    bool isDark = false;
+  void changeAppMode({bool? fromShared}) {
+    if (fromShared != null) {
+      isDark = fromShared;
+      emit(AppChangeModeState());
+    } else {
+      isDark = !isDark;
+      CacheHelper.saveData(key: "isDark", value: isDark)
+          .then((value) => emit(AppChangeModeState()));
+    }
+
+    
+  }
 
   UserData? userData;
 

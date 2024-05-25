@@ -43,6 +43,7 @@ class SocialAppLayout extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Scaffold.of(context).openEndDrawer();
+                          
                         },
                         child: const CircleAvatar(
                           backgroundImage: AssetImage("assets/logo.png"),
