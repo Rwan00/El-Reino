@@ -1,6 +1,7 @@
 import 'package:el_reino/models/comment_model.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CommentWidget extends StatelessWidget {
@@ -36,7 +37,9 @@ class CommentWidget extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.grey[300]),
+                  color: Get.isDarkMode
+                      ? const Color.fromARGB(255, 90, 88, 88)
+                      : Colors.grey[300]),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

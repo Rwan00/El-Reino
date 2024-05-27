@@ -4,6 +4,7 @@ import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/create_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../theme/fonts.dart';
@@ -38,7 +39,7 @@ class AddPostWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
+                  color: Get.isDarkMode ? Colors.black : Colors.white,
                   border: Border.all(color: Colors.grey)),
               child: Row(
                 children: [
@@ -49,7 +50,8 @@ class AddPostWidget extends StatelessWidget {
                   ),
                   Text(
                     "Share Your Thoughts...",
-                    style: subTitle.copyWith(color: Colors.black),
+                    style: subTitle.copyWith(
+                        color: Get.isDarkMode ? Colors.white : Colors.black),
                   ),
                 ],
               ),

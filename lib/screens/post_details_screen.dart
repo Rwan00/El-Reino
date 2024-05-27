@@ -29,8 +29,6 @@ class PostDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-  
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -38,7 +36,6 @@ class PostDetailsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
             elevation: 0,
             leading: IconButton(
               icon: Icon(
@@ -60,7 +57,6 @@ class PostDetailsScreen extends StatelessWidget {
                     isFeed: false,
                     postId: postId,
                     likes: likes,
-                
                   ),
                   Expanded(
                     child: StreamBuilder(
@@ -99,8 +95,7 @@ class PostDetailsScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final comment = CommentModel.fromJson(
                                     snapshot.data!.docs[index].data());
-              
-                               
+
                                 return CommentWidget(
                                   comment: comment,
                                 );

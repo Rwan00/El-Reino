@@ -16,7 +16,7 @@ class NewCommentWidget extends StatelessWidget {
     TextEditingController commentController = TextEditingController();
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
-        // TODO: implement listener
+   
       },
       builder: (context, state) {
         var cubit = AppCubit.get(context);

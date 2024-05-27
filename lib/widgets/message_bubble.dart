@@ -1,6 +1,7 @@
 import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -55,7 +56,11 @@ class MessageBubble extends StatelessWidget {
                 if (isFirstInSequence) const SizedBox(height: 18),
                 Container(
                   decoration: BoxDecoration(
-                    color: isMe ? primaryBlue : Colors.grey[300],
+                    color: isMe
+                        ? primaryBlue
+                        : Get.isDarkMode
+                            ? Colors.grey
+                            : Colors.grey[300],
                     borderRadius: BorderRadius.only(
                       topLeft: !isMe && isFirstInSequence
                           ? Radius.zero

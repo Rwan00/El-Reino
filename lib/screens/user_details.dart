@@ -24,7 +24,6 @@ class UserDetailsScreen extends StatelessWidget {
           title,
           style: appTitle,
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
@@ -38,7 +37,10 @@ class UserDetailsScreen extends StatelessWidget {
       ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 18),
-        itemBuilder: (context, index) => UserWidget(user: users[index]),
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: UserWidget(user: users[index]),
+        ),
         separatorBuilder: (context, index) => const Divider(),
         itemCount: users.length,
       ),

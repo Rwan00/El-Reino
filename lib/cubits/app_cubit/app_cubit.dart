@@ -13,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -23,18 +24,18 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
 
-    bool isDark = false;
-  void changeAppMode({bool? fromShared}) {
-    if (fromShared != null) {
-      isDark = fromShared;
-      emit(AppChangeModeState());
-    } else {
-      isDark = !isDark;
-      CacheHelper.saveData(key: "isDark", value: isDark)
-          .then((value) => emit(AppChangeModeState()));
-    }
+  final key = "isDarkMode";
 
-    
+  saveThemeToBox(bool isDark) => CacheHelper.saveData(key: key, value: isDark);
+
+  bool loadThemeFromBox() => CacheHelper.getData(key: key) ?? false;
+
+  ThemeMode get theme => loadThemeFromBox() ? ThemeMode.dark : ThemeMode.light;
+
+  void switchTheme() {
+    Get.changeThemeMode(loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark);
+    saveThemeToBox(!loadThemeFromBox());
+    emit(AppChangeModeState());
   }
 
   UserData? userData;

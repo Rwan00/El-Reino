@@ -31,7 +31,6 @@ class SocialAppLayout extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 elevation: 0,
-                backgroundColor: Colors.white,
                 title: Text(
                   "El Rieno",
                   style: heading.copyWith(color: primaryBlue),
@@ -43,7 +42,6 @@ class SocialAppLayout extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Scaffold.of(context).openEndDrawer();
-                          
                         },
                         child: const CircleAvatar(
                           backgroundImage: AssetImage("assets/logo.png"),

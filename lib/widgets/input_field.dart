@@ -49,7 +49,7 @@ class InputField extends StatelessWidget {
               ),
               Container(
                 height: 50,
-                margin: EdgeInsets.only(bottom: 8),
+                margin: const EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),

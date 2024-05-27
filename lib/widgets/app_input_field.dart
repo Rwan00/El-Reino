@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../constants/consts.dart';
 import '../theme/fonts.dart';
@@ -16,7 +17,9 @@ class AppInputField extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 200),
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.2),
+        color: Get.isDarkMode
+            ? const Color.fromARGB(255, 90, 88, 88)
+            : Colors.grey.withOpacity(0.2),
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextFormField(

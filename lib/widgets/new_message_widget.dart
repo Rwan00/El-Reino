@@ -16,9 +16,7 @@ class NewMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final messageController = TextEditingController();
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return Padding(
@@ -63,7 +61,10 @@ class NewMessage extends StatelessWidget {
                           width: 50,
                           child: IconButton(
                             onPressed: () => cubit.fetchImage(),
-                            icon: const Icon(Icons.image),
+                            icon: Icon(
+                              Icons.image,
+                              color: primaryBlue,
+                            ),
                           ),
                         ),
                       ),
@@ -83,7 +84,7 @@ class NewMessage extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.send,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: primaryBlue,
                 ),
               ),
             ],

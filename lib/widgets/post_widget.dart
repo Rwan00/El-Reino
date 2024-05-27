@@ -14,6 +14,7 @@ import 'package:el_reino/widgets/divide.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../models/user_model.dart';
@@ -106,7 +107,7 @@ class _PostWidgetState extends State<PostWidget> {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: Card(
-            color: Colors.white,
+            color: Get.isDarkMode ? Colors.black : Colors.white,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3.0),
@@ -167,6 +168,8 @@ class _PostWidgetState extends State<PostWidget> {
                       IconButton(
                         onPressed: () {
                           showModalBottomSheet(
+                              backgroundColor:
+                                  Get.isDarkMode ? Colors.black : Colors.white,
                               useSafeArea: true,
                               context: context,
                               builder: (context) {
@@ -195,9 +198,13 @@ class _PostWidgetState extends State<PostWidget> {
 
                                           Navigator.of(context).pop();
                                         },
-                                        leading: const Icon(
+                                        leading: Icon(
                                           Icons.save_alt_rounded,
-                                          size: 32,
+                                          size: 22,
+                                          color: Get.isDarkMode
+                                              ? const Color.fromARGB(
+                                                  255, 176, 174, 174)
+                                              : Colors.black54,
                                         ),
                                         title: Text(
                                           "Save Post",
@@ -211,7 +218,7 @@ class _PostWidgetState extends State<PostWidget> {
                                         ListTile(
                                           leading: const Icon(
                                             Icons.delete_forever_outlined,
-                                            size: 32,
+                                            size: 22,
                                             color: Colors.red,
                                           ),
                                           title: Text(
@@ -225,7 +232,12 @@ class _PostWidgetState extends State<PostWidget> {
                                 );
                               });
                         },
-                        icon: const Icon(Icons.more_vert),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Get.isDarkMode
+                              ? const Color.fromARGB(255, 176, 174, 174)
+                              : Colors.black54,
+                        ),
                       ),
                     ],
                   ),
@@ -289,9 +301,11 @@ class _PostWidgetState extends State<PostWidget> {
                                   Icons.favorite,
                                   color: Colors.red,
                                 )
-                              : const Icon(
+                              : Icon(
                                   Icons.favorite_border_outlined,
-                                  color: Colors.black54,
+                                  color: Get.isDarkMode
+                                      ? const Color.fromARGB(255, 176, 174, 174)
+                                      : Colors.black54,
                                 ),
                         ),
                       const SizedBox(
@@ -331,9 +345,11 @@ class _PostWidgetState extends State<PostWidget> {
                             );
                           }
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.comment_outlined,
-                          color: Colors.black54,
+                          color: Get.isDarkMode
+                              ? const Color.fromARGB(255, 176, 174, 174)
+                              : Colors.black54,
                         ),
                         label: Text(
                           "$count Comment",
