@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   final Widget startWidget;
@@ -23,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      
       body: Center(
-        child: Image.asset("assets/logo_splash.gif"),
+        child: Image.asset(Get.isDarkMode? "assets/logo_splash_dark.gif":"assets/logo_splash.gif"),
       ),
     );
   }

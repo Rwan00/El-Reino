@@ -52,18 +52,16 @@ void main() async {
   } else {
     widget = const LoginScreen();
   }
-  bool? isDark = CacheHelper.getData(key: "isDark");
 
   runApp(MyApp(
     startWidget: widget,
-    isDark: isDark,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final Widget startWidget;
-  final bool? isDark;
-  const MyApp({required this.startWidget, required this.isDark, super.key});
+
+  const MyApp({required this.startWidget, super.key});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -84,7 +82,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: Themes.light,
             darkTheme: Themes.dark,
-            themeMode: AppCubit.get(context).theme,
+            themeMode: ThemeMode.dark,
             home: SplashScreen(
               startWidget: startWidget,
             ),

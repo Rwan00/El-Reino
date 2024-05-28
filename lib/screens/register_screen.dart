@@ -6,6 +6,7 @@ import 'package:el_reino/screens/login_screen.dart';
 import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../constants/consts.dart';
@@ -64,7 +65,7 @@ class RegisterScreen extends StatelessWidget {
               child: Container(
                 //height: 820,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Get.isDarkMode ? Colors.black : Colors.white,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Padding(

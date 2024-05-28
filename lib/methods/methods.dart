@@ -1,9 +1,12 @@
-
+import 'package:el_reino/constants/consts.dart';
+import 'package:el_reino/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:page_transition/page_transition.dart';
 
-
+import '../helper/cache_helper.dart';
+import '../screens/splash_screen.dart';
 import '../theme/fonts.dart';
 
 void animatedNavigateTo(
@@ -60,4 +63,99 @@ void animatedNavigateAndDelete(
       (Route<dynamic> route) => false);
 }
 
+void signOut(context) async {
+  var uIdValue = await CacheHelper.removeData(key: "uId");
+  var themeValue = await CacheHelper.removeData(key: "isDarkMode");
+  var tokenValue = await CacheHelper.removeData(key: "token");
+  if (uIdValue! && themeValue! && tokenValue!) {
+    print(themeValue);
+    animatedNavigateAndDelete(
+      context: context,
+      widget: const SplashScreen(
+        startWidget: LoginScreen(),
+      ),
+      curve: Curves.easeInCirc,
+      direction: PageTransitionType.fade,
+    );
+  }
+}
 
+void buildDialog(BuildContext context) {
+  double width = MediaQuery.of(context).size.width;
+  double height = MediaQuery.of(context).size.height;
+  final AlertDialog alert = AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+    contentTextStyle: subTitle,
+    title: Text(
+      "Log out",
+      style: heading,
+    ),
+    content: SizedBox(
+      height: height * 0.15,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Divider(
+            color: Colors.grey,
+          ),
+          const SizedBox(height: 12),
+          const Text("Are You Sure You Want To Log Out?"),
+          const SizedBox(height: 18),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          const MaterialStatePropertyAll(Colors.red),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      signOut(context);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Log out",
+                      style: GoogleFonts.lato(color: Colors.white),
+                    )),
+              ),
+              SizedBox(
+                width: width * 0.045,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(primaryBlue),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: GoogleFonts.lato(color: Colors.white),
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      return alert;
+    },
+    barrierDismissible: false,
+    //barrierColor: Colors.orange.withOpacity(0.3)
+  );
+}

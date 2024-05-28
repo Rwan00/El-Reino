@@ -76,6 +76,9 @@ class MyDrawer extends StatelessWidget {
                     style: titleStyle.copyWith(fontSize: 18),
                   ),
                 ),
+                const Divider(
+                  color: Colors.grey,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.local_activity_outlined,
@@ -84,6 +87,36 @@ class MyDrawer extends StatelessWidget {
                   ),
                   title: Text(
                     "My Activity",
+                    style: titleStyle.copyWith(fontSize: 18),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.save_alt_outlined,
+                    size: 22,
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  title: Text(
+                    "Save Posts",
+                    style: titleStyle.copyWith(fontSize: 18),
+                  ),
+                ),
+                const Spacer(),
+                const Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  onTap: () => buildDialog(context),
+                  leading: const Icon(
+                    Icons.exit_to_app,
+                    size: 22,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    "Log Out",
                     style: titleStyle.copyWith(fontSize: 18),
                   ),
                 ),

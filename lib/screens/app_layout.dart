@@ -11,6 +11,7 @@ import 'package:el_reino/widgets/drawer.dart';
 import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class SocialAppLayout extends StatelessWidget {
   const SocialAppLayout({super.key});
@@ -43,8 +44,10 @@ class SocialAppLayout extends StatelessWidget {
                         onTap: () {
                           Scaffold.of(context).openEndDrawer();
                         },
-                        child: const CircleAvatar(
-                          backgroundImage: AssetImage("assets/logo.png"),
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(Get.isDarkMode
+                              ? "assets/logo_dark.png"
+                              : "assets/logo.png"),
                         ),
                       ),
                     );

@@ -7,6 +7,7 @@ import 'package:el_reino/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../constants/consts.dart';
@@ -39,14 +40,13 @@ class LoginScreen extends StatelessWidget {
               );
               CacheHelper.saveData(key: "uId", value: state.user.uid)
                   .then((value) {
-                    uId= CacheHelper.getData(key: "uId");
+                uId = CacheHelper.getData(key: "uId");
                 animatedNavigateAndDelete(
                     context: context,
                     widget: const SocialAppLayout(),
                     direction: PageTransitionType.fade,
                     curve: Curves.easeInOutBack);
               });
-             
             } else {
               buildSnackBar(
                 context: context,
@@ -76,9 +76,9 @@ class LoginScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
+                        decoration:  BoxDecoration(
+                          color:Get.isDarkMode? Colors.black:Colors.white,
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(30),
                           ),
                         ),
