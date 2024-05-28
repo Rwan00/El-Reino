@@ -154,6 +154,7 @@ class AppCubit extends Cubit<AppStates> {
       followers: userData!.followers,
       followings: userData!.followings,
       posts: userData!.posts,
+      savedPosts: userData!.savedPosts,
     );
 
     try {
@@ -398,4 +399,5 @@ class AppCubit extends Cubit<AppStates> {
       emit(SavePostError());
     }
   }
+
 }

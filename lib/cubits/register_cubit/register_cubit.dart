@@ -85,7 +85,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       followings: [
         "rwanbdalrhym948@gmail.com",
       ],
-      posts: [],
+      posts: [], savedPosts: [],
     );
     emit(AppCreateUserLoadingState());
     try {

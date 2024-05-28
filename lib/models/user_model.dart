@@ -10,6 +10,7 @@ class UserData {
   List? followers;
   List? followings;
   List? posts;
+  List? savedPosts;
 
   UserData({
     required this.email,
@@ -23,6 +24,7 @@ class UserData {
     required this.followers,
     required this.followings,
     required this.posts,
+    required this.savedPosts,
   });
   factory UserData.fromJson(json) {
     return UserData(
@@ -37,6 +39,7 @@ class UserData {
       followers: json?["followers"],
       followings: json?["followings"],
       posts: json?["posts"],
+      savedPosts: json?["saved posts"],
     );
   }
 
@@ -53,6 +56,7 @@ class UserData {
       "followers": followers,
       "followings": followings,
       "posts": posts,
+      "saved posts": savedPosts,
     };
   }
 }

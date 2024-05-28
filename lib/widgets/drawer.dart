@@ -2,6 +2,9 @@ import 'package:el_reino/constants/consts.dart';
 import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
+import 'package:el_reino/screens/app_layout.dart';
+import 'package:el_reino/screens/saved_posts_screen.dart';
+
 import 'package:el_reino/screens/user_profile_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
 import 'package:el_reino/widgets/divide.dart';
@@ -64,6 +67,12 @@ class MyDrawer extends StatelessWidget {
                     value: cubit.loadThemeFromBox(),
                     onChanged: (isDark) {
                       cubit.switchTheme();
+                      animatedNavigateAndDelete(
+                        context: context,
+                        widget: const SocialAppLayout(),
+                        direction: PageTransitionType.fade,
+                        curve: Curves.decelerate,
+                      );
                     },
                   ),
                   leading: Icon(
@@ -94,6 +103,14 @@ class MyDrawer extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 ListTile(
+                  onTap: () {
+                    animatedNavigateTo(
+                      context: context,
+                      widget: const SavedPostsScreen(),
+                      direction: PageTransitionType.rightToLeft,
+                      curve: Curves.easeInCirc,
+                    );
+                  },
                   leading: Icon(
                     Icons.save_alt_outlined,
                     size: 22,
