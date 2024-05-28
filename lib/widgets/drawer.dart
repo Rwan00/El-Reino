@@ -3,7 +3,8 @@ import 'package:el_reino/cubits/app_cubit/app_cubit.dart';
 import 'package:el_reino/cubits/app_cubit/app_state.dart';
 import 'package:el_reino/methods/methods.dart';
 import 'package:el_reino/screens/app_layout.dart';
-import 'package:el_reino/screens/saved_posts_screen.dart';
+import 'package:el_reino/screens/my_activities_screen.dart';
+import 'package:el_reino/screens/my_list_posts_screen.dart';
 
 import 'package:el_reino/screens/user_profile_screen.dart';
 import 'package:el_reino/theme/fonts.dart';
@@ -89,6 +90,14 @@ class MyDrawer extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 ListTile(
+                  onTap: () {
+                     animatedNavigateTo(
+                      context: context,
+                      widget: const MyActivitiesScreen(),
+                      direction: PageTransitionType.rightToLeft,
+                      curve: Curves.easeInCirc,
+                    );
+                  },
                   leading: Icon(
                     Icons.local_activity_outlined,
                     size: 22,
@@ -106,7 +115,7 @@ class MyDrawer extends StatelessWidget {
                   onTap: () {
                     animatedNavigateTo(
                       context: context,
-                      widget: const SavedPostsScreen(),
+                      widget: const MyListPostsScreen(typeList: "saved posts",),
                       direction: PageTransitionType.rightToLeft,
                       curve: Curves.easeInCirc,
                     );

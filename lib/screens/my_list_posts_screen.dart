@@ -9,8 +9,9 @@ import '../theme/fonts.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/post_widget.dart';
 
-class SavedPostsScreen extends StatelessWidget {
-  const SavedPostsScreen({super.key});
+class MyListPostsScreen extends StatelessWidget {
+  final String typeList;
+  const MyListPostsScreen({required this.typeList,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class SavedPostsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              "Saved Posts",
+              typeList == "saved posts"? "Saved Posts":typeList=="likes"? "My Likes" : "My Posts",
               style: appTitle,
             ),
           ),
@@ -50,13 +51,28 @@ class SavedPostsScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  print("hello?4");
-                  print(snapshot.data!.docs[0].data());
-                  print(cubit.userData!.posts);
-                  List posts = snapshot.data!.docs
+                  List posts;
+
+                  if(typeList == "saved posts")
+                  {
+  posts = snapshot.data!.docs
+                       .where((element) =>
+                           cubit.userData!.savedPosts!.contains(element.id))
+                       .toList();
+                  }else if(typeList == "likes") {
+                     posts = snapshot.data!.docs
                       .where((element) =>
-                          cubit.userData!.savedPosts!.contains(element.id))
+                          element["likes"].contains(cubit.userData!.email))
                       .toList();
+                  }else{
+                    posts = snapshot.data!.docs
+                                  .where((element) => cubit.userData!.posts!
+                                      .contains(element.id))
+                                  .toList();
+                  }
+                  
+                 
+
                   print(posts[0].data);
                   return ListView.separated(
                     separatorBuilder: (context, index) => Container(
