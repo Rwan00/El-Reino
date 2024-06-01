@@ -68,7 +68,7 @@ void signOut(context) async {
   var themeValue = await CacheHelper.removeData(key: "isDarkMode");
   var tokenValue = await CacheHelper.removeData(key: "token");
   if (uIdValue! && themeValue! && tokenValue!) {
-    print(themeValue);
+    //print(themeValue);
     animatedNavigateAndDelete(
       context: context,
       widget: const SplashScreen(

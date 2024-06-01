@@ -20,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
       create: (context) => AppCubit()..getUserData()..getAllUsers(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {
-          // TODO: implement listener
+         
         },
         builder: (context, state) {
           var cubit = AppCubit.get(context);
@@ -41,13 +41,13 @@ class FeedsScreen extends StatelessWidget {
                               .collection("posts")
                               .snapshots(),
                           builder: (context, snapshot) {
-                            print(snapshot.hasData);
+                            //print(snapshot.hasData);
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              print("hello?1");
-                              return LoadingWidget();
+                              //print("hello?1");
+                              return const LoadingWidget();
                             } else if (snapshot.hasError) {
-                              print("hello?2");
+                             // print("hello?2");
                               return Center(
                                 child: Text(
                                   "Something Went Wrong...",
@@ -56,7 +56,7 @@ class FeedsScreen extends StatelessWidget {
                               );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.docs.isEmpty) {
-                              print("hello?3");
+                              //print("hello?3");
                               return Center(
                                 child: Text(
                                   "No Posts Found!",
@@ -64,8 +64,8 @@ class FeedsScreen extends StatelessWidget {
                                 ),
                               );
                             } else {
-                              print("hello?4");
-                              print(snapshot.data!.docs[0].data());
+                              //print("hello?4");
+                              //print(snapshot.data!.docs[0].data());
                               return ListView.separated(
                                 separatorBuilder: (context, index) => Container(
                                   height: 0.5,
@@ -78,7 +78,7 @@ class FeedsScreen extends StatelessWidget {
                                       snapshot.data!.docs[index].data());
                                   final postId = snapshot.data!.docs[index];
                                  
-                                  print("pst ${post.likes}");
+                                  //print("pst ${post.likes}");
                                   return PostWidget(
                                     index: index,
                                     likes: List<String>.from(post.likes ?? []),

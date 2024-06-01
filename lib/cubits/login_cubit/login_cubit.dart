@@ -17,7 +17,7 @@ class AppLoginCubit extends Cubit<AppLoginState> {
       email: email,
       password: password,
     );
-    print(value.user!.email);
+    //print(value.user!.email);
       emit(AppLoginSuccessState(user: value.user!));
     }on FirebaseAuthException catch(error){
       emit(AppLoginErrorState(error.message??"Authintication Failed!"));

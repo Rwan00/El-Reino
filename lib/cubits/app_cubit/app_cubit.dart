@@ -46,8 +46,9 @@ class AppCubit extends Cubit<AppStates> {
     try {
       var value =
           await FirebaseFirestore.instance.collection("users").doc(uId).get();
-      print(value.data());
+
       userData = UserData.fromJson(value.data());
+      print("cubit user: ${userData!.name}");
       emit(GetUserSuccessState());
     } on FirebaseException catch (error) {
       print(error.toString());
@@ -149,7 +150,7 @@ class AppCubit extends Cubit<AppStates> {
       cover: coverImgUrl ?? userData!.cover,
       bio: bio,
       email: userData!.email,
-      uId: uId,
+      uId: uId!,
       isEmailVerified: userData!.isEmailVerified,
       followers: userData!.followers,
       followings: userData!.followings,
@@ -213,6 +214,7 @@ class AppCubit extends Cubit<AppStates> {
   void createNewPost({
     required String text,
   }) async {
+    print("method:${userData!.name}");
     PostModel model = PostModel(
       name: userData!.name,
       isEmailVerified: userData!.isEmailVerified,
@@ -257,8 +259,8 @@ class AppCubit extends Cubit<AppStates> {
     required commentText,
   }) async {
     CommentModel comment = CommentModel(
-      name: userData!.name!,
-      image: userData!.image!,
+      name: userData!.name,
+      image: userData!.image,
       comment: commentText,
       time: DateTime.now().toString(),
     );
@@ -286,7 +288,7 @@ class AppCubit extends Cubit<AppStates> {
       for (var u in value.docs) {
         users.add(UserData.fromJson(u.data()));
       }
-      print("users: $users");
+      //print("users: $users");
       emit(GetAllUsersSuccessState());
     } on FirebaseException catch (error) {
       print(error.toString());
@@ -382,7 +384,7 @@ class AppCubit extends Cubit<AppStates> {
   int currentIndex = 0;
   void changeTabBar(int index) {
     currentIndex = index;
-    print(currentIndex);
+    //print(currentIndex);
     emit(ChangeTabBar());
   }
 
@@ -399,5 +401,4 @@ class AppCubit extends Cubit<AppStates> {
       emit(SavePostError());
     }
   }
-
 }

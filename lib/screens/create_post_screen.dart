@@ -6,6 +6,7 @@ import 'package:el_reino/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../constants/consts.dart';
@@ -15,11 +16,15 @@ import 'app_layout.dart';
 
 class CreatePost extends StatelessWidget {
   final UserData userData;
-  const CreatePost({required this.userData,super.key});
+  const CreatePost({required this.userData, super.key});
+  
 
   @override
   Widget build(BuildContext context) {
     TextEditingController postController = TextEditingController();
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppCubit.get(context).getUserData();
+    });
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
         if (state is CreatePostSuccessState) {
@@ -45,6 +50,8 @@ class CreatePost extends StatelessWidget {
       },
       builder: (context, state) {
         var cubit = AppCubit.get(context);
+        
+        print("create post user: ${cubit.userData}");
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -64,9 +71,9 @@ class CreatePost extends StatelessWidget {
               state is CreatePostLoadingState
                   ? const LoadingWidget()
                   : TextButton.icon(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.post_add_outlined,
-                        color: Colors.white,
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
                       ),
                       onPressed: () {
                         if (postController.text.isEmpty &&
@@ -82,9 +89,7 @@ class CreatePost extends StatelessWidget {
                       },
                       label: Text(
                         "Post",
-                        style: titleStyle.copyWith(
-                          color: Colors.white,
-                        ),
+                        style: titleStyle,
                       ),
                     ),
             ],
@@ -97,14 +102,14 @@ class CreatePost extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        userData.image!,
+                        userData.image,
                       ),
                     ),
                     const SizedBox(
                       width: 18,
                     ),
                     Text(
-                    userData.name!,
+                      userData.name,
                       style: titleStyle,
                     ),
                   ],

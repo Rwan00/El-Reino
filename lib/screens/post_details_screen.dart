@@ -69,10 +69,10 @@ class PostDetailsScreen extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            print("hello?1");
-                            return LoadingWidget();
+                            //print("hello?1");
+                            return const LoadingWidget();
                           } else if (snapshot.hasError) {
-                            print("hello?2");
+                            //print("hello?2");
                             return Center(
                               child: Text(
                                 "Something Went Wrong...",
@@ -81,7 +81,7 @@ class PostDetailsScreen extends StatelessWidget {
                             );
                           } else if (!snapshot.hasData ||
                               snapshot.data!.docs.isEmpty) {
-                            print("hello?3");
+                            //print("hello?3");
                             return Center(
                               child: Text(
                                 "No Comments Found!",

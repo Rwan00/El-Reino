@@ -30,12 +30,12 @@ class MyListPostsScreen extends StatelessWidget {
               stream:
                   FirebaseFirestore.instance.collection("posts").snapshots(),
               builder: (context, snapshot) {
-                print(snapshot.hasData);
+                //print(snapshot.hasData);
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  print("hello?1");
-                  return LoadingWidget();
+                  //print("hello?1");
+                  return const LoadingWidget();
                 } else if (snapshot.hasError) {
-                  print("hello?2");
+                  //print("hello?2");
                   return Center(
                     child: Text(
                       "Something Went Wrong...",
@@ -43,7 +43,7 @@ class MyListPostsScreen extends StatelessWidget {
                     ),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  print("hello?3");
+                  //print("hello?3");
                   return Center(
                     child: Text(
                       "No Posts Found!",
@@ -57,7 +57,7 @@ class MyListPostsScreen extends StatelessWidget {
                   {
   posts = snapshot.data!.docs
                        .where((element) =>
-                           cubit.userData!.savedPosts!.contains(element.id))
+                           cubit.userData!.savedPosts.contains(element.id))
                        .toList();
                   }else if(typeList == "likes") {
                      posts = snapshot.data!.docs
@@ -66,14 +66,14 @@ class MyListPostsScreen extends StatelessWidget {
                       .toList();
                   }else{
                     posts = snapshot.data!.docs
-                                  .where((element) => cubit.userData!.posts!
+                                  .where((element) => cubit.userData!.posts
                                       .contains(element.id))
                                   .toList();
                   }
                   
                  
 
-                  print(posts[0].data);
+                  //print(posts[0].data);
                   return ListView.separated(
                     separatorBuilder: (context, index) => Container(
                       height: 0.5,
@@ -85,7 +85,7 @@ class MyListPostsScreen extends StatelessWidget {
                       final post = PostModel.fromJson(posts[index].data());
                       final postId = posts[index];
 
-                      print("pst ${post.uId}");
+                     // print("pst ${post.uId}");
                       return PostWidget(
                         index: index,
                         likes: List<String>.from(post.likes ?? []),

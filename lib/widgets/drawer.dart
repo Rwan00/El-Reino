@@ -37,10 +37,10 @@ class MyDrawer extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(
                     radius: 32,
-                    backgroundImage: NetworkImage(cubit.userData!.image!),
+                    backgroundImage: NetworkImage(cubit.userData!.image),
                   ),
                   title: Text(
-                    cubit.userData!.name!,
+                    cubit.userData!.name,
                     style: appTitle,
                   ),
                   subtitle: Text(

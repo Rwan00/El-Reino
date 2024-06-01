@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-          print("User:${cubit.userData}");
+          print("User profile:${cubit.userData}");
           return ConditionalBuilder(
             condition: state is GetUserSuccessState,
             builder: (context) {
@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundImage: NetworkImage(
-                                  cubit.userData!.image!,
+                                  cubit.userData!.image,
                                 ),
                               ),
                             ),
@@ -79,15 +79,15 @@ class ProfileScreen extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: cubit.userData!.name!.length > 10 ? 200 : null,
+                          width: cubit.userData!.name.length > 10 ? 200 : null,
                           child: Text(
-                            cubit.userData!.name!,
+                            cubit.userData!.name,
                             style: heading,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                           ),
                         ),
-                        if (cubit.userData!.isEmailVerified!)
+                        if (cubit.userData!.isEmailVerified)
                           Icon(
                             Icons.verified,
                             color: primaryBlue,
@@ -97,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                         AppBtn(
                             label: "Edit Your Profile",
                             onPressed: () {
-                              print(cubit.userData?.cover);
+                              //print(cubit.userData?.cover);
                               animatedNavigateTo(
                                 context: context,
                                 widget: EditScreen(
@@ -124,10 +124,10 @@ class ProfileScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          print("hello?1");
-                          return LoadingWidget();
+                          //print("hello?1");
+                          return const LoadingWidget();
                         } else if (snapshot.hasError) {
-                          print("hello?2");
+                          //print("hello?2");
                           return Center(
                             child: Text(
                               "Something Went Wrong...",
@@ -136,14 +136,14 @@ class ProfileScreen extends StatelessWidget {
                           );
                         } else {
                           final user = UserData.fromJson(snapshot.data!);
-                          print(user.email);
+                         // print(user.email);
                           return Row(
                             children: [
                               Expanded(
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.posts!.length.toString(),
+                                      user.posts.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -171,7 +171,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followers!.length.toString(),
+                                      user.followers.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followings!.length.toString(),
+                                      user.followings.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -213,13 +213,13 @@ class ProfileScreen extends StatelessWidget {
                               .collection("posts")
                               .snapshots(),
                           builder: (context, snapshot) {
-                            print(snapshot.hasData);
+                            //print(snapshot.hasData);
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              print("hello?1");
-                              return LoadingWidget();
+                              //print("hello?1");
+                              return const LoadingWidget();
                             } else if (snapshot.hasError) {
-                              print("hello?2");
+                              //print("hello?2");
                               return Center(
                                 child: Text(
                                   "Something Went Wrong...",
@@ -228,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
                               );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.docs.isEmpty) {
-                              print("hello?3");
+                              //print("hello?3");
                               return Center(
                                 child: Text(
                                   "No Posts Found!",
@@ -236,14 +236,14 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               );
                             } else {
-                              print("hello?4");
-                              print(snapshot.data!.docs[0].data());
-                              print(cubit.userData!.posts);
+                              //print("hello?4");
+                              //print(snapshot.data!.docs[0].data());
+                              //print(cubit.userData!.posts);
                               List posts = snapshot.data!.docs
-                                  .where((element) => cubit.userData!.posts!
+                                  .where((element) => cubit.userData!.posts
                                       .contains(element.id))
                                   .toList();
-                              print(posts[0].data);
+                              //print(posts[0].data);
                               return ListView.separated(
                                 separatorBuilder: (context, index) => Container(
                                   height: 0.5,
@@ -256,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
                                       PostModel.fromJson(posts[index].data());
                                   final postId = posts[index];
 
-                                  print("pst ${post.uId}");
+                                  //print("pst ${post.uId}");
                                   return PostWidget(
                                     index: index,
                                     likes: List<String>.from(post.likes ?? []),

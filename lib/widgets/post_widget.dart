@@ -55,10 +55,10 @@ class _PostWidgetState extends State<PostWidget> {
     super.initState();
     isLike = widget.likes.contains(currentUser.email);
     getCommentsCount();
-    print(isLike);
-    print(currentUser.email);
-    print(widget.likes);
-    print(widget.postId);
+    //print(isLike);
+    //print(currentUser.email);
+    //print(widget.likes);
+    //print(widget.postId);
   }
 
   void toggleLike() {
@@ -90,7 +90,7 @@ class _PostWidgetState extends State<PostWidget> {
         count = value.docs.length;
       });
     }
-    print("Hell${value.docs.length}");
+    //print("Hell${value.docs.length}");
   }
 
   @override
@@ -129,7 +129,7 @@ class _PostWidgetState extends State<PostWidget> {
                             curve: Curves.bounceIn,
                           );
 
-                          print(widget.post.uId);
+                          //print(widget.post.uId);
                         },
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
@@ -364,7 +364,7 @@ class _PostWidgetState extends State<PostWidget> {
                       children: [
                         CircleAvatar(
                           radius: 15,
-                          backgroundImage: NetworkImage(cubit.userData!.image!),
+                          backgroundImage: NetworkImage(cubit.userData!.image),
                         ),
                         TextButton(
                           onPressed: () {

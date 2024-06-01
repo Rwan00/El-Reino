@@ -9,6 +9,7 @@ import 'package:el_reino/widgets/input_field.dart';
 import 'package:el_reino/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 class EditScreen extends StatelessWidget {
@@ -20,8 +21,11 @@ class EditScreen extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController bioController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppCubit.get(context).getUserData();
+    });
     return BlocConsumer<AppCubit, AppStates>(listener: (context, state) {
-      if (state is GetUserSuccessState) {
+      if (state is UpdateUserSuccessState) {
         buildSnackBar(
           context: context,
           text: "Your Profile Updated Successfully!",
@@ -36,9 +40,9 @@ class EditScreen extends StatelessWidget {
       }
     }, builder: (context, state) {
       var cubit = AppCubit.get(context);
-      nameController.text = userData.name!;
+      nameController.text = userData.name;
       bioController.text = userData.bio ?? "Add Bio";
-      phoneController.text = userData.phone!;
+      phoneController.text = userData.phone;
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -58,9 +62,9 @@ class EditScreen extends StatelessWidget {
             state is UpdateUserLoadingState
                 ? const LoadingWidget()
                 : TextButton.icon(
-                    icon: const Icon(
+                    icon:  Icon(
                       Icons.save_outlined,
-                      color: Colors.white,
+                      color:Get.isDarkMode? Colors.white:Colors.black,
                     ),
                     onPressed: () {
                       if (nameController.text.isEmpty ||
@@ -81,9 +85,7 @@ class EditScreen extends StatelessWidget {
                     },
                     label: Text(
                       "Update",
-                      style: titleStyle.copyWith(
-                        color: Colors.white,
-                      ),
+                      style: titleStyle,
                     ),
                   ),
           ],
@@ -156,7 +158,7 @@ class EditScreen extends StatelessWidget {
                                       cubit.pickedProfileImage != null
                                           ? FileImage(cubit.pickedProfileImage!)
                                           : NetworkImage(
-                                              userData.image!,
+                                              userData.image,
                                             ) as ImageProvider<Object>,
                                 ),
                               ),

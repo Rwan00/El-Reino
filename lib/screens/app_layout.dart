@@ -26,7 +26,7 @@ class SocialAppLayout extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-          print("User:${cubit.userData}");
+          print("Layout User:${cubit.userData}");
           return DefaultTabController(
             length: 4,
             child: Scaffold(

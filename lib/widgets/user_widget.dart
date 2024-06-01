@@ -24,13 +24,13 @@ class UserWidget extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(user.image!),
+            backgroundImage: NetworkImage(user.image),
           ),
           const SizedBox(
             width: 12,
           ),
           Text(
-            user.name!,
+            user.name,
             style: titleStyle,
           ),
         ],

@@ -32,7 +32,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
     super.initState();
-    isFollow = widget.user.followers!.contains(currentUser.email);
+    isFollow = widget.user.followers.contains(currentUser.email);
     print("followers: ${widget.user.followers}");
     print(isFollow);
   }
@@ -107,7 +107,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: CircleAvatar(
                             radius: 55,
                             backgroundImage: NetworkImage(
-                              widget.user.image!,
+                              widget.user.image,
                             ),
                           ),
                         )
@@ -117,15 +117,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Row(
                     children: [
                       SizedBox(
-                        width: widget.user.name!.length > 10 ? 200 : null,
+                        width: widget.user.name.length > 10 ? 200 : null,
                         child: Text(
-                          widget.user.name!,
+                          widget.user.name,
                           style: heading,
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
                         ),
                       ),
-                      if (widget.user.isEmailVerified!)
+                      if (widget.user.isEmailVerified)
                         Icon(
                           Icons.verified,
                           color: primaryBlue,
@@ -144,7 +144,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   direction: PageTransitionType.bottomToTop,
                                   curve: Curves.decelerate,
                                 );
-                              })
+                              },)
                           : AppBtn(
                               label: isFollow ? "Unfollow" : "Follow",
                               onPressed: () {
@@ -159,7 +159,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 }
                               },
                               clr: isFollow ? Colors.white : null,
-                              style: isFollow ? titleStyle : null,
+                              style: isFollow
+                                  ? titleStyle.copyWith(
+                                      color: Colors.black,
+                                    )
+                                  : null,
                             ),
                     ],
                   ),
@@ -177,10 +181,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        print("hello?1");
-                        return LoadingWidget();
+                        //print("hello?1");
+                        return const LoadingWidget();
                       } else if (snapshot.hasError) {
-                        print("hello?2");
+                        //print("hello?2");
                         return Center(
                           child: Text(
                             "Something Went Wrong...",
@@ -190,14 +194,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       } else {
                         final user = UserData.fromJson(snapshot.data!);
 
-                        print(user.email);
+                        //print(user.email);
                         return Row(
                           children: [
                             Expanded(
                               child: Column(
                                 children: [
                                   Text(
-                                    user.posts!.length.toString(),
+                                    user.posts.length.toString(),
                                     style: titleStyle,
                                   ),
                                   Text(
@@ -228,7 +232,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     context: context,
                                     widget: UserDetailsScreen(
                                       title: "Followers",
-                                      usersEmails: user.followers!,
+                                      usersEmails: user.followers,
                                     ),
                                     direction: PageTransitionType.leftToRight,
                                     curve: Curves.easeInCirc,
@@ -237,7 +241,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followers!.length.toString(),
+                                      user.followers.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -255,7 +259,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     context: context,
                                     widget: UserDetailsScreen(
                                       title: "Followings",
-                                      usersEmails: user.followings!,
+                                      usersEmails: user.followings,
                                     ),
                                     direction: PageTransitionType.leftToRight,
                                     curve: Curves.easeInCirc,
@@ -264,7 +268,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followings!.length.toString(),
+                                      user.followings.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -293,13 +297,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             .collection("posts")
                             .snapshots(),
                         builder: (context, snapshot) {
-                          print(snapshot.hasData);
+                          //print(snapshot.hasData);
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            print("hello?1");
-                            return LoadingWidget();
+                            //print("hello?1");
+                            return const LoadingWidget();
                           } else if (snapshot.hasError) {
-                            print("hello?2");
+                            //print("hello?2");
                             return Center(
                               child: Text(
                                 "Something Went Wrong...",
@@ -308,7 +312,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             );
                           } else if (!snapshot.hasData ||
                               snapshot.data!.docs.isEmpty) {
-                            print("hello?3");
+                            //print("hello?3");
                             return Center(
                               child: Text(
                                 "No Posts Found!",
@@ -316,13 +320,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                             );
                           } else {
-                            print("hello?4");
-                            print(snapshot.data!.docs[0].data());
+                            //print("hello?4");
+                            //print(snapshot.data!.docs[0].data());
                             List posts = snapshot.data!.docs
                                 .where((element) =>
-                                    widget.user.posts!.contains(element.id))
+                                    widget.user.posts.contains(element.id))
                                 .toList();
-                            print(posts[0].data);
+                            //print(posts[0].data);
                             return ListView.separated(
                               separatorBuilder: (context, index) => Container(
                                 height: 0.5,
@@ -335,7 +339,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     PostModel.fromJson(posts[index].data());
                                 final postId = posts[index];
 
-                                print("pst ${post.likes}");
+                                //print("pst ${post.likes}");
                                 return PostWidget(
                                   index: index,
                                   likes: List<String>.from(post.likes ?? []),

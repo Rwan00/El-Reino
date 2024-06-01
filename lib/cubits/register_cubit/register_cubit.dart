@@ -68,7 +68,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     required String phone,
     required String uId,
     String? bio,
-    String? image,
+    required String image,
     
    
   }) async {

@@ -20,7 +20,7 @@ import 'firebase_options.dart';
 import 'theme/theme_data.dart';
 
 Future<void> firebaseMassegingBackgroundHandler(RemoteMessage message) async {
-  print(message.data.toString());
+  //print(message.data.toString());
   print("On Background Message ");
 }
 
@@ -35,11 +35,11 @@ void main() async {
   print("token: $token");
 
   FirebaseMessaging.onMessage.listen((event) {
-    print(event.data.toString());
+    //print(event.data.toString());
     print("On Message");
   });
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    print(event.data.toString());
+    //print(event.data.toString());
     print("On Message Opened App");
   });
 
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AppCubit()
-            ..getUserData()
+            
             ..getAllUsers(),
         ),
         BlocProvider(
@@ -78,11 +78,12 @@ class MyApp extends StatelessWidget {
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          print("user main: ${AppCubit.get(context).userData}");
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Themes.light,
             darkTheme: Themes.dark,
-            themeMode: ThemeMode.dark,
+            themeMode: AppCubit.get(context).theme,
             home: SplashScreen(
               startWidget: startWidget,
             ),
