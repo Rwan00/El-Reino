@@ -23,6 +23,7 @@ class PostWidget extends StatefulWidget {
   final PostModel post;
   final String postId;
   final bool isFeed;
+
   final List likes;
 
   final int? index;
@@ -40,21 +41,24 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  bool _isDisposed = false; // Add a variable to track if the widget is disposed
+  bool _isDisposed = false;
 
   @override
   void dispose() {
-    _isDisposed = true; // Mark the widget as disposed when it is disposed
+    _isDisposed = true;
     super.dispose();
   }
 
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLike = false;
+  bool isSave = false;
   @override
   void initState() {
     super.initState();
     isLike = widget.likes.contains(currentUser.email);
     getCommentsCount();
+    isSave = AppCubit.get(context).userData!.savedPosts.contains(widget.postId);
+
     //print(isLike);
     //print(currentUser.email);
     //print(widget.likes);
@@ -75,6 +79,38 @@ class _PostWidgetState extends State<PostWidget> {
       postRef.update({
         "likes": FieldValue.arrayRemove([currentUser.email])
       });
+    }
+  }
+
+  void savePost() {
+    setState(() {
+      isSave = !isSave;
+    });
+    try {
+      DocumentReference meRef =
+          FirebaseFirestore.instance.collection("users").doc(uId);
+
+      if (isSave) {
+        meRef.update({
+          "saved posts": FieldValue.arrayUnion([widget.postId])
+        });
+        buildSnackBar(
+          context: context,
+          text: "Post Saved",
+          clr: primaryBlue,
+        );
+      } else {
+        meRef.update({
+          "saved posts": FieldValue.arrayRemove([widget.postId])
+        });
+        buildSnackBar(
+          context: context,
+          text: "Post UnSaved",
+          clr: primaryBlue,
+        );
+      }
+    } on FirebaseException catch (error) {
+      print(error.message);
     }
   }
 
@@ -167,54 +203,19 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                       IconButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                              backgroundColor:
-                                  Get.isDarkMode ? Colors.black : Colors.white,
-                              useSafeArea: true,
-                              context: context,
-                              builder: (context) {
-                                return SizedBox(
-                                  height: 150,
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
-                                      ListTile(
-                                        onTap: () {
-                                          cubit.savePost(widget.postId);
-                                          if (state is SavePostError) {
-                                            buildSnackBar(
-                                              context: context,
-                                              text: "Something Went Wrong",
-                                              clr: errorColor,
-                                            );
-                                          }
-                                          buildSnackBar(
-                                            context: context,
-                                            text: "Post Saved",
-                                            clr: primaryBlue,
-                                          );
-
-                                          Navigator.of(context).pop();
-                                        },
-                                        leading: Icon(
-                                          Icons.save_alt_rounded,
-                                          size: 22,
-                                          color: Get.isDarkMode
-                                              ? const Color.fromARGB(
-                                                  255, 176, 174, 174)
-                                              : Colors.black54,
-                                        ),
-                                        title: Text(
-                                          "Save Post",
-                                          style:
-                                              appTitle.copyWith(fontSize: 18),
-                                        ),
-                                      ),
-                                      if (widget.post.uId == uId)
+                          if (widget.post.uId == uId) {
+                            showModalBottomSheet(
+                                backgroundColor: Get.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
+                                useSafeArea: true,
+                                context: context,
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 120,
+                                    child: Column(
+                                      children: [
                                         const Divider(),
-                                      if (widget.post.uId == uId)
                                         ListTile(
                                           leading: const Icon(
                                             Icons.delete_forever_outlined,
@@ -227,10 +228,11 @@ class _PostWidgetState extends State<PostWidget> {
                                                 appTitle.copyWith(fontSize: 18),
                                           ),
                                         ),
-                                    ],
-                                  ),
-                                );
-                              });
+                                      ],
+                                    ),
+                                  );
+                                });
+                          }
                         },
                         icon: Icon(
                           Icons.more_vert,
@@ -354,6 +356,15 @@ class _PostWidgetState extends State<PostWidget> {
                         label: Text(
                           "$count Comment",
                           style: subTitle,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          savePost();
+                        },
+                        icon: Icon(
+                          isSave ? Icons.bookmark : Icons.bookmark_border,
+                          color: primaryBlue,
                         ),
                       ),
                     ],

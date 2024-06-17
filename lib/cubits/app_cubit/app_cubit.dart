@@ -393,17 +393,5 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangeTabBar());
   }
 
-  void savePost(postId) {
-    try {
-      DocumentReference meRef =
-          FirebaseFirestore.instance.collection("users").doc(uId);
-
-      meRef.update({
-        "saved posts": FieldValue.arrayUnion([postId])
-      });
-    } on FirebaseException catch (error) {
-      print(error.message);
-      emit(SavePostError());
-    }
-  }
+  
 }
