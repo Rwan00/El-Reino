@@ -11,10 +11,13 @@ import '../widgets/post_widget.dart';
 
 class MyListPostsScreen extends StatelessWidget {
   final String typeList;
-  const MyListPostsScreen({required this.typeList,super.key});
+  const MyListPostsScreen({required this.typeList, super.key});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppCubit.get(context).getUserData();
+    });
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -22,7 +25,11 @@ class MyListPostsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              typeList == "saved posts"? "Saved Posts":typeList=="likes"? "My Likes" : "My Posts",
+              typeList == "saved posts"
+                  ? "Saved Posts"
+                  : typeList == "likes"
+                      ? "My Likes"
+                      : "My Posts",
               style: appTitle,
             ),
           ),
@@ -53,25 +60,23 @@ class MyListPostsScreen extends StatelessWidget {
                 } else {
                   List posts;
 
-                  if(typeList == "saved posts")
-                  {
-  posts = snapshot.data!.docs
-                       .where((element) =>
-                           cubit.userData!.savedPosts.contains(element.id))
-                       .toList();
-                  }else if(typeList == "likes") {
-                     posts = snapshot.data!.docs
-                      .where((element) =>
-                          element["likes"].contains(cubit.userData!.email))
-                      .toList();
-                  }else{
+                  if (typeList == "saved posts") {
                     posts = snapshot.data!.docs
-                                  .where((element) => cubit.userData!.posts
-                                      .contains(element.id))
-                                  .toList();
+                        .where((element) =>
+                            cubit.userData!.savedPosts.contains(element.id))
+                        .toList();
+                    print(posts);
+                  } else if (typeList == "likes") {
+                    posts = snapshot.data!.docs
+                        .where((element) =>
+                            element["likes"].contains(cubit.userData!.email))
+                        .toList();
+                  } else {
+                    posts = snapshot.data!.docs
+                        .where((element) =>
+                            cubit.userData!.posts.contains(element.id))
+                        .toList();
                   }
-                  
-                 
 
                   //print(posts[0].data);
                   return ListView.separated(
@@ -85,7 +90,7 @@ class MyListPostsScreen extends StatelessWidget {
                       final post = PostModel.fromJson(posts[index].data());
                       final postId = posts[index];
 
-                     // print("pst ${post.uId}");
+                      // print("pst ${post.uId}");
                       return PostWidget(
                         index: index,
                         likes: List<String>.from(post.likes ?? []),

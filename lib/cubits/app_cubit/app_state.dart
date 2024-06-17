@@ -91,6 +91,10 @@ class SendMessageSuccess extends AppStates {}
 
 class SendMessageError extends AppStates {}
 
+class SendNotificationSuccess extends AppStates {}
+
+class SendNotificationError extends AppStates {}
+
 class GetMessagesLoading extends AppStates {}
 
 class GetMessageSuccess extends AppStates {}

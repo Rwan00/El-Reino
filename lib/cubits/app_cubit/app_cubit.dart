@@ -241,6 +241,11 @@ class AppCubit extends Cubit<AppStates> {
         "posts": FieldValue.arrayUnion([value.id])
       });
 
+      // callOnFcmApiSendPushNotifications(
+      //   title: "New Post",
+      //   body: "see ${userData!.name}'s new post",
+      // );
+
       emit(CreatePostSuccessState());
     } on FirebaseException catch (error) {
       print(error.message);
