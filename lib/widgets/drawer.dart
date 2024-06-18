@@ -91,7 +91,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: () {
-                     animatedNavigateTo(
+                    animatedNavigateTo(
                       context: context,
                       widget: const MyActivitiesScreen(),
                       direction: PageTransitionType.rightToLeft,
@@ -115,7 +115,9 @@ class MyDrawer extends StatelessWidget {
                   onTap: () {
                     animatedNavigateTo(
                       context: context,
-                      widget: const MyListPostsScreen(typeList: "saved posts",),
+                      widget: const MyListPostsScreen(
+                        typeList: "saved posts",
+                      ),
                       direction: PageTransitionType.rightToLeft,
                       curve: Curves.easeInCirc,
                     );
@@ -135,7 +137,39 @@ class MyDrawer extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 ListTile(
-                  onTap: () => buildDialog(context),
+                  onTap: () => buildDialog(
+                    context: context,
+                    title: "Delete Account",
+                    message: "Are Sure You Want To Delete Your Account?",
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    btnTxt: "Delete",
+                  ),
+                  leading: const Icon(
+                    Icons.error,
+                    size: 22,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    "Delete Account",
+                    style: titleStyle.copyWith(fontSize: 18, color: Colors.red),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  onTap: () => buildDialog(
+                    context: context,
+                    title: "Log Out",
+                    message: "Are Sure You Want To Log Out?",
+                    onPressed: () {
+                      signOut(context);
+                      Navigator.of(context).pop();
+                    },
+                    btnTxt: "Logout",
+                  ),
                   leading: const Icon(
                     Icons.exit_to_app,
                     size: 22,

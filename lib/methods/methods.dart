@@ -80,14 +80,19 @@ void signOut(context) async {
   }
 }
 
-void buildDialog(BuildContext context) {
+void buildDialog(
+    {required BuildContext context,
+    required String title,
+    required String message,
+    required void Function() onPressed,
+    required String btnTxt}) {
   double width = MediaQuery.of(context).size.width;
   double height = MediaQuery.of(context).size.height;
   final AlertDialog alert = AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
     contentTextStyle: subTitle,
     title: Text(
-      "Log out",
+      title,
       style: heading,
     ),
     content: SizedBox(
@@ -99,7 +104,7 @@ void buildDialog(BuildContext context) {
             color: Colors.grey,
           ),
           const SizedBox(height: 12),
-          const Text("Are You Sure You Want To Log Out?"),
+          Text(message),
           const SizedBox(height: 18),
           Row(
             children: [
@@ -114,12 +119,9 @@ void buildDialog(BuildContext context) {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      signOut(context);
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: onPressed,
                     child: Text(
-                      "Log out",
+                      btnTxt,
                       style: GoogleFonts.lato(color: Colors.white),
                     )),
               ),

@@ -393,5 +393,20 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangeTabBar());
   }
 
-  
+  void deletePost(postId) {
+    try {
+      DocumentReference meRef =
+          FirebaseFirestore.instance.collection("users").doc(uId);
+      FirebaseFirestore.instance.collection("posts").doc(postId).delete();
+      meRef.update({
+          "saved posts": FieldValue.arrayRemove([postId])
+        });
+        meRef.update({
+          "posts": FieldValue.arrayRemove([postId])
+        });
+    } on FirebaseException catch (error) {
+      print(error.message);
+      emit(DeletePostError());
+    }
+  }
 }

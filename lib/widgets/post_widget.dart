@@ -217,6 +217,20 @@ class _PostWidgetState extends State<PostWidget> {
                                       children: [
                                         const Divider(),
                                         ListTile(
+                                          onTap: () {
+                                            buildDialog(
+                                              context: context,
+                                              title: "Delete Post",
+                                              message:
+                                                  "Are You Sure You Want To Delete This Post?",
+                                              onPressed: () {
+                                                cubit.deletePost(widget.postId);
+                                                Navigator.of(context).pop();
+                                              },
+                                              btnTxt: "Delete",
+                                            );
+                                            Navigator.of(context).pop();
+                                          },
                                           leading: const Icon(
                                             Icons.delete_forever_outlined,
                                             size: 22,
