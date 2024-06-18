@@ -13,11 +13,14 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppCubit.get(context).getUserData();
+    });
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        List<UserData> users = cubit.users.where((element) => element.uId != uId && cubit.userData!.followers.contains(element.email)).toList();
+        List<UserData> users = cubit.users.where((element) => element.uId != uId && cubit.userData!.followers!.contains(element.email)).toList();
        
         return ListView.separated(
           physics: const BouncingScrollPhysics(),

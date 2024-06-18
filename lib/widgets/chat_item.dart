@@ -30,7 +30,7 @@ class ChatItem extends StatelessWidget {
               CircleAvatar(
                 radius: 30,
                 backgroundImage: NetworkImage(
-                  user.image,
+                  user.image!,
                 ),
               ),
               const SizedBox(
@@ -41,7 +41,7 @@ class ChatItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(user.name, style: titleStyle),
+                    Text(user.name!, style: titleStyle),
                     const SizedBox(
                       height: 12,
                     ),

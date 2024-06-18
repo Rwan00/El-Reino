@@ -26,14 +26,14 @@ class ChatContent extends StatelessWidget {
           title: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(user.image),
+                backgroundImage: NetworkImage(user.image!),
                 radius: 24,
               ),
               const SizedBox(
                 width: 24,
               ),
               Text(
-                user.name,
+                user.name!,
                 style: titleStyle,
               ),
             ],

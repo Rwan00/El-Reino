@@ -63,7 +63,7 @@ class MyListPostsScreen extends StatelessWidget {
                   if (typeList == "saved posts") {
                     posts = snapshot.data!.docs
                         .where((element) =>
-                            cubit.userData!.savedPosts.contains(element.id))
+                            cubit.userData!.savedPosts!.contains(element.id))
                         .toList();
                     print(posts);
                   } else if (typeList == "likes") {
@@ -74,7 +74,7 @@ class MyListPostsScreen extends StatelessWidget {
                   } else {
                     posts = snapshot.data!.docs
                         .where((element) =>
-                            cubit.userData!.posts.contains(element.id))
+                            cubit.userData!.posts!.contains(element.id))
                         .toList();
                   }
 

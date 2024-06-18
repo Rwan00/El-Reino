@@ -102,14 +102,14 @@ class CreatePost extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        userData.image,
+                        userData.image!,
                       ),
                     ),
                     const SizedBox(
                       width: 18,
                     ),
                     Text(
-                      userData.name,
+                      userData.name!,
                       style: titleStyle,
                     ),
                   ],

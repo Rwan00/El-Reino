@@ -27,6 +27,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
     emit(AppRegisterLoadingState());
 
     try {
+      
       var value = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -82,9 +83,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       isEmailVerified: false,
       bio: bio,
       followers: [],
-      followings: [
-        "rwanbdalrhym948@gmail.com",
-      ],
+      followings: [ ],
       posts: [], savedPosts: [],
     );
     emit(AppCreateUserLoadingState());

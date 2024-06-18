@@ -75,7 +75,7 @@ class NewMessage extends StatelessWidget {
                     return;
                   } else {
                     cubit.sendMessage(
-                      recieverId: user.uId,
+                      recieverId: user.uId!,
                       dateTime: DateTime.now().toString(),
                       message: messageController.text.toString(),
                     );

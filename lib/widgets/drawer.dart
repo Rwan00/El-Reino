@@ -37,10 +37,10 @@ class MyDrawer extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(
                     radius: 32,
-                    backgroundImage: NetworkImage(cubit.userData!.image),
+                    backgroundImage: NetworkImage(cubit.userData!.image!),
                   ),
                   title: Text(
-                    cubit.userData!.name,
+                    cubit.userData!.name!,
                     style: appTitle,
                   ),
                   subtitle: Text(
@@ -133,29 +133,7 @@ class MyDrawer extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                const Divider(
-                  color: Colors.grey,
-                ),
-                ListTile(
-                  onTap: () => buildDialog(
-                    context: context,
-                    title: "Delete Account",
-                    message: "Are Sure You Want To Delete Your Account?",
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    btnTxt: "Delete",
-                  ),
-                  leading: const Icon(
-                    Icons.error,
-                    size: 22,
-                    color: Colors.red,
-                  ),
-                  title: Text(
-                    "Delete Account",
-                    style: titleStyle.copyWith(fontSize: 18, color: Colors.red),
-                  ),
-                ),
+                
                 const Divider(
                   color: Colors.grey,
                 ),

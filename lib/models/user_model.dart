@@ -1,16 +1,16 @@
 class UserData {
-  String name;
-  String email;
-  String phone;
-  String uId;
-  String image;
+  String? name;
+  String? email;
+  String? phone;
+  String? uId;
+  String? image;
   String? cover;
   String? bio;
-  bool isEmailVerified;
-  List followers;
-  List followings;
-  List posts;
-  List savedPosts;
+  bool? isEmailVerified;
+  List? followers;
+  List? followings;
+  List? posts;
+  List? savedPosts;
 
   UserData({
     required this.email,
@@ -28,18 +28,18 @@ class UserData {
   });
   factory UserData.fromJson(json) {
     return UserData(
-      email: json["email"],
-      name: json["name"],
-      phone: json["phone"],
-      uId: json["uId"],
-      image: json["image"],
-      cover: json["cover"],
+      email: json?["email"],
+      name: json?["name"],
+      phone: json?["phone"],
+      uId: json?["uId"],
+      image: json?["image"],
+      cover: json?["cover"],
       bio: json?["bio"],
-      isEmailVerified: json["isEmailVerified"],
-      followers: json["followers"],
-      followings: json["followings"],
-      posts: json["posts"],
-      savedPosts: json["saved posts"],
+      isEmailVerified: json?["isEmailVerified"],
+      followers: json?["followers"],
+      followings: json?["followings"],
+      posts: json?["posts"],
+      savedPosts: json?["saved posts"],
     );
   }
 

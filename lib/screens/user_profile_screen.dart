@@ -32,7 +32,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
     super.initState();
-    isFollow = widget.user.followers.contains(currentUser.email);
+    isFollow = widget.user.followers!.contains(currentUser.email);
     print("followers: ${widget.user.followers}");
     print(isFollow);
   }
@@ -107,7 +107,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: CircleAvatar(
                             radius: 55,
                             backgroundImage: NetworkImage(
-                              widget.user.image,
+                              widget.user.image!,
                             ),
                           ),
                         )
@@ -117,15 +117,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Row(
                     children: [
                       SizedBox(
-                        width: widget.user.name.length > 10 ? 200 : null,
+                        width: widget.user.name!.length > 10 ? 200 : null,
                         child: Text(
-                          widget.user.name,
+                          widget.user.name!,
                           style: heading,
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
                         ),
                       ),
-                      if (widget.user.isEmailVerified)
+                      if (widget.user.isEmailVerified!)
                         Icon(
                           Icons.verified,
                           color: primaryBlue,
@@ -201,7 +201,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: Column(
                                 children: [
                                   Text(
-                                    user.posts.length.toString(),
+                                    user.posts!.length.toString(),
                                     style: titleStyle,
                                   ),
                                   Text(
@@ -232,7 +232,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     context: context,
                                     widget: UserDetailsScreen(
                                       title: "Followers",
-                                      usersEmails: user.followers,
+                                      usersEmails: user.followers!,
                                     ),
                                     direction: PageTransitionType.leftToRight,
                                     curve: Curves.easeInCirc,
@@ -241,7 +241,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followers.length.toString(),
+                                      user.followers!.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -259,7 +259,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     context: context,
                                     widget: UserDetailsScreen(
                                       title: "Followings",
-                                      usersEmails: user.followings,
+                                      usersEmails: user.followings!,
                                     ),
                                     direction: PageTransitionType.leftToRight,
                                     curve: Curves.easeInCirc,
@@ -268,7 +268,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followings.length.toString(),
+                                      user.followings!.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -324,7 +324,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             //print(snapshot.data!.docs[0].data());
                             List posts = snapshot.data!.docs
                                 .where((element) =>
-                                    widget.user.posts.contains(element.id))
+                                    widget.user.posts!.contains(element.id))
                                 .toList();
                             //print(posts[0].data);
                             return ListView.separated(

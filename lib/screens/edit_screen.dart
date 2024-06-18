@@ -40,9 +40,9 @@ class EditScreen extends StatelessWidget {
       }
     }, builder: (context, state) {
       var cubit = AppCubit.get(context);
-      nameController.text = userData.name;
+      nameController.text = userData.name!;
       bioController.text = userData.bio ?? "Add Bio";
-      phoneController.text = userData.phone;
+      phoneController.text = userData.phone!;
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -158,7 +158,7 @@ class EditScreen extends StatelessWidget {
                                       cubit.pickedProfileImage != null
                                           ? FileImage(cubit.pickedProfileImage!)
                                           : NetworkImage(
-                                              userData.image,
+                                              userData.image!,
                                             ) as ImageProvider<Object>,
                                 ),
                               ),

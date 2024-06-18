@@ -104,6 +104,7 @@ class GetMessageSuccess extends AppStates {}
 class ChangeTabBar extends AppStates {}
 
 class DeletePostError extends AppStates {}
+class DeleteAccountError extends AppStates {}
 
 
 

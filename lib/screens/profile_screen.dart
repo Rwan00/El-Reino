@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundImage: NetworkImage(
-                                  cubit.userData!.image,
+                                  cubit.userData!.image!,
                                 ),
                               ),
                             ),
@@ -79,15 +79,15 @@ class ProfileScreen extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: cubit.userData!.name.length > 10 ? 200 : null,
+                          width: cubit.userData!.name!.length > 10 ? 200 : null,
                           child: Text(
-                            cubit.userData!.name,
+                            cubit.userData!.name!,
                             style: heading,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                           ),
                         ),
-                        if (cubit.userData!.isEmailVerified)
+                        if (cubit.userData!.isEmailVerified!)
                           Icon(
                             Icons.verified,
                             color: primaryBlue,
@@ -143,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.posts.length.toString(),
+                                      user.posts!.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -171,7 +171,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followers.length.toString(),
+                                      user.followers!.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      user.followings.length.toString(),
+                                      user.followings!.length.toString(),
                                       style: titleStyle,
                                     ),
                                     Text(
@@ -240,7 +240,7 @@ class ProfileScreen extends StatelessWidget {
                               //print(snapshot.data!.docs[0].data());
                               //print(cubit.userData!.posts);
                               List posts = snapshot.data!.docs
-                                  .where((element) => cubit.userData!.posts
+                                  .where((element) => cubit.userData!.posts!
                                       .contains(element.id))
                                   .toList();
                               //print(posts[0].data);

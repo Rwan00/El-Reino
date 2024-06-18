@@ -57,7 +57,7 @@ class _PostWidgetState extends State<PostWidget> {
     super.initState();
     isLike = widget.likes.contains(currentUser.email);
     getCommentsCount();
-    isSave = AppCubit.get(context).userData!.savedPosts.contains(widget.postId);
+    isSave = AppCubit.get(context).userData!.savedPosts!.contains(widget.postId);
 
     //print(isLike);
     //print(currentUser.email);
@@ -389,7 +389,7 @@ class _PostWidgetState extends State<PostWidget> {
                       children: [
                         CircleAvatar(
                           radius: 15,
-                          backgroundImage: NetworkImage(cubit.userData!.image),
+                          backgroundImage: NetworkImage(cubit.userData!.image!),
                         ),
                         TextButton(
                           onPressed: () {

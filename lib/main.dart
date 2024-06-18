@@ -34,7 +34,7 @@ void main() async {
   var token = await FirebaseMessaging.instance.getToken();
   print("token: $token");
 
-  FirebaseMessaging.onMessage.listen((event) {
+ /*  FirebaseMessaging.onMessage.listen((event) {
     //print(event.data.toString());
     print("On Message");
   });
@@ -43,7 +43,7 @@ void main() async {
     print("On Message Opened App");
   });
 
-  FirebaseMessaging.onBackgroundMessage(firebaseMassegingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(firebaseMassegingBackgroundHandler); */
   await CacheHelper.init();
   Widget widget;
   uId = CacheHelper.getData(key: "uId");

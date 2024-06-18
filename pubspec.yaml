@@ -50,7 +50,12 @@ dependencies:
   intl: ^0.19.0
   firebase_messaging: ^14.7.19
   get: ^4.6.6
-  http: ^1.2.0
+  flutter_native_splash: ^2.3.10
+
+
+flutter_native_splash:
+  android: true
+  background_image: "assets/logo_splash.gif"
 
 dev_dependencies:
   flutter_test:

@@ -45,7 +45,7 @@ class AddPostWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      cubit.userData!.image,
+                      cubit.userData!.image!,
                     ),
                   ),
                   Text(
