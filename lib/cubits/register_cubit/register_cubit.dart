@@ -81,7 +81,7 @@ class AppRegisterCubit extends Cubit<AppRegisterState> {
       image: image,
       cover: "https://i.pinimg.com/564x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg",
       isEmailVerified: false,
-      bio: bio,
+      bio: "Add Bio",
       followers: [],
       followings: [ ],
       posts: [], savedPosts: [],

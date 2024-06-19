@@ -144,19 +144,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   direction: PageTransitionType.bottomToTop,
                                   curve: Curves.decelerate,
                                 );
-                              },)
+                              },
+                            )
                           : AppBtn(
                               label: isFollow ? "Unfollow" : "Follow",
                               onPressed: () {
-                                if (widget.user.email ==
-                                    "rwanbdalrhym948@gmail.com") {
-                                  buildSnackBar(
-                                      context: context,
-                                      text: "ههههه لا",
-                                      clr: errorColor);
-                                } else {
-                                  toggleFollow();
-                                }
+                                toggleFollow();
                               },
                               clr: isFollow ? Colors.white : null,
                               style: isFollow

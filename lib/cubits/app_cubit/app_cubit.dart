@@ -8,7 +8,7 @@ import 'package:el_reino/models/comment_model.dart';
 
 import 'package:el_reino/models/post_model.dart';
 import 'package:el_reino/models/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +17,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:page_transition/page_transition.dart';
+
 
 import '../../helper/cache_helper.dart';
-import '../../methods/methods.dart';
+
 import '../../models/message_model.dart';
-import '../../screens/login_screen.dart';
-import '../../screens/splash_screen.dart';
+
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());

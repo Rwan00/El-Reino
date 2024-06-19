@@ -57,7 +57,9 @@ class _PostWidgetState extends State<PostWidget> {
     super.initState();
     isLike = widget.likes.contains(currentUser.email);
     getCommentsCount();
-    isSave = AppCubit.get(context).userData!.savedPosts!.contains(widget.postId);
+    isSave =
+        AppCubit.get(context).userData!.savedPosts?.contains(widget.postId) ??
+            false;
 
     //print(isLike);
     //print(currentUser.email);
@@ -229,7 +231,7 @@ class _PostWidgetState extends State<PostWidget> {
                                               },
                                               btnTxt: "Delete",
                                             );
-                                            Navigator.of(context).pop();
+                                            //Navigator.of(context).pop();
                                           },
                                           leading: const Icon(
                                             Icons.delete_forever_outlined,
