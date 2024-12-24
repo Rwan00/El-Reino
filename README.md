@@ -1,6 +1,6 @@
-# 👑 Elreino
+# 👑 El Reino
 
-**Elreino** is a modern social media application designed for seamless interaction, allowing users to connect through real-time messaging, posting, commenting, and more. Built with cutting-edge technologies, it delivers a fast and engaging experience for users.
+**El Reino** is a modern social media application designed for seamless interaction, allowing users to connect through real-time messaging, posting, commenting, and more. Built with cutting-edge technologies, it delivers a fast and engaging experience for users.
 
 ## 🚀 Features
 
